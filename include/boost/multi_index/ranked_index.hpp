@@ -131,19 +131,19 @@ public:
   std::pair<size_type,size_type>
   range_rank(LowerBounder lower,UpperBounder upper)const
   {
-    typedef typename mpl::if_<
+    typedef mp11::mp_if<
       is_same<LowerBounder,unbounded_type>,
-      BOOST_DEDUCED_TYPENAME mpl::if_<
+      mp11::mp_if<
         is_same<UpperBounder,unbounded_type>,
         both_unbounded_tag,
         lower_unbounded_tag
-      >::type,
-      BOOST_DEDUCED_TYPENAME mpl::if_<
+      >,
+      mp11::mp_if<
         is_same<UpperBounder,unbounded_type>,
         upper_unbounded_tag,
         none_unbounded_tag
-      >::type
-    >::type dispatch;
+      >
+    > dispatch;
 
     return range_rank(lower,upper,dispatch());
   }
@@ -335,7 +335,7 @@ struct ranked_unique
 {
   typedef typename detail::ordered_index_args<
     Arg1,Arg2,Arg3>                                index_args;
-  typedef typename index_args::tag_list_type::type tag_list_type;
+  typedef typename index_args::tag_list_type       tag_list_type;
   typedef typename index_args::key_from_value_type key_from_value_type;
   typedef typename index_args::compare_type        compare_type;
 
@@ -360,7 +360,7 @@ struct ranked_non_unique
 {
   typedef detail::ordered_index_args<
     Arg1,Arg2,Arg3>                                index_args;
-  typedef typename index_args::tag_list_type::type tag_list_type;
+  typedef typename index_args::tag_list_type       tag_list_type;
   typedef typename index_args::key_from_value_type key_from_value_type;
   typedef typename index_args::compare_type        compare_type;
 

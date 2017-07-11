@@ -14,7 +14,7 @@
 #endif
 
 #include <boost/core/no_exceptions_support.hpp>
-#include <boost/mpl/if.hpp>
+#include <boost/mp11/utility.hpp>
 
 namespace boost{
 
@@ -120,7 +120,7 @@ struct null_guard : public scope_guard_impl_base
 template< bool cond, class T >
 struct null_guard_return
 {
-    typedef typename boost::mpl::if_c<cond,T,null_guard>::type type;
+    typedef typename boost::mp11::mp_if_c<cond,T,null_guard>::type type;
 };
 
 template<typename F>

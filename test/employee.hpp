@@ -14,7 +14,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
-#include <boost/mpl/vector.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
@@ -102,8 +101,8 @@ struct as_inserted{};
 struct ssn{};
 struct randomly{};
 
-struct employee_set_indices:
-  boost::mpl::vector<
+using employee_set_indices=
+  boost::multi_index::indexed_by<
     boost::multi_index::ordered_unique<
       boost::multi_index::identity<employee> >,
     boost::multi_index::hashed_non_unique<
@@ -118,8 +117,7 @@ struct employee_set_indices:
       boost::multi_index::tag<ssn>,
       BOOST_MULTI_INDEX_MEMBER(employee,int,ssn)>,
     boost::multi_index::random_access<
-      boost::multi_index::tag<randomly> > >
-{};
+      boost::multi_index::tag<randomly> > >;
 
 typedef
   boost::multi_index::multi_index_container<

@@ -50,9 +50,9 @@
 #include <boost/iterator/reverse_iterator.hpp>
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/utility.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/push_front.hpp>
 #include <boost/multi_index/detail/access_specifier.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
@@ -201,18 +201,18 @@ protected:
   typedef tuples::cons<
     ctor_args, 
     typename super::ctor_args_list>                  ctor_args_list;
-  typedef typename mpl::push_front<
+  typedef mp11::mp_push_front<
     typename super::index_type_list,
     ordered_index<
       KeyFromValue,Compare,
       SuperMeta,TagList,Category,AugmentPolicy
-    > >::type                                        index_type_list;
-  typedef typename mpl::push_front<
+    > >                                              index_type_list;
+  typedef mp11::mp_push_front<
     typename super::iterator_type_list,
-    iterator>::type    iterator_type_list;
-  typedef typename mpl::push_front<
+    iterator>                                        iterator_type_list;
+  typedef mp11::mp_push_front<
     typename super::const_iterator_type_list,
-    const_iterator>::type                            const_iterator_type_list;
+    const_iterator>                                  const_iterator_type_list;
   typedef typename super::copy_map_type              copy_map_type;
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
@@ -624,19 +624,19 @@ public:
   std::pair<iterator,iterator>
   range(LowerBounder lower,UpperBounder upper)const
   {
-    typedef typename mpl::if_<
+    typedef mp11::mp_if<
       is_same<LowerBounder,unbounded_type>,
-      BOOST_DEDUCED_TYPENAME mpl::if_<
+      mp11::mp_if<
         is_same<UpperBounder,unbounded_type>,
         both_unbounded_tag,
         lower_unbounded_tag
-      >::type,
-      BOOST_DEDUCED_TYPENAME mpl::if_<
+      >,
+      mp11::mp_if<
         is_same<UpperBounder,unbounded_type>,
         upper_unbounded_tag,
         none_unbounded_tag
-      >::type
-    >::type dispatch;
+      >
+    > dispatch;
 
     return range(lower,upper,dispatch());
   }
