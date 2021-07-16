@@ -99,8 +99,7 @@ public:
   BOOST_ATTRIBUTE_NODISCARD 
   bool empty()const noexcept{return (node==0);}
 
-  void swap(node_handle& x)
-    BOOST_NOEXCEPT_IF(
+  void swap(node_handle& x) noexcept(
       alloc_traits::propagate_on_container_swap::value||
       alloc_traits::is_always_equal::value)
   {
@@ -124,8 +123,7 @@ public:
     std::swap(node,x.node);
   }
 
-  friend void swap(node_handle& x,node_handle& y)
-    BOOST_NOEXCEPT_IF(noexcept(x.swap(y)))
+  friend void swap(node_handle& x,node_handle& y) noexcept(noexcept(x.swap(y)))
   {
     x.swap(y);
   }
