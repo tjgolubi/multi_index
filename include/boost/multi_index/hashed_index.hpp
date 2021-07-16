@@ -208,35 +208,35 @@ public:
   }
 #endif
 
-  allocator_type get_allocator()const BOOST_NOEXCEPT
+  allocator_type get_allocator()const noexcept
   {
     return this->final().get_allocator();
   }
 
   /* size and capacity */
 
-  bool      empty()const BOOST_NOEXCEPT{return this->final_empty_();}
-  size_type size()const BOOST_NOEXCEPT{return this->final_size_();}
-  size_type max_size()const BOOST_NOEXCEPT{return this->final_max_size_();}
+  bool      empty()const noexcept{return this->final_empty_();}
+  size_type size()const noexcept{return this->final_size_();}
+  size_type max_size()const noexcept{return this->final_max_size_();}
 
   /* iterators */
 
-  iterator begin()BOOST_NOEXCEPT
+  iterator begin()noexcept
   {
     return make_iterator(
       index_node_type::from_impl(header()->next()->prior()));
   
   }
-  const_iterator begin()const BOOST_NOEXCEPT
+  const_iterator begin()const noexcept
   {
     return make_iterator(
       index_node_type::from_impl(header()->next()->prior()));
   }
 
-  iterator       end()BOOST_NOEXCEPT{return make_iterator(header());}
-  const_iterator end()const BOOST_NOEXCEPT{return make_iterator(header());}
-  const_iterator cbegin()const BOOST_NOEXCEPT{return begin();}
-  const_iterator cend()const BOOST_NOEXCEPT{return end();}
+  iterator       end()noexcept{return make_iterator(header());}
+  const_iterator end()const noexcept{return make_iterator(header());}
+  const_iterator cbegin()const noexcept{return begin();}
+  const_iterator cend()const noexcept{return end();}
 
   iterator iterator_to(const value_type& x)
   {
@@ -481,7 +481,7 @@ public:
       modify_key_adaptor<Rollback,value_type,KeyFromValue>(back_,key));
   }
 
-  void clear()BOOST_NOEXCEPT
+  void clear()noexcept
   {
     BOOST_MULTI_INDEX_HASHED_INDEX_CHECK_INVARIANT;
     this->final_clear_();
@@ -564,12 +564,12 @@ public:
 
   /* bucket interface */
 
-  size_type bucket_count()const BOOST_NOEXCEPT
+  size_type bucket_count()const noexcept
   {
     return static_cast<size_type>(buckets.size());
   }
 
-  size_type max_bucket_count()const BOOST_NOEXCEPT{return static_cast<size_type>(-1);}
+  size_type max_bucket_count()const noexcept{return static_cast<size_type>(-1);}
 
   size_type bucket_size(size_type n)const
   {
@@ -625,9 +625,9 @@ public:
 
   /* hash policy */
 
-  float load_factor()const BOOST_NOEXCEPT
+  float load_factor()const noexcept
     {return static_cast<float>(size())/bucket_count();}
-  float max_load_factor()const BOOST_NOEXCEPT{return mlf;}
+  float max_load_factor()const noexcept{return mlf;}
   void  max_load_factor(float z){mlf=z;calculate_max_load();}
 
   void rehash(size_type n)

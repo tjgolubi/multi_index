@@ -351,7 +351,7 @@ public:
   }
 #endif
 
-  allocator_type get_allocator()const BOOST_NOEXCEPT
+  allocator_type get_allocator()const noexcept
   {
     return allocator_type(bfm_allocator::member);
   }
@@ -367,14 +367,14 @@ public:
   };
 
   template<int N>
-  typename nth_index<N>::type& get()BOOST_NOEXCEPT
+  typename nth_index<N>::type& get()noexcept
   {
     static_assert(N>=0&&N<mp11::mp_size<index_type_list>::value);
     return *this;
   }
 
   template<int N>
-  const typename nth_index<N>::type& get()const BOOST_NOEXCEPT
+  const typename nth_index<N>::type& get()const noexcept
   {
     static_assert(N>=0&&N<mp11::mp_size<index_type_list>::value);
     return *this;
@@ -400,13 +400,13 @@ public:
   };
 
   template<typename Tag>
-  typename index<Tag>::type& get()BOOST_NOEXCEPT
+  typename index<Tag>::type& get()noexcept
   {
     return *this;
   }
 
   template<typename Tag>
-  const typename index<Tag>::type& get()const BOOST_NOEXCEPT
+  const typename index<Tag>::type& get()const noexcept
   {
     return *this;
   }
@@ -1119,7 +1119,7 @@ template<int N,typename Value,typename IndexSpecifierList,typename Allocator>
 typename nth_index<
   multi_index_container<Value,IndexSpecifierList,Allocator>,N>::type&
 get(
-  multi_index_container<Value,IndexSpecifierList,Allocator>& m)BOOST_NOEXCEPT
+  multi_index_container<Value,IndexSpecifierList,Allocator>& m)noexcept
 {
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>    multi_index_type;
@@ -1143,7 +1143,7 @@ const typename nth_index<
   multi_index_container<Value,IndexSpecifierList,Allocator>,N>::type&
 get(
   const multi_index_container<Value,IndexSpecifierList,Allocator>& m
-)BOOST_NOEXCEPT
+)noexcept
 {
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>    multi_index_type;
@@ -1187,7 +1187,7 @@ template<
 typename ::boost::multi_index::index<
   multi_index_container<Value,IndexSpecifierList,Allocator>,Tag>::type&
 get(
-  multi_index_container<Value,IndexSpecifierList,Allocator>& m)BOOST_NOEXCEPT
+  multi_index_container<Value,IndexSpecifierList,Allocator>& m)noexcept
 {
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>         multi_index_type;
@@ -1207,7 +1207,7 @@ const typename ::boost::multi_index::index<
   multi_index_container<Value,IndexSpecifierList,Allocator>,Tag>::type&
 get(
   const multi_index_container<Value,IndexSpecifierList,Allocator>& m
-)BOOST_NOEXCEPT
+)noexcept
 {
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>         multi_index_type;

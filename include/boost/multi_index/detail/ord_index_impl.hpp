@@ -224,7 +224,7 @@ public:
    * Assignment operators defined at ordered_index rather than here.
    */
 
-  allocator_type get_allocator()const BOOST_NOEXCEPT
+  allocator_type get_allocator()const noexcept
   {
     return this->final().get_allocator();
   }
@@ -232,29 +232,29 @@ public:
   /* iterators */
 
   iterator
-    begin()BOOST_NOEXCEPT{return make_iterator(leftmost());}
+    begin()noexcept{return make_iterator(leftmost());}
   const_iterator
-    begin()const BOOST_NOEXCEPT{return make_iterator(leftmost());}
+    begin()const noexcept{return make_iterator(leftmost());}
   iterator
-    end()BOOST_NOEXCEPT{return make_iterator(header());}
+    end()noexcept{return make_iterator(header());}
   const_iterator
-    end()const BOOST_NOEXCEPT{return make_iterator(header());}
+    end()const noexcept{return make_iterator(header());}
   reverse_iterator
-    rbegin()BOOST_NOEXCEPT{return boost::make_reverse_iterator(end());}
+    rbegin()noexcept{return boost::make_reverse_iterator(end());}
   const_reverse_iterator
-    rbegin()const BOOST_NOEXCEPT{return boost::make_reverse_iterator(end());}
+    rbegin()const noexcept{return boost::make_reverse_iterator(end());}
   reverse_iterator
-    rend()BOOST_NOEXCEPT{return boost::make_reverse_iterator(begin());}
+    rend()noexcept{return boost::make_reverse_iterator(begin());}
   const_reverse_iterator
-    rend()const BOOST_NOEXCEPT{return boost::make_reverse_iterator(begin());}
+    rend()const noexcept{return boost::make_reverse_iterator(begin());}
   const_iterator
-    cbegin()const BOOST_NOEXCEPT{return begin();}
+    cbegin()const noexcept{return begin();}
   const_iterator
-    cend()const BOOST_NOEXCEPT{return end();}
+    cend()const noexcept{return end();}
   const_reverse_iterator
-    crbegin()const BOOST_NOEXCEPT{return rbegin();}
+    crbegin()const noexcept{return rbegin();}
   const_reverse_iterator
-    crend()const BOOST_NOEXCEPT{return rend();}
+    crend()const noexcept{return rend();}
  
   iterator iterator_to(const value_type& x)
   {
@@ -270,9 +270,9 @@ public:
 
   /* capacity */
 
-  bool      empty()const BOOST_NOEXCEPT{return this->final_empty_();}
-  size_type size()const BOOST_NOEXCEPT{return this->final_size_();}
-  size_type max_size()const BOOST_NOEXCEPT{return this->final_max_size_();}
+  bool      empty()const noexcept{return this->final_empty_();}
+  size_type size()const noexcept{return this->final_size_();}
+  size_type max_size()const noexcept{return this->final_max_size_();}
 
   /* modifiers */
 
@@ -506,7 +506,7 @@ public:
     this->final_swap_(x.final());
   }
 
-  void clear()BOOST_NOEXCEPT
+  void clear()noexcept
   {
     BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT;
     this->final_clear_();

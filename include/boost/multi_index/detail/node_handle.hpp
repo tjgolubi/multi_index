@@ -43,9 +43,9 @@ private:
   typedef allocator_traits<allocator_type> alloc_traits;
 
 public:
-  node_handle()BOOST_NOEXCEPT:node(0){}
+  node_handle()noexcept:node(0){}
 
-  node_handle(BOOST_RV_REF(node_handle) x)BOOST_NOEXCEPT:node(x.node)
+  node_handle(BOOST_RV_REF(node_handle) x)noexcept:node(x.node)
   {
     if(!x.empty()){
       move_construct_allocator(boost::move(x));
@@ -94,10 +94,10 @@ public:
 #if !defined(BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS)
   explicit
 #endif
-  operator bool()const BOOST_NOEXCEPT{return (node!=0);}
+  operator bool()const noexcept{return (node!=0);}
 
   BOOST_ATTRIBUTE_NODISCARD 
-  bool empty()const BOOST_NOEXCEPT{return (node==0);}
+  bool empty()const noexcept{return (node==0);}
 
   void swap(node_handle& x)
     BOOST_NOEXCEPT_IF(
