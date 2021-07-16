@@ -10,13 +10,9 @@
 #define BOOST_MULTI_INDEX_DETAIL_SCOPE_GUARD_HPP
 #pragma once
 
-#include <boost/mp11/utility.hpp>
+#include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Until some official version of the ScopeGuard idiom makes it into Boost,
  * we locally define our own. This is a merely reformated version of
@@ -30,27 +26,9 @@ namespace detail{
  *   - Added scope_guard_impl4 and obj_scope_guard_impl3, (Boost.MultiIndex
  *     needs them). A better design would provide guards for many more
  *     arguments through the Boost Preprocessor Library.
- *   - Added scope_guard_impl_base::touch (see below.)
- *   - Removed RefHolder and ByRef, whose functionality is provided
- *     already by Boost.Ref.
  *   - Removed static make_guard's and make_obj_guard's, so that the code
- *     will work even if BOOST_NO_MEMBER_TEMPLATES is defined. This forces
+ *     will work even without member templates. This forces
  *     us to move some private ctors to public, though.
- *
- * NB: CodeWarrior Pro 8 seems to have problems looking up safe_execute
- * without an explicit qualification.
- * 
- * We also define the following variants of the idiom:
- * 
- *   - make_guard_if_c<bool>( ... )
- *   - make_guard_if<IntegralConstant>( ... )
- *   - make_obj_guard_if_c<bool>( ... )
- *   - make_obj_guard_if<IntegralConstant>( ... )
- * which may be used with a compile-time constant to yield
- * a "null_guard" if the boolean compile-time parameter is false,
- * or conversely, the guard is only constructed if the constant is true.
- * This is useful to avoid extra tagging, because the returned
- * null_guard can be optimzed comlpetely away by the compiler.
  */
 
 class scope_guard_impl_base
@@ -58,10 +36,6 @@ class scope_guard_impl_base
 public:
   scope_guard_impl_base():dismissed_(false){}
   void dismiss()const{dismissed_=true;}
-
-  /* This helps prevent some "unused variable" warnings under, for instance,
-   * GCC 3.2.
-   */
   void touch()const{}
 
 protected:
@@ -84,38 +58,21 @@ protected:
   mutable bool dismissed_;
 
 private:
-  scope_guard_impl_base& operator=(const scope_guard_impl_base&);
+  scope_guard_impl_base& operator=(const scope_guard_impl_base&) = delete;
 };
 
 typedef const scope_guard_impl_base& scope_guard;
 
 struct null_guard : public scope_guard_impl_base
 {
-    template< class T1 >
-    null_guard( const T1& )
-    { }
-
-    template< class T1, class T2 >
-    null_guard( const T1&, const T2& )
-    { }
-
-    template< class T1, class T2, class T3 >
-    null_guard( const T1&, const T2&, const T3& )
-    { }
-
-    template< class T1, class T2, class T3, class T4 >
-    null_guard( const T1&, const T2&, const T3&, const T4& )
-    { }
-
-    template< class T1, class T2, class T3, class T4, class T5 >
-    null_guard( const T1&, const T2&, const T3&, const T4&, const T5& )
-    { }
+    template< typename... Args >
+    null_guard( const Args&...) { }
 };
 
 template< bool cond, class T >
 struct null_guard_return
 {
-    typedef typename boost::mp11::mp_if_c<cond,T,null_guard>::type type;
+    typedef typename std::conditional_t<cond,T,null_guard> type;
 };
 
 template<typename F>
@@ -439,10 +396,6 @@ make_obj_guard_if(Obj& obj,MemFun mem_fun,P1 p1,P2 p2,P3 p3)
   return make_obj_guard_if_c<C::value>(obj,mem_fun,p1,p2,p3);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif
