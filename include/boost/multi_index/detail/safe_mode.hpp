@@ -108,11 +108,9 @@
     safe_mode::unequal_allocators);
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/multi_index/detail/iter_adaptor.hpp>
 #include <boost/multi_index/safe_mode_errors.hpp>
-#include <boost/noncopyable.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/serialization/split_member.hpp>
@@ -121,9 +119,7 @@
 
 #include <mutex>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace safe_mode{
 
@@ -262,7 +258,7 @@ inline void detach_equivalent_iterators(Iterator& it)
 
 template<typename Container> class safe_container; /* fwd decl. */
 
-} /* namespace multi_index::safe_mode */
+} // safe_mode
 
 namespace detail{
 
@@ -318,11 +314,9 @@ protected:
 private:
   friend class safe_container_base;
 
-#if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template<typename>          friend class safe_mode::safe_container;
   template<typename Iterator> friend
     void safe_mode::detach_equivalent_iterators(Iterator&);
-#endif
 
   inline void attach(safe_container_base* cont_);
 
@@ -331,18 +325,19 @@ private:
   bool                 unchecked_;
 };
 
-class safe_container_base:private noncopyable
+class safe_container_base
 {
 public:
   safe_container_base(){}
 
+  safe_container_base(const safe_container_base&) = delete;
+  safe_container_base& operator=(const safe_container_base&) = delete;
+
 protected:
   friend class safe_iterator_base;
 
-#if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template<typename Iterator> friend
     void safe_mode::detach_equivalent_iterators(Iterator&);
-#endif
 
   ~safe_container_base()
   {
@@ -388,7 +383,7 @@ void safe_iterator_base::detach()
   }
 }
 
-} /* namespace multi_index::detail */
+} // detail
 
 namespace safe_mode{
 
@@ -559,12 +554,12 @@ public:
   }
 };
 
-} /* namespace multi_index::safe_mode */
+} // safe_mode
 
-} /* namespace multi_index */
+} // boost::multi_index
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
-namespace serialization{
+namespace boost::serialization{
 template<typename Iterator,typename Container>
 struct version<
   boost::multi_index::safe_mode::safe_iterator<Iterator,Container>
@@ -572,10 +567,8 @@ struct version<
 {
   static const int value=boost::serialization::version<Iterator>::value;
 };
-} /* namespace serialization */
+} // boost::serialization
 #endif
-
-} /* namespace boost */
 
 #endif /* BOOST_MULTI_INDEX_ENABLE_SAFE_MODE */
 
