@@ -244,7 +244,7 @@ inline void detach_equivalent_iterators(Iterator& it)
 {
   if(it.valid()){
     {
-      std::lock_guard<std::mutex> lock(it.cont->mutex);
+      const std::lock_guard<std::mutex> lock(it.cont->mutex);
       Iterator *prev_,*next_;
       for(
         prev_=static_cast<Iterator*>(&it.cont->header);
@@ -371,7 +371,7 @@ void safe_iterator_base::attach(safe_container_base* cont_)
 {
   cont=cont_;
   if(cont){
-    std::lock_guard<std::mutex> lock(cont->mutex);
+    const std::lock_guard<std::mutex> lock(cont->mutex);
     next=cont->header.next;
     cont->header.next=this;
   }
@@ -380,7 +380,7 @@ void safe_iterator_base::attach(safe_container_base* cont_)
 void safe_iterator_base::detach()
 {
   if(cont){
-    std::lock_guard<std::mutex> lock(cont->mutex);
+    const std::lock_guard<std::mutex> lock(cont->mutex);
     safe_iterator_base *prev_,*next_;
     for(prev_=&cont->header;(next_=prev_->next)!=this;prev_=next_){}
     prev_->next=next;
