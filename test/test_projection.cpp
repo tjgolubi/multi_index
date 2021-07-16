@@ -33,28 +33,28 @@ void test_projection()
   employee_set_by_ssn::iterator      it4;
   employee_set_randomly::iterator    it5;
 
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set::iterator,
     nth_index_iterator<employee_set,0>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_name::iterator,
     nth_index_iterator<employee_set,1>::type >::value));
 #if defined(BOOST_NO_MEMBER_TEMPLATES)
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_age::iterator,
     index_iterator<employee_set,age>::type >::value));
 #else
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_age::iterator,
     employee_set::index_iterator<age>::type >::value));
 #endif
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_as_inserted::iterator,
     nth_index_iterator<employee_set,3>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_ssn::iterator,
     nth_index_iterator<employee_set,4>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_randomly::iterator,
     nth_index_iterator<employee_set,5>::type >::value));
 
@@ -88,28 +88,28 @@ void test_projection()
   employee_set_by_ssn::const_iterator      cit4;
   employee_set_randomly::const_iterator    cit5;
 
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set::const_iterator,
     nth_index_const_iterator<employee_set,0>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_name::const_iterator,
     nth_index_const_iterator<employee_set,1>::type >::value));
 #if defined(BOOST_NO_MEMBER_TEMPLATES)
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_age::const_iterator,
     index_const_iterator<employee_set,age>::type >::value));
 #else
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_age::const_iterator,
     employee_set::index_const_iterator<age>::type >::value));
 #endif
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_as_inserted::const_iterator,
     nth_index_const_iterator<employee_set,3>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_by_ssn::const_iterator,
     nth_index_const_iterator<employee_set,4>::type >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     employee_set_randomly::const_iterator,
     nth_index_const_iterator<employee_set,5>::type >::value));
 

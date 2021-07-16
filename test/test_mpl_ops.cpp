@@ -31,10 +31,10 @@ void test_mpl_ops()
      >
   >                           indexed_t1;
 
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0>,
     ordered_unique<identity<int> > >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1>,
     ordered_non_unique<identity<int> > >::value));
 
@@ -48,13 +48,13 @@ void test_mpl_ops()
     index_list_t
   >                           indexed_t2;
 
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,0>,
     sequenced<> >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,1>,
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0> >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,2>,
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1> >::value));
 
@@ -66,10 +66,10 @@ void test_mpl_ops()
     >
   >                           indexed_t3;
 
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list,0>,
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0> >::value));
-  BOOST_STATIC_ASSERT((boost::is_same<
+  static_assert((boost::is_same<
     boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list,1>,
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1> >::value));
 }

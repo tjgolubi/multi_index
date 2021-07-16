@@ -263,34 +263,34 @@ void test_copy_assignment()
   typedef small_container::nth_index<3>::type small_container_3;
   typedef small_container::nth_index<4>::type small_container_4;
 
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container::difference_type,small_alloc::difference_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container_0::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container_0::difference_type,small_alloc::difference_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container_1::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container_1::difference_type,small_alloc::difference_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container_2::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container_2::difference_type,small_alloc::difference_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container_3::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container_3::difference_type,small_alloc::difference_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<small_container_4::size_type,small_alloc::size_type>::value));
-  BOOST_STATIC_ASSERT((
+  static_assert((
     boost::is_same<
       small_container_4::difference_type,small_alloc::difference_type>::value));
 
