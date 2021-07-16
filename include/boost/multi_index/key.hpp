@@ -10,14 +10,10 @@
 #define BOOST_MULTI_INDEX_KEY_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/global_fun.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
-
-#if __cplusplus>=201703L||\
-    defined(BOOST_MSVC)&&defined(__cpp_nontype_template_parameter_auto)
 
 #define BOOST_MULTI_INDEX_KEY_SUPPORTED
 
@@ -183,5 +179,4 @@ using key=typename detail::limited_size_key_impl<Keys...>::type;
 
 } /* namespace boost */
 
-#endif
 #endif

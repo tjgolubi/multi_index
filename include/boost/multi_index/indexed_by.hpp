@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_INDEXED_BY_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/list.hpp>
 
 /* An alias to mp11::mp_list used to hide Mp11 from the user.

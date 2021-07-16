@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_VALUE_COMPARE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/call_traits.hpp>
 
 namespace boost{

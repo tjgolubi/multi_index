@@ -11,7 +11,6 @@
 #ifndef BOOST_MULTI_INDEX_TEST_NON_STD_ALLOCATOR_HPP
 #define BOOST_MULTI_INDEX_TEST_NON_STD_ALLOCATOR_HPP
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/throw_exception.hpp>
 #include <iterator>
 #include <cstddef>
@@ -32,9 +31,7 @@ public:
 
   T& operator*()const
   {
-#if !defined(BOOST_NO_EXCEPTIONS)
     if(!p)boost::throw_exception(std::runtime_error("null indirection"));
-#endif
 
     return *p;
   }

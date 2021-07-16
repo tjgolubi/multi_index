@@ -10,7 +10,6 @@
 
 #include "test_basic.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <vector>
 #include "pre_multi_index.hpp"
@@ -57,11 +56,7 @@ void test_basic()
   employee_set          es;
   std::vector<employee> v;
 
-#if defined(BOOST_NO_MEMBER_TEMPLATES)
-  employee_set_by_name& i1=get<by_name>(es);
-#else
   employee_set_by_name& i1=es.get<by_name>();
-#endif
 
   const employee_set_by_age& i2=get<2>(es);
   employee_set_as_inserted&  i3=get<3>(es);

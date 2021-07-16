@@ -10,7 +10,6 @@
 
 #include "test_alloc_awareness.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
 #include <boost/multi_index_container.hpp>
@@ -50,11 +49,6 @@ inline std::size_t hash_value(const move_tracker& x)
   boost::hash<int> h;
   return h(x.n);
 }
-
-#if defined(BOOST_NO_CXX17_IF_CONSTEXPR)&&defined(BOOST_MSVC)
-#pragma warning(push)
-#pragma warning(disable:4127) /* conditional expression is constant */
-#endif
 
 template<bool Propagate,bool AlwaysEqual>
 void test_allocator_awareness_for()
@@ -128,20 +122,11 @@ void test_allocator_awareness_for()
   }
 }
 
-#if defined(BOOST_NO_CXX17_IF_CONSTEXPR)&&defined(BOOST_MSVC)
-#pragma warning(pop) /* C4127 */
-#endif
-
 void test_allocator_awareness()
 {
   test_allocator_awareness_for<false,false>();
   test_allocator_awareness_for<false,true>();
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-  /* only in C+11 onwards are allocators potentially expected to propagate */
-
   test_allocator_awareness_for<true,false>();
   test_allocator_awareness_for<true,true>();
-
-#endif
 }

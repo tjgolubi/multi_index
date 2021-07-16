@@ -37,7 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_OPS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/function.hpp>
 #include <boost/multi_index/detail/promotes_arg.hpp>
 #include <type_traits>

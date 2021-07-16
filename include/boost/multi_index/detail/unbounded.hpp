@@ -10,8 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_UNBOUNDED_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-
 namespace boost{
 
 namespace multi_index{

@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_HAS_TAG_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/algorithm.hpp>
 
 namespace boost{

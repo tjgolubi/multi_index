@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_HASH_INDEX_ARGS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/functional/hash.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/multi_index/tag.hpp>

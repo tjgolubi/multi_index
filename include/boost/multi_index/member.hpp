@@ -10,15 +10,12 @@
 #define BOOST_MULTI_INDEX_MEMBER_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/utility.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <cstddef>
 
-#if !defined(BOOST_NO_SFINAE)
 #include <boost/type_traits/is_convertible.hpp>
-#endif
 
 namespace boost{
 
@@ -45,12 +42,8 @@ struct const_member_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-#else
-  Type&
-#endif
   
   operator()(const ChainedPtr& x)const
   {
@@ -80,12 +73,8 @@ struct non_const_member_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-#else
-  Type&
-#endif
 
   operator()(const ChainedPtr& x)const
   {
@@ -151,12 +140,8 @@ struct const_member_offset_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-#else
-  Type&
-#endif 
     
   operator()(const ChainedPtr& x)const
   {
@@ -189,12 +174,8 @@ struct non_const_member_offset_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-#else
-  Type&
-#endif 
   
   operator()(const ChainedPtr& x)const
   {
@@ -239,18 +220,8 @@ struct member_offset:
 {
 };
 
-/* BOOST_MULTI_INDEX_MEMBER resolves to member in the normal cases,
- * and to member_offset as a workaround in those defective compilers for
- * which BOOST_NO_POINTER_TO_MEMBER_TEMPLATE_PARAMETERS is defined.
- */
-
-#if defined(BOOST_NO_POINTER_TO_MEMBER_TEMPLATE_PARAMETERS)
-#define BOOST_MULTI_INDEX_MEMBER(Class,Type,MemberName) \
-::boost::multi_index::member_offset< Class,Type,offsetof(Class,MemberName) >
-#else
 #define BOOST_MULTI_INDEX_MEMBER(Class,Type,MemberName) \
 ::boost::multi_index::member< Class,Type,&Class::MemberName >
-#endif
 
 } /* namespace multi_index */
 

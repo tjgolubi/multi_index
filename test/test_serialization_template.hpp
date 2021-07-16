@@ -8,7 +8,6 @@
  * See http://www.boost.org/libs/multi_index for library home page.
  */
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/detail/lightweight_test.hpp>

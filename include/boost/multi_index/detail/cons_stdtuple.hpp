@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_CONS_STDTUPLE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/utility.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <tuple>

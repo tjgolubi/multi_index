@@ -11,7 +11,6 @@
 #ifndef BOOST_MULTI_INDEX_TEST_EMPLOYEE_HPP
 #define BOOST_MULTI_INDEX_TEST_EMPLOYEE_HPP
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
@@ -120,12 +119,7 @@ typedef
     employee_set_indices,
     non_std_allocator<employee> >        employee_set;
 
-#if defined(BOOST_NO_MEMBER_TEMPLATES)
-typedef boost::multi_index::nth_index<
-  employee_set,1>::type                  employee_set_by_name;
-#else
 typedef employee_set::nth_index<1>::type employee_set_by_name;
-#endif
 
 typedef boost::multi_index::index<
          employee_set,age>::type         employee_set_by_age;
@@ -134,12 +128,7 @@ typedef boost::multi_index::index<
 typedef boost::multi_index::index<
          employee_set,ssn>::type         employee_set_by_ssn;
 
-#if defined(BOOST_NO_MEMBER_TEMPLATES)
-typedef boost::multi_index::index<
-         employee_set,randomly>::type    employee_set_randomly;
-#else
 typedef employee_set::index<
           randomly>::type                employee_set_randomly;
-#endif
 
 #endif

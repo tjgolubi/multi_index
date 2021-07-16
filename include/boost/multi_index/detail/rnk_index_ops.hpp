@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RNK_INDEX_OPS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/core/pointer_traits.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/multi_index/detail/promotes_arg.hpp>

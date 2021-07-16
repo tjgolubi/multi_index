@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_GLOBAL_FUN_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/utility.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_reference.hpp>
@@ -18,9 +17,7 @@
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/utility/enable_if.hpp>
 
-#if !defined(BOOST_NO_SFINAE)
 #include <boost/type_traits/is_convertible.hpp>
-#endif
 
 namespace boost{
 
@@ -50,12 +47,8 @@ struct const_ref_global_fun_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,Value>,Type>::type
-#else
-  Type
-#endif
 
   operator()(const ChainedPtr& x)const
   {
@@ -91,12 +84,8 @@ struct non_const_ref_global_fun_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<ChainedPtr&,Value>,Type>::type
-#else
-  Type
-#endif
 
   operator()(const ChainedPtr& x)const
   {
@@ -123,12 +112,8 @@ struct non_ref_global_fun_base
 
   template<typename ChainedPtr>
 
-#if !defined(BOOST_NO_SFINAE)
   typename disable_if<
     is_convertible<const ChainedPtr&,const Value&>,Type>::type
-#else
-  Type
-#endif
 
   operator()(const ChainedPtr& x)const
   {

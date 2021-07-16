@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_LOADER_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>

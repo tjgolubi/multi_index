@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_HASH_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <utility>

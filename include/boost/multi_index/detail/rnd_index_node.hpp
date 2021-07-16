@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/integer/common_factor_rt.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>

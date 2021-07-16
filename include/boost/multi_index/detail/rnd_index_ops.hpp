@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_OPS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 

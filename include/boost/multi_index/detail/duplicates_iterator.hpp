@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_DUPLICATES_ITERATOR_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <iterator>
 
 namespace boost{

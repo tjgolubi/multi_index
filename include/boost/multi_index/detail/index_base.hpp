@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_BASE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/core/addressof.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>

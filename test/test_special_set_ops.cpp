@@ -10,7 +10,6 @@
 
 #include "test_special_set_ops.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <sstream>
 #include "pre_multi_index.hpp"

@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
@@ -39,9 +38,7 @@
 #include <type_traits> 
 #include <utility>
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
 #include<initializer_list>
-#endif
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/rnd_index_loader.hpp>
@@ -173,14 +170,12 @@ public:
     return *this;
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   random_access_index<SuperMeta,TagList>& operator=(
     std::initializer_list<value_type> list)
   {
     this->final()=list;
     return *this;
   }
-#endif
 
   template <class InputIterator>
   void assign(InputIterator first,InputIterator last)
@@ -188,12 +183,10 @@ public:
     assign_iter(first,last,mp11::mp_not<is_integral<InputIterator> >());
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   void assign(std::initializer_list<value_type> list)
   {
     assign(list.begin(),list.end());
   }
-#endif
 
   void assign(size_type n,value_param_type value)
   {
@@ -380,12 +373,10 @@ public:
     insert_iter(position,first,last,mp11::mp_not<is_integral<InputIterator> >());
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   void insert(iterator position,std::initializer_list<value_type> list)
   {
     insert(position,list.begin(),list.end());
   }
-#endif
 
   insert_return_type insert(const_iterator position,node_type&& nh)
   {

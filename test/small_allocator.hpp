@@ -11,8 +11,6 @@
 #ifndef BOOST_MULTI_INDEX_TEST_SMALL_ALLOCATOR_HPP
 #define BOOST_MULTI_INDEX_TEST_SMALL_ALLOCATOR_HPP
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-
 template<typename T>
 class small_allocator
 {

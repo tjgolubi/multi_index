@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_NODE_TYPE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/algorithm.hpp>
 #include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/header_holder.hpp>

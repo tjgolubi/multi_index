@@ -11,7 +11,6 @@
 #ifndef BOOST_MULTI_INDEX_TEST_PAIR_OF_INTS_HPP
 #define BOOST_MULTI_INDEX_TEST_PAIR_OF_INTS_HPP
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/serialization/nvp.hpp>
 
 struct pair_of_ints

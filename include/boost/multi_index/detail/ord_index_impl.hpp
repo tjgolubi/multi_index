@@ -37,7 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/call_traits.hpp>
 #include <boost/core/addressof.hpp>
@@ -65,9 +64,7 @@
 #include <boost/type_traits/is_same.hpp>
 #include <utility>
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
 #include <initializer_list>
-#endif
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
@@ -330,12 +327,10 @@ public:
     }
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   void insert(std::initializer_list<value_type> list)
   {
     insert(list.begin(),list.end());
   }
-#endif
 
   insert_return_type insert(node_type&& nh)
   {
@@ -1446,14 +1441,12 @@ public:
     return *this;
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   ordered_index& operator=(
     std::initializer_list<typename super::value_type> list)
   {
     this->final()=list;
     return *this;
   }
-#endif
 
 protected:
   ordered_index(

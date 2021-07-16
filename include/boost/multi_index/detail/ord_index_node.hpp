@@ -37,7 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <cstddef>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
@@ -113,17 +112,6 @@ private:
  * store color information. This typically reduces the size of
  * ordered_index_node_impl by 25%.
  */
-
-#if defined(BOOST_MSVC)
-/* This code casts pointers to an integer type that has been computed
- * to be large enough to hold the pointer, however the metaprogramming
- * logic is not always spotted by the VC++ code analyser that issues a
- * long list of warnings.
- */
-
-#pragma warning(push)
-#pragma warning(disable:4312 4311)
-#endif
 
 template<typename AugmentPolicy,typename Allocator>
 struct ordered_index_node_compressed_base
@@ -215,9 +203,6 @@ private:
   pointer      left_;
   pointer      right_;
 };
-#if defined(BOOST_MSVC)
-#pragma warning(pop)
-#endif
 #endif
 
 template<typename AugmentPolicy,typename Allocator>

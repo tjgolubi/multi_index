@@ -10,8 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_PROMOTES_ARG_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-
 /* Metafunctions to check if f(arg1,arg2) promotes either arg1 to the type of
  * arg2 or viceversa. By default, (i.e. if it cannot be determined), no
  * promotion is assumed.

@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_BIDIR_NODE_ITERATOR_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/operators.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)

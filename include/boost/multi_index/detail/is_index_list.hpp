@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_IS_INDEX_LIST_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <type_traits>
 
 namespace boost{

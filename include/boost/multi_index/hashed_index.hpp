@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_HASHED_INDEX_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/call_traits.hpp>
 #include <boost/core/addressof.hpp>
@@ -41,9 +40,7 @@
 #include <type_traits>
 #include <utility>
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
 #include <initializer_list>
-#endif
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/serialization/nvp.hpp>
@@ -197,14 +194,12 @@ public:
     return *this;
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& operator=(
     std::initializer_list<value_type> list)
   {
     this->final()=list;
     return *this;
   }
-#endif
 
   allocator_type get_allocator()const noexcept
   {
@@ -303,12 +298,10 @@ public:
     for(;first!=last;++first)this->final_insert_ref_(*first);
   }
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   void insert(std::initializer_list<value_type> list)
   {
     insert(list.begin(),list.end());
   }
-#endif
 
   insert_return_type insert(node_type&& nh)
   {
@@ -1067,13 +1060,11 @@ protected:
 
   /* comparison */
 
-#if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   /* defect macro refers to class, not function, templates, but anyway */
 
   template<typename K,typename H,typename P,typename S,typename T,typename C>
   friend bool operator==(
     const hashed_index<K,H,P,S,T,C>&,const hashed_index<K,H,P,S,T,C>& y);
-#endif
 
   bool equals(const hashed_index& x)const{return equals(x,Category());}
 

@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RAW_PTR_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <type_traits>
 
 namespace boost{

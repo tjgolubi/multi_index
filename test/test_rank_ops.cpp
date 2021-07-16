@@ -10,7 +10,6 @@
 
 #include "test_rank_ops.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <iterator>
 #include <set>

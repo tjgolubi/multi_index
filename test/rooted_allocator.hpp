@@ -11,14 +11,8 @@
 #ifndef BOOST_MULTI_INDEX_TEST_ROOTED_ALLOCATOR_HPP
 #define BOOST_MULTI_INDEX_TEST_ROOTED_ALLOCATOR_HPP
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/type_traits/integral_constant.hpp>
 #include <memory>
-
-#if defined(BOOST_MSVC)
-#pragma warning(push)
-#pragma warning(disable:4355) /* this used in base member initializer list */
-#endif
 
 template<typename T,bool Propagate,bool AlwaysEqual>
 class rooted_allocator:public std::allocator<T>
@@ -56,9 +50,5 @@ private:
 
   const void* root;
 };
-
-#if defined(BOOST_MSVC)
-#pragma warning(pop) /* C4355 */
-#endif
 
 #endif

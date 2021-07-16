@@ -10,7 +10,6 @@
 
 #include "test_composite_key.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
 #include <boost/mp11/utility.hpp>
@@ -56,8 +55,6 @@ struct composite_key_result_length
     >::value;
 };
 
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)&&\
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 struct is_boost_tuple_helper
 {
   typedef char yes;
@@ -94,19 +91,6 @@ struct composite_object_length
 
   static const int value=type::value;
 };
-#else
-template<typename T>
-struct composite_object_length
-{
-  typedef boost::mp11::mp_if_c<
-    is_composite_key_result<T>::value,
-    composite_key_result_length<T>,
-    boost::tuples::length<T>
-  > type;
-
-  static const int value=type::value;
-};
-#endif
 
 template<typename CompositeKeyResult,typename T2>
 struct comparison_equal_length
@@ -348,10 +332,7 @@ struct name                                             \
 
 DEFINE_TUPLE_MAKER(boost_tuple_maker,boost::tuple)
 
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)&&\
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 DEFINE_TUPLE_MAKER(std_tuple_maker,std::tuple)
-#endif
 
 #undef DEFINE_TUPLE_MAKER
 #undef TUPLE_MAKER_CREATE
@@ -397,12 +378,10 @@ void test_composite_key_template()
       mc1.lower_bound(TupleMaker::create(0,0)),
       mc1.upper_bound(TupleMaker::create(1,0)))==6);
 
-#if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
   BOOST_TEST(
     std::distance(
       mc1.lower_bound(1),
       mc1.upper_bound(1))==4);
-#endif
 
   ckey_t1 ck1;
   ckey_t1 ck2(ck1);
@@ -447,11 +426,9 @@ void test_composite_key_template()
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),TupleMaker::create(1),cp1));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),TupleMaker::create(-1),cp1));
 
-#if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,0)),0,cp1));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),1,cp1));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),-1,cp1));
-#endif
 
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,0)),TupleMaker::create(0,0),cp1));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),TupleMaker::create(0,1),cp1));
@@ -661,8 +638,5 @@ void test_composite_key()
 {
   test_composite_key_template<boost_tuple_maker>();
 
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)&&\
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
   test_composite_key_template<std_tuple_maker>();
-#endif
 }

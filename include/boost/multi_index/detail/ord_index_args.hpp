@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_ARGS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/utility.hpp>
 #include <boost/multi_index/tag.hpp>
 #include <boost/type_traits/is_same.hpp>
