@@ -18,7 +18,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/core/addressof.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/mp11/algorithm.hpp>
@@ -79,11 +78,6 @@ struct unequal_alloc_move_ctor_tag{};
 
 } /* namespace multi_index::detail */
 
-#if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1500))
-#pragma warning(push)
-#pragma warning(disable:4522) /* spurious warning on multiple operator=()'s */
-#endif
-
 template<typename Value,typename IndexSpecifierList,typename Allocator>
 class multi_index_container:
   private ::boost::base_from_member<
@@ -105,16 +99,6 @@ class multi_index_container:
   public detail::multi_index_base_type<
     Value,IndexSpecifierList,Allocator>::type
 {
-#if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)&&\
-    BOOST_WORKAROUND(__MWERKS__,<=0x3003)
-/* The "ISO C++ Template Parser" option in CW8.3 has a problem with the
- * lifetime of const references bound to temporaries --precisely what
- * scopeguards are.
- */
-
-#pragma parse_mfunc_templ off
-#endif
-
 private:
   BOOST_COPYABLE_AND_MOVABLE(multi_index_container)
 
@@ -176,17 +160,7 @@ public:
   explicit multi_index_container(
     const ctor_args_list& args_list,
 
-#if BOOST_WORKAROUND(__IBMCPP__,<=600)
-    /* VisualAge seems to have an ETI issue with the default value for
-     * argument al.
-     */
-
-    const allocator_type& al=
-      typename mp11::mp_identity<multi_index_container>::type::
-        allocator_type()):
-#else
     const allocator_type& al=allocator_type()):
-#endif
 
     bfm_allocator(al),
     super(args_list,bfm_allocator::member),
@@ -207,21 +181,8 @@ public:
   multi_index_container(
     InputIterator first,InputIterator last,
 
-#if BOOST_WORKAROUND(__IBMCPP__,<=600)
-    /* VisualAge seems to have an ETI issue with the default values
-     * for arguments args_list and al.
-     */
-
-    const ctor_args_list& args_list=
-      typename mp11::mp_identity<multi_index_container>::type::
-        ctor_args_list(),
-    const allocator_type& al=
-      typename mp11::mp_identity<multi_index_container>::type::
-        allocator_type()):
-#else
     const ctor_args_list& args_list=ctor_args_list(),
     const allocator_type& al=allocator_type()):
-#endif
 
     bfm_allocator(al),
     super(args_list,bfm_allocator::member),
@@ -1146,16 +1107,7 @@ private:
   }
 
   size_type node_count;
-
-#if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)&&\
-    BOOST_WORKAROUND(__MWERKS__,<=0x3003)
-#pragma parse_mfunc_templ reset
-#endif
 };
-
-#if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1500))
-#pragma warning(pop) /* C4522 */
-#endif
 
 /* retrieval of indices by number */
 

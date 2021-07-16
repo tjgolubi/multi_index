@@ -17,7 +17,6 @@
 #include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/core/addressof.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/iterator/reverse_iterator.hpp>
 #include <boost/move/core.hpp>
@@ -76,16 +75,6 @@ class sequenced_index:
 #endif
 
 { 
-#if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)&&\
-    BOOST_WORKAROUND(__MWERKS__,<=0x3003)
-/* The "ISO C++ Template Parser" option in CW8.3 has a problem with the
- * lifetime of const references bound to temporaries --precisely what
- * scopeguards are.
- */
-
-#pragma parse_mfunc_templ off
-#endif
-
   typedef typename SuperMeta::type               super;
 
 protected:
@@ -975,11 +964,6 @@ private:
     }
     return std::pair<iterator,bool>(make_iterator(p.first),p.second);
   }
-
-#if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)&&\
-    BOOST_WORKAROUND(__MWERKS__,<=0x3003)
-#pragma parse_mfunc_templ reset
-#endif
 };
 
 /* comparison */

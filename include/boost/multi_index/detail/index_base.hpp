@@ -15,7 +15,6 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/core/addressof.hpp>
-#include <boost/detail/workaround.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/mp11/list.hpp>

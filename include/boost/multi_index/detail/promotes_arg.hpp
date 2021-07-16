@@ -14,34 +14,11 @@
 #endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/detail/workaround.hpp>
 
 /* Metafunctions to check if f(arg1,arg2) promotes either arg1 to the type of
  * arg2 or viceversa. By default, (i.e. if it cannot be determined), no
  * promotion is assumed.
  */
-
-#if BOOST_WORKAROUND(BOOST_MSVC,<1400)
-
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
-
-template<typename F,typename Arg1,typename Arg2>
-struct promotes_1st_arg:std::false_type{};
-
-template<typename F,typename Arg1,typename Arg2>
-struct promotes_2nd_arg:std::false_type{};
-
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
-
-#else
 
 #include <boost/mp11/function.hpp>
 #include <boost/multi_index/detail/is_transparent.hpp>
@@ -77,5 +54,4 @@ struct promotes_2nd_arg:
 
 } /* namespace boost */
 
-#endif
 #endif

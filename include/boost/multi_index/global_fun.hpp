@@ -14,7 +14,6 @@
 #endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/detail/workaround.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_reference.hpp>
@@ -82,12 +81,6 @@ struct const_ref_global_fun_base
     const reference_wrapper<
       typename remove_const<
         typename remove_reference<Value>::type>::type>& x
-
-#if BOOST_WORKAROUND(BOOST_MSVC,==1310)
-/* http://lists.boost.org/Archives/boost/2015/10/226135.php */
-    ,int=0
-#endif
-
   )const
   { 
     return operator()(x.get());
