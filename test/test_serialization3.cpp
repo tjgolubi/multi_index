@@ -66,7 +66,7 @@ namespace boost{
 namespace serialization{
 template<> struct version<non_default_ctble>
 {
-  BOOST_STATIC_CONSTANT(int,value=3);
+  static const int value=3;
 };
 } /* namespace serialization */
 } /* namespace boost*/

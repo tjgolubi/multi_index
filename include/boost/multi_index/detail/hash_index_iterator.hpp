@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_HASH_INDEX_ITERATOR_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/operators.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
@@ -166,7 +165,7 @@ struct version<
   >
 >
 {
-  BOOST_STATIC_CONSTANT(int,value=1);
+  static const int value=1;
 };
 } /* namespace serialization */
 #endif

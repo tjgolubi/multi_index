@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_BASE_TYPE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/integral.hpp>
 #include <boost/mp11/list.hpp>
@@ -35,7 +34,7 @@ using nth_layer_index=typename mp11::mp_at<IndexSpecifierList,N>::
 template<int N,typename Value,typename IndexSpecifierList,typename Allocator>
 struct nth_layer
 {
-  BOOST_STATIC_CONSTANT(int,length=mp11::mp_size<IndexSpecifierList>::value);
+  static const int length=mp11::mp_size<IndexSpecifierList>::value;
 
   typedef mp11::mp_eval_if_c<
     N==length,

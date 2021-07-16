@@ -49,14 +49,14 @@ template<>struct uintptr_candidates<4> {typedef unsigned int           type;};
 
 struct uintptr_aux
 {
-  BOOST_STATIC_CONSTANT(int,index=
+  static const int index=
     sizeof(void*)==sizeof(uintptr_candidates<0>::type)?0:
     sizeof(void*)==sizeof(uintptr_candidates<1>::type)?1:
     sizeof(void*)==sizeof(uintptr_candidates<2>::type)?2:
     sizeof(void*)==sizeof(uintptr_candidates<3>::type)?3:
-    sizeof(void*)==sizeof(uintptr_candidates<4>::type)?4:-1);
+    sizeof(void*)==sizeof(uintptr_candidates<4>::type)?4:-1;
 
-  BOOST_STATIC_CONSTANT(bool,has_uintptr_type=(index>=0));
+  static const bool has_uintptr_type=(index>=0);
 
   typedef uintptr_candidates<index>::type type;
 };

@@ -583,8 +583,7 @@ struct version<
   boost::multi_index::safe_mode::safe_iterator<Iterator,Container>
 >
 {
-  BOOST_STATIC_CONSTANT(
-    int,value=boost::serialization::version<Iterator>::value);
+  static const int value=boost::serialization::version<Iterator>::value;
 };
 } /* namespace serialization */
 #endif

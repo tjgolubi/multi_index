@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_SERIALIZATION_VERSION_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/version.hpp>
 
@@ -61,7 +60,7 @@ namespace serialization {
 template<typename T>
 struct version<boost::multi_index::detail::serialization_version<T> >
 {
-  BOOST_STATIC_CONSTANT(int,value=version<T>::value);
+  static const int value=version<T>::value;
 };
 } /* namespace serialization */
 

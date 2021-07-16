@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_NO_DUPLICATE_TAGS_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/set.hpp>
@@ -34,8 +33,8 @@ struct no_duplicate_tags
     mp11::mp_set_push_back
   > aux;
  
-  BOOST_STATIC_CONSTANT(
-    bool,value=(mp11::mp_size<TagList>::value==mp11::mp_size<aux>::value));
+  static const bool value=
+      (mp11::mp_size<TagList>::value==mp11::mp_size<aux>::value);
 };
 
 /* Variant for an index list: duplication is checked

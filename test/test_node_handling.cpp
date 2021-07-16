@@ -10,7 +10,6 @@
 
 #include "test_node_handling.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/core/enable_if.hpp>
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/move/utility_core.hpp>
@@ -149,7 +148,7 @@ struct is_iterator
   template<typename Q> static no  test(...);
   template<typename Q> static yes test(typename Q::iterator_category*);
 
-  BOOST_STATIC_CONSTANT(bool,value=(sizeof(test<T>(0))==sizeof(yes)));
+  static const bool value=(sizeof(test<T>(0))==sizeof(yes));
 };
 
 template<typename T>

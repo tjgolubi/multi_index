@@ -393,8 +393,8 @@ public:
       typename detail::has_tag<Tag>
     >                                        pos;
 
-    BOOST_STATIC_CONSTANT(
-      bool,index_found=(pos::value<mp11::mp_size<index_type_list>::value));
+    static const bool index_found=
+        (pos::value<mp11::mp_size<index_type_list>::value);
     static_assert(index_found);
 
     typedef mp11::mp_at<index_type_list,pos> type;
@@ -1110,9 +1110,8 @@ private:
 template<typename MultiIndexContainer,int N>
 struct nth_index
 {
-  BOOST_STATIC_CONSTANT(
-    int,
-    M=mp11::mp_size<typename MultiIndexContainer::index_type_list>::value);
+  static const int M=
+      mp11::mp_size<typename MultiIndexContainer::index_type_list>::value;
   static_assert(N>=0&&N<M);
   typedef mp11::mp_at_c<
     typename MultiIndexContainer::index_type_list,N> type;
@@ -1177,8 +1176,8 @@ struct index
     typename detail::has_tag<Tag>
   >                                        pos;
 
-  BOOST_STATIC_CONSTANT(
-    bool,index_found=(pos::value<mp11::mp_size<index_type_list>::value));
+  static const bool index_found=
+      (pos::value<mp11::mp_size<index_type_list>::value);
   static_assert(index_found);
 
   typedef mp11::mp_at<index_type_list,pos> type;
@@ -1485,7 +1484,7 @@ struct version<
   boost::multi_index_container<Value,IndexSpecifierList,Allocator>
 >
 {
-  BOOST_STATIC_CONSTANT(int,value=2);
+  static const int value=2;
 };
 } /* namespace serialization */
 #endif

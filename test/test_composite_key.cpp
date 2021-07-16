@@ -42,20 +42,18 @@ struct is_composite_key_result
 {
   typedef is_composite_key_result_helper helper;
 
-  BOOST_STATIC_CONSTANT(bool,
-    value=(
+  static const bool value=(
       sizeof(helper::test((T*)0))==
-      sizeof(typename helper::yes)));
+      sizeof(typename helper::yes));
 };
 
 template<typename CompositeKeyResult>
 struct composite_key_result_length
 {
-  BOOST_STATIC_CONSTANT(int,
-    value=boost::tuples::length<
+  static const int value=boost::tuples::length<
       BOOST_DEDUCED_TYPENAME 
       CompositeKeyResult::composite_key_type::key_extractor_tuple
-    >::value);
+    >::value;
 };
 
 #if !defined(BOOST_NO_CXX11_HDR_TUPLE)&&\
@@ -76,10 +74,9 @@ struct is_boost_tuple
 {
   typedef is_boost_tuple_helper helper;
 
-  BOOST_STATIC_CONSTANT(bool,
-    value=(
+  static const bool value=(
       sizeof(helper::test((T*)0))==
-      sizeof(typename helper::yes)));
+      sizeof(typename helper::yes));
 };
 
 template<typename T>
@@ -95,7 +92,7 @@ struct composite_object_length
     >
   > type;
 
-  BOOST_STATIC_CONSTANT(int,value=type::value);
+  static const int value=type::value;
 };
 #else
 template<typename T>
@@ -107,7 +104,7 @@ struct composite_object_length
     boost::tuples::length<T>
   > type;
 
-  BOOST_STATIC_CONSTANT(int,value=type::value);
+  static const int value=type::value;
 };
 #endif
 

@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_TAG_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
 
@@ -29,7 +28,7 @@ struct tag_marker{};
 template<typename T>
 struct is_tag
 {
-  BOOST_STATIC_CONSTANT(bool,value=(is_base_and_derived<tag_marker,T>::value));
+  static const bool value=(is_base_and_derived<tag_marker,T>::value);
 };
 
 } /* namespace multi_index::detail */
