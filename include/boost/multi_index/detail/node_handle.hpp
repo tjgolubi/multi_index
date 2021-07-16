@@ -30,8 +30,6 @@ namespace detail{
 /* Node handle template class following [container.node] specs.
  */
 
-#include <boost/multi_index/detail/define_if_constexpr_macro.hpp>
-
 template<typename Node,typename Allocator>
 class node_handle
 {
@@ -68,7 +66,7 @@ public:
       if(!empty()){
         delete_node();
         if(!x.empty()){
-          BOOST_MULTI_INDEX_IF_CONSTEXPR(
+          if constexpr(
             alloc_traits::propagate_on_container_move_assignment::value){
             move_assign_allocator(boost::move(x));
           }
@@ -105,7 +103,7 @@ public:
   {
     if(!empty()){
       if(!x.empty()){
-        BOOST_MULTI_INDEX_IF_CONSTEXPR(
+        if constexpr(
           alloc_traits::propagate_on_container_swap::value){
           using std::swap;
           swap(*allocator_ptr(),*x.allocator_ptr());
@@ -189,8 +187,6 @@ private:
     alignment_of<allocator_type>::value
   >::type                               space;
 };
-
-#include <boost/multi_index/detail/undef_if_constexpr_macro.hpp>
 
 /* node handle insert return type template class following
  * [container.insert.return] specs.

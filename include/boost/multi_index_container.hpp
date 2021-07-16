@@ -314,9 +314,7 @@ public:
   multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
     BOOST_RV_REF(multi_index_container) x)
   {
-#include <boost/multi_index/detail/define_if_constexpr_macro.hpp>
-
-    BOOST_MULTI_INDEX_IF_CONSTEXPR(
+    if constexpr(
       node_alloc_traits::propagate_on_container_move_assignment::value){
       swap_(x,boost::true_type() /* swap_allocators */);
     }
@@ -328,8 +326,6 @@ public:
       swap_(y,boost::false_type() /* swap_allocators */);
     }
     return *this;
-
-#include <boost/multi_index/detail/undef_if_constexpr_macro.hpp>
   }
 
 #if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
