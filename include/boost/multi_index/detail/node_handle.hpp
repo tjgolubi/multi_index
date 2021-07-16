@@ -96,7 +96,7 @@ public:
 #endif
   operator bool()const noexcept{return (node!=0);}
 
-  BOOST_ATTRIBUTE_NODISCARD 
+  [[nodiscard]]
   bool empty()const noexcept{return (node==0);}
 
   void swap(node_handle& x) noexcept(
