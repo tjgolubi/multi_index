@@ -281,7 +281,7 @@ struct iter_adaptor_selector<std::random_access_iterator_tag>
 };
 
 template<class Derived,class Base>
-using iter_adaptor_base= mp11::mp_invoke<
+using iter_adaptor_base= mp11::mp_invoke_q<
   iter_adaptor_selector<typename Base::iterator_category>,
   Derived,Base
 >;

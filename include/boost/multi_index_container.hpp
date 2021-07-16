@@ -434,9 +434,9 @@ public:
   template<typename Tag>
   struct index
   {
-    typedef mp11::mp_find_if<
+    typedef mp11::mp_find_if_q<
       index_type_list,
-      typename detail::has_tag<Tag>::fn
+      typename detail::has_tag<Tag>
     >                                        pos;
 
     BOOST_STATIC_CONSTANT(
@@ -1242,9 +1242,9 @@ struct index
 {
   typedef typename MultiIndexContainer::index_type_list index_type_list;
 
-  typedef mp11::mp_find_if<
+  typedef mp11::mp_find_if_q<
     index_type_list,
-    typename detail::has_tag<Tag>::fn
+    typename detail::has_tag<Tag>
   >                                        pos;
 
   BOOST_STATIC_CONSTANT(
