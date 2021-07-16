@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_VARTEMPL_SUPPORT_HPP
 #define BOOST_MULTI_INDEX_DETAIL_VARTEMPL_SUPPORT_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 /* Utilities for emulation of variadic template functions. Variadic packs are
  * replaced by lists of BOOST_MULTI_INDEX_LIMIT_VARTEMPL_ARGS parameters:

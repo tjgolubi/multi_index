@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_HPP
 #define BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>

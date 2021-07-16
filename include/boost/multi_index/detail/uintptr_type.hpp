@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_UINTPTR_TYPE_HPP
 #define BOOST_MULTI_INDEX_DETAIL_UINTPTR_TYPE_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/integral.hpp>

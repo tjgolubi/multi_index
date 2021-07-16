@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_SAFE_MODE_HPP
 #define BOOST_MULTI_INDEX_DETAIL_SAFE_MODE_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 /* Safe mode machinery, in the spirit of Cay Hortmann's "Safe STL"
  * (http://www.horstmann.com/safestl.html).

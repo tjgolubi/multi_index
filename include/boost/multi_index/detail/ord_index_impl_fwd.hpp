@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_FWD_HPP
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_FWD_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 namespace boost{
 

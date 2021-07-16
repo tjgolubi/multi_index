@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_CONVERTER_HPP
 #define BOOST_MULTI_INDEX_DETAIL_CONVERTER_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 namespace boost{
 

@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_SEQ_INDEX_OPS_HPP
 #define BOOST_MULTI_INDEX_DETAIL_SEQ_INDEX_OPS_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/seq_index_node.hpp>

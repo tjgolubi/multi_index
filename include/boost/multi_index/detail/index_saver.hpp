@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_INDEX_SAVER_HPP
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_SAVER_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/index_matcher.hpp>

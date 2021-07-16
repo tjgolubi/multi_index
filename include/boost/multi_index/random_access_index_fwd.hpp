@@ -8,10 +8,7 @@
 
 #ifndef BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_FWD_HPP
 #define BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_FWD_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include <boost/multi_index/tag.hpp>
 
