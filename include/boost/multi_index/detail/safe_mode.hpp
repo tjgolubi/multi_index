@@ -119,9 +119,7 @@
 #include <boost/serialization/version.hpp>
 #endif
 
-#if defined(BOOST_HAS_THREADS)
-#include <boost/detail/lightweight_mutex.hpp>
-#endif
+#include <mutex>
 
 namespace boost{
 
@@ -246,10 +244,7 @@ inline void detach_equivalent_iterators(Iterator& it)
 {
   if(it.valid()){
     {
-#if defined(BOOST_HAS_THREADS)
-      boost::detail::lightweight_mutex::scoped_lock lock(it.cont->mutex);
-#endif
-
+      std::lock_guard<std::mutex> lock(it.cont->mutex);
       Iterator *prev_,*next_;
       for(
         prev_=static_cast<Iterator*>(&it.cont->header);
@@ -369,19 +364,14 @@ protected:
 
   safe_iterator_base header;
 
-#if defined(BOOST_HAS_THREADS)
-  boost::detail::lightweight_mutex mutex;
-#endif
+  std::mutex mutex;
 };
 
 void safe_iterator_base::attach(safe_container_base* cont_)
 {
   cont=cont_;
   if(cont){
-#if defined(BOOST_HAS_THREADS)
-    boost::detail::lightweight_mutex::scoped_lock lock(cont->mutex);
-#endif
-
+    std::lock_guard<std::mutex> lock(cont->mutex);
     next=cont->header.next;
     cont->header.next=this;
   }
@@ -390,10 +380,7 @@ void safe_iterator_base::attach(safe_container_base* cont_)
 void safe_iterator_base::detach()
 {
   if(cont){
-#if defined(BOOST_HAS_THREADS)
-    boost::detail::lightweight_mutex::scoped_lock lock(cont->mutex);
-#endif
-
+    std::lock_guard<std::mutex> lock(cont->mutex);
     safe_iterator_base *prev_,*next_;
     for(prev_=&cont->header;(next_=prev_->next)!=this;prev_=next_){}
     prev_->next=next;
