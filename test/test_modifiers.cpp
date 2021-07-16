@@ -10,7 +10,6 @@
 
 #include "test_modifiers.hpp"
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/iterator/iterator_facade.hpp>
@@ -78,13 +77,8 @@ class linked_object
     impl,
     indexed_by<
 
-#if BOOST_WORKAROUND(__IBMCPP__,BOOST_TESTED_AT(1010))
-      ordered_unique<member<impl,int,&linked_object::impl::n> >,
-      hashed_non_unique<member<impl,int,&linked_object::impl::n> >,
-#else
       ordered_unique<member<impl,int,&impl::n> >,
       hashed_non_unique<member<impl,int,&impl::n> >,
-#endif
 
       sequenced<>,
       random_access<>
@@ -137,7 +131,6 @@ struct change_int
   int n;
 };
 
-#if !(defined BOOST_NO_EXCEPTIONS)
 struct change_int_and_throw
 {
   change_int_and_throw(int n):n(n){}
@@ -146,7 +139,6 @@ struct change_int_and_throw
 
   int n;
 };
-#endif
 
 void test_modifiers()
 {
@@ -252,10 +244,8 @@ void test_modifiers()
   i1.insert(ve.begin(),ve.end());
   BOOST_TEST(i2.size()==3);
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   i1.insert({{4,"Vanessa",20,9236},{5,"Penelope",55,2358}});
   BOOST_TEST(i2.size()==5);
-#endif
 
   BOOST_TEST(i2.erase(i2.begin(),i2.end())==i2.end());
   BOOST_TEST(es.size()==0);
@@ -263,10 +253,8 @@ void test_modifiers()
   i2.insert(ve.begin(),ve.end());
   BOOST_TEST(i3.size()==3);
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   i2.insert({{4,"Vanessa",20,9236},{5,"Penelope",55,2358}});
   BOOST_TEST(i3.size()==5);
-#endif
 
   BOOST_TEST(*(i3.erase(i3.begin()))==employee(1,"Rachel",27,9012));
   BOOST_TEST(i3.erase(i3.begin(),i3.end())==i3.end());
@@ -275,11 +263,9 @@ void test_modifiers()
   i3.insert(i3.end(),ve.begin(),ve.end());
   BOOST_TEST(es.size()==3);
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   i3.insert(i3.begin(),{{4,"Vanessa",20,9236},{5,"Penelope",55,2358}});
   BOOST_TEST(i3.front().name=="Vanessa");
   BOOST_TEST(i4.size()==5);
-#endif
 
   BOOST_TEST(i4.erase(9012)==1);
   i4.erase(i4.begin());
@@ -294,11 +280,9 @@ void test_modifiers()
   i5.insert(i5.begin(),ve.begin(),ve.end());
   BOOST_TEST(i1.size()==3);
 
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
   i5.insert(i5.end(),{{4,"Vanessa",20,9236},{5,"Penelope",55,2358}});
   BOOST_TEST(i5.back().name=="Penelope");
   BOOST_TEST(i1.size()==5);
-#endif
 
   BOOST_TEST(es.erase(es.begin(),es.end())==es.end());
   BOOST_TEST(i2.size()==0);
@@ -333,48 +317,28 @@ void test_modifiers()
   i5.swap(get<5>(es2));
   BOOST_TEST(es==es2_backup&&es2==es_backup);
 
-#if defined(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL)
-  ::boost::multi_index::detail::swap(i1,get<1>(es2));
-#else
   using std::swap;
   swap(i1,get<1>(es2));
-#endif
 
   BOOST_TEST(es==es_backup&&es2==es2_backup);
 
-#if defined(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL)
-  ::boost::multi_index::detail::swap(i2,get<2>(es2));
-#else
   using std::swap;
   swap(i2,get<2>(es2));
-#endif
 
   BOOST_TEST(es==es2_backup&&es2==es_backup);
 
-#if defined(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL)
-  ::boost::multi_index::detail::swap(i3,get<3>(es2));
-#else
   using std::swap;
   swap(i3,get<3>(es2));
-#endif
 
   BOOST_TEST(es==es_backup&&es2==es2_backup);
 
-#if defined(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL)
-  ::boost::multi_index::detail::swap(i4,get<4>(es2));
-#else
   using std::swap;
   swap(i4,get<4>(es2));
-#endif
 
   BOOST_TEST(es==es2_backup&&es2==es_backup);
 
-#if defined(BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL)
-  ::boost::multi_index::detail::swap(i5,get<5>(es2));
-#else
   using std::swap;
   swap(i5,get<5>(es2));
-#endif
 
   BOOST_TEST(es==es_backup&&es2==es2_backup);
 
@@ -519,7 +483,6 @@ void test_modifiers()
      >
     > ohc;
 
-#if !(defined BOOST_NO_EXCEPTIONS)
     ohc.insert(0);
     ohc.insert(1);
 
@@ -560,7 +523,6 @@ void test_modifiers()
     catch(int){}
     BOOST_TEST(ohc.size()==1);
     ohc.clear();
-#endif
 
     ohc.insert(0);
     ohc.insert(1);
