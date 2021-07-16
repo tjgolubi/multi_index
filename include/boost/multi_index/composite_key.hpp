@@ -22,7 +22,6 @@
 #include <boost/preprocessor/list/at.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp> 
-#include <boost/static_assert.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -651,7 +650,7 @@ inline bool operator==(
   typedef typename CompositeKey2::key_extractor_tuple key_extractor_tuple2;
   typedef typename CompositeKey2::value_type          value_type2;
 
-  BOOST_STATIC_ASSERT(
+  static_assert(
     tuples::length<key_extractor_tuple1>::value==
     tuples::length<key_extractor_tuple2>::value);
 
@@ -677,7 +676,7 @@ inline bool operator==(
   typedef typename CompositeKey::value_type              value_type;
   typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
   
-  BOOST_STATIC_ASSERT(
+  static_assert(
     tuples::length<key_extractor_tuple>::value==
     tuples::length<key_tuple>::value);
 
@@ -702,7 +701,7 @@ inline bool operator==(
   typedef typename CompositeKey::value_type              value_type;
   typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
   
-  BOOST_STATIC_ASSERT(
+  static_assert(
     tuples::length<key_extractor_tuple>::value==
     tuples::length<key_tuple>::value);
 
@@ -727,7 +726,7 @@ inline bool operator==(
   typedef typename detail::cons_stdtuple_ctor<
     key_tuple>::result_type                          cons_key_tuple;
   
-  BOOST_STATIC_ASSERT(
+  static_assert(
     static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
     std::tuple_size<key_tuple>::value);
 
@@ -750,7 +749,7 @@ inline bool operator==(
   typedef typename detail::cons_stdtuple_ctor<
     key_tuple>::result_type                          cons_key_tuple;
 
-  BOOST_STATIC_ASSERT(
+  static_assert(
     static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
     std::tuple_size<key_tuple>::value);
 
@@ -964,7 +963,7 @@ public:
     typedef typename CompositeKey2::key_extractor_tuple key_extractor_tuple2;
     typedef typename CompositeKey2::value_type          value_type2;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple1>::value<=
       tuples::length<key_eq_tuple>::value&&
       tuples::length<key_extractor_tuple1>::value==
@@ -993,7 +992,7 @@ public:
     typedef typename CompositeKey::value_type              value_type;
     typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple>::value<=
       tuples::length<key_eq_tuple>::value&&
       tuples::length<key_extractor_tuple>::value==
@@ -1018,7 +1017,7 @@ public:
     typedef typename CompositeKey::value_type              value_type;
     typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_tuple>::value<=
       tuples::length<key_eq_tuple>::value&&
       tuples::length<key_tuple>::value==
@@ -1043,7 +1042,7 @@ public:
     typedef typename detail::cons_stdtuple_ctor<
       key_tuple>::result_type                          cons_key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple>::value<=
       tuples::length<key_eq_tuple>::value&&
       static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
@@ -1068,7 +1067,7 @@ public:
     typedef typename detail::cons_stdtuple_ctor<
       key_tuple>::result_type                          cons_key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       std::tuple_size<key_tuple>::value<=
       static_cast<std::size_t>(tuples::length<key_eq_tuple>::value)&&
       std::tuple_size<key_tuple>::value==
@@ -1119,7 +1118,7 @@ public:
     typedef typename CompositeKey2::key_extractor_tuple key_extractor_tuple2;
     typedef typename CompositeKey2::value_type          value_type2;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple1>::value<=
       tuples::length<key_comp_tuple>::value||
       tuples::length<key_extractor_tuple2>::value<=
@@ -1158,7 +1157,7 @@ public:
     typedef typename CompositeKey::value_type              value_type;
     typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple>::value<=
       tuples::length<key_comp_tuple>::value||
       tuples::length<key_tuple>::value<=
@@ -1193,7 +1192,7 @@ public:
     typedef typename CompositeKey::value_type              value_type;
     typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_tuple>::value<=
       tuples::length<key_comp_tuple>::value||
       tuples::length<key_extractor_tuple>::value<=
@@ -1218,7 +1217,7 @@ public:
     typedef typename detail::cons_stdtuple_ctor<
       key_tuple>::result_type                          cons_key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple>::value<=
       tuples::length<key_comp_tuple>::value||
       std::tuple_size<key_tuple>::value<=
@@ -1243,7 +1242,7 @@ public:
     typedef typename detail::cons_stdtuple_ctor<
       key_tuple>::result_type                          cons_key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       std::tuple_size<key_tuple>::value<=
       static_cast<std::size_t>(tuples::length<key_comp_tuple>::value)||
       tuples::length<key_extractor_tuple>::value<=
@@ -1290,7 +1289,7 @@ public:
     typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
     typedef typename CompositeKey::value_type          value_type;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_extractor_tuple>::value==
       tuples::length<key_hasher_tuple>::value);
 
@@ -1306,7 +1305,7 @@ public:
   {
     typedef tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       tuples::length<key_tuple>::value==
       tuples::length<key_hasher_tuple>::value);
 
@@ -1324,7 +1323,7 @@ public:
     typedef typename detail::cons_stdtuple_ctor<
       key_tuple>::result_type                    cons_key_tuple;
 
-    BOOST_STATIC_ASSERT(
+    static_assert(
       std::tuple_size<key_tuple>::value==
       static_cast<std::size_t>(tuples::length<key_hasher_tuple>::value));
 

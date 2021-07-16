@@ -36,7 +36,6 @@
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/vartempl_support.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/base_from_member.hpp>
@@ -140,7 +139,7 @@ public:
   typedef typename super::iterator                 iterator;
   typedef typename super::const_iterator           const_iterator;
 
-  BOOST_STATIC_ASSERT(
+  static_assert(
     detail::no_duplicate_tags_in_index_list<index_type_list>::value);
 
   /* global project() needs to see this publicly */
@@ -367,21 +366,21 @@ public:
   template<int N>
   struct nth_index
   {
-    BOOST_STATIC_ASSERT(N>=0&&N<mp11::mp_size<index_type_list>::value);
+    static_assert(N>=0&&N<mp11::mp_size<index_type_list>::value);
     typedef mp11::mp_at_c<index_type_list,N> type;
   };
 
   template<int N>
   typename nth_index<N>::type& get()BOOST_NOEXCEPT
   {
-    BOOST_STATIC_ASSERT(N>=0&&N<mp11::mp_size<index_type_list>::value);
+    static_assert(N>=0&&N<mp11::mp_size<index_type_list>::value);
     return *this;
   }
 
   template<int N>
   const typename nth_index<N>::type& get()const BOOST_NOEXCEPT
   {
-    BOOST_STATIC_ASSERT(N>=0&&N<mp11::mp_size<index_type_list>::value);
+    static_assert(N>=0&&N<mp11::mp_size<index_type_list>::value);
     return *this;
   }
 #endif
@@ -399,7 +398,7 @@ public:
 
     BOOST_STATIC_CONSTANT(
       bool,index_found=(pos::value<mp11::mp_size<index_type_list>::value));
-    BOOST_STATIC_ASSERT(index_found);
+    static_assert(index_found);
 
     typedef mp11::mp_at<index_type_list,pos> type;
   };
@@ -438,7 +437,7 @@ public:
     typedef typename nth_index<N>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* fails in Sun C++ 5.7 */
-    BOOST_STATIC_ASSERT(
+    static_assert(
       (mp11::mp_contains<iterator_type_list,IteratorType>::value));
 #endif
 
@@ -456,7 +455,7 @@ public:
     typedef typename nth_index<N>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* fails in Sun C++ 5.7 */
-    BOOST_STATIC_ASSERT((
+    static_assert((
       mp11::mp_contains<iterator_type_list,IteratorType>::value||
       mp11::mp_contains<const_iterator_type_list,IteratorType>::value));
 #endif
@@ -490,7 +489,7 @@ public:
     typedef typename index<Tag>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* fails in Sun C++ 5.7 */
-    BOOST_STATIC_ASSERT(
+    static_assert(
       (mp11::mp_contains<iterator_type_list,IteratorType>::value));
 #endif
 
@@ -507,7 +506,7 @@ public:
     typedef typename index<Tag>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* fails in Sun C++ 5.7 */
-    BOOST_STATIC_ASSERT((
+    static_assert((
       mp11::mp_contains<iterator_type_list,IteratorType>::value||
       mp11::mp_contains<const_iterator_type_list,IteratorType>::value));
 #endif
@@ -1117,7 +1116,7 @@ struct nth_index
   BOOST_STATIC_CONSTANT(
     int,
     M=mp11::mp_size<typename MultiIndexContainer::index_type_list>::value);
-  BOOST_STATIC_ASSERT(N>=0&&N<M);
+  static_assert(N>=0&&N<M);
   typedef mp11::mp_at_c<
     typename MultiIndexContainer::index_type_list,N> type;
 };
@@ -1136,7 +1135,7 @@ get(
     N
   >::type                                  index_type;
 
-  BOOST_STATIC_ASSERT(N>=0&&
+  static_assert(N>=0&&
     N<
     mp11::mp_size<
       BOOST_DEDUCED_TYPENAME multi_index_type::index_type_list
@@ -1160,7 +1159,7 @@ get(
     N
   >::type                                  index_type;
 
-  BOOST_STATIC_ASSERT(N>=0&&
+  static_assert(N>=0&&
     N<
     mp11::mp_size<
       BOOST_DEDUCED_TYPENAME multi_index_type::index_type_list
@@ -1183,7 +1182,7 @@ struct index
 
   BOOST_STATIC_CONSTANT(
     bool,index_found=(pos::value<mp11::mp_size<index_type_list>::value));
-  BOOST_STATIC_ASSERT(index_found);
+  static_assert(index_found);
 
   typedef mp11::mp_at<index_type_list,pos> type;
 };
@@ -1255,7 +1254,7 @@ project(
   typedef typename nth_index<multi_index_type,N>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
-  BOOST_STATIC_ASSERT((
+  static_assert((
     mp11::mp_contains<
       BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
       IteratorType>::value));
@@ -1288,7 +1287,7 @@ project(
   typedef typename nth_index<multi_index_type,N>::type index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
-  BOOST_STATIC_ASSERT((
+  static_assert((
     mp11::mp_contains<
       BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
       IteratorType>::value||
@@ -1341,7 +1340,7 @@ project(
     multi_index_type,Tag>::type                 index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
-  BOOST_STATIC_ASSERT((
+  static_assert((
     mp11::mp_contains<
       BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
       IteratorType>::value));
@@ -1375,7 +1374,7 @@ project(
     multi_index_type,Tag>::type                 index_type;
 
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
-  BOOST_STATIC_ASSERT((
+  static_assert((
     mp11::mp_contains<
       BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
       IteratorType>::value||

@@ -15,7 +15,6 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
 
 /* A Mp11 list containing types used as tag names for indices in get()
@@ -41,7 +40,7 @@ struct is_tag
 template<typename... T>
 struct tag:private detail::tag_marker
 {
-  BOOST_STATIC_ASSERT(detail::no_duplicate_tags<tag>::value);
+  static_assert(detail::no_duplicate_tags<tag>::value);
 };
 
 } /* namespace multi_index */

@@ -17,7 +17,6 @@
 #include <boost/functional/hash.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/multi_index/tag.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <functional>
 #include <type_traits>
@@ -78,10 +77,10 @@ struct hashed_index_args
     typename key_from_value_type::result_type
   >                                           pred_type;
 
-  BOOST_STATIC_ASSERT(is_tag<tag_list_type>::value);
-  BOOST_STATIC_ASSERT(!std::is_void<key_from_value_type>::value);
-  BOOST_STATIC_ASSERT(!std::is_void<hash_type>::value);
-  BOOST_STATIC_ASSERT(!std::is_void<pred_type>::value);
+  static_assert(is_tag<tag_list_type>::value);
+  static_assert(!std::is_void<key_from_value_type>::value);
+  static_assert(!std::is_void<hash_type>::value);
+  static_assert(!std::is_void<pred_type>::value);
 };
 
 } /* namespace multi_index::detail */

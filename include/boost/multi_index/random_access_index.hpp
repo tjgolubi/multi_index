@@ -1155,7 +1155,7 @@ void swap(
 template <typename TagList>
 struct random_access
 {
-  BOOST_STATIC_ASSERT(detail::is_tag<TagList>::value);
+  static_assert(detail::is_tag<TagList>::value);
 
   template<typename Super>
   struct node_class

@@ -19,7 +19,6 @@
 #include <boost/multi_index/detail/header_holder.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
 #include <boost/multi_index/detail/is_index_list.hpp>
-#include <boost/static_assert.hpp>
 
 namespace boost{
 
@@ -37,7 +36,7 @@ using node_type=typename IndexSpecifier::template node_class<Super>::type;
 template<typename Value,typename IndexSpecifierList,typename Allocator>
 struct multi_index_node_type
 {
-  BOOST_STATIC_ASSERT(detail::is_index_list<IndexSpecifierList>::value);
+  static_assert(detail::is_index_list<IndexSpecifierList>::value);
 
   typedef mp11::mp_reverse_fold<
     IndexSpecifierList,

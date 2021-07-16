@@ -16,7 +16,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/mp11/utility.hpp>
 #include <boost/multi_index/tag.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <functional>
 #include <type_traits>
@@ -62,9 +61,9 @@ struct ordered_index_args
     typename key_from_value_type::result_type
   >                                              compare_type;
 
-  BOOST_STATIC_ASSERT(is_tag<tag_list_type>::value);
-  BOOST_STATIC_ASSERT(!std::is_void<key_from_value_type>::value);
-  BOOST_STATIC_ASSERT(!std::is_void<compare_type>::value);
+  static_assert(is_tag<tag_list_type>::value);
+  static_assert(!std::is_void<key_from_value_type>::value);
+  static_assert(!std::is_void<compare_type>::value);
 };
 
 } /* namespace multi_index::detail */
