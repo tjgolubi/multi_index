@@ -10,13 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_NODE_HANDLE_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/core/addressof.hpp>
 #include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
-#include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
+#include <algorithm>
+#include <type_traits>
 #include <new>
+#include <memory>
 
 namespace boost{
 
@@ -171,16 +170,16 @@ private:
     typedef detail::allocator_traits<node_allocator> node_alloc_traits;
     typedef typename node_alloc_traits::pointer      node_pointer;
 
-    alloc_traits::destroy(*allocator_ptr(),boost::addressof(node->value()));
+    alloc_traits::destroy(*allocator_ptr(),std::addressof(node->value()));
     node_allocator nal(*allocator_ptr());
     node_alloc_traits::deallocate(nal,static_cast<node_pointer>(node),1);
   }
 
   Node*                                 node;
-  typename aligned_storage<
+  typename std::aligned_storage_t<
     sizeof(allocator_type),
-    alignment_of<allocator_type>::value
-  >::type                               space;
+    std::alignment_of_v<allocator_type>
+  >                                     space;
 };
 
 /* node handle insert return type template class following

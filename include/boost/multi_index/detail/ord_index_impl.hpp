@@ -37,14 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/call_traits.hpp>
-#include <boost/core/addressof.hpp>
-#include <boost/foreach_fwd.hpp>
-#include <boost/iterator/reverse_iterator.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mp11/utility.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
@@ -59,11 +51,15 @@
 #include <boost/multi_index/detail/unbounded.hpp>
 #include <boost/multi_index/detail/value_compare.hpp>
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
-#include <boost/ref.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <boost/call_traits.hpp>
+#include <boost/foreach_fwd.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/utility.hpp>
+#include <algorithm>
 #include <utility>
-
 #include <initializer_list>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
@@ -254,13 +250,13 @@ public:
   iterator iterator_to(const value_type& x)
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   const_iterator iterator_to(const value_type& x)const
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   /* capacity */
@@ -601,14 +597,14 @@ public:
   range(LowerBounder lower,UpperBounder upper)const
   {
     typedef mp11::mp_if<
-      is_same<LowerBounder,unbounded_type>,
+      std::is_same<LowerBounder,unbounded_type>,
       mp11::mp_if<
-        is_same<UpperBounder,unbounded_type>,
+        std::is_same<UpperBounder,unbounded_type>,
         both_unbounded_tag,
         lower_unbounded_tag
       >,
       mp11::mp_if<
-        is_same<UpperBounder,unbounded_type>,
+        std::is_same<UpperBounder,unbounded_type>,
         upper_unbounded_tag,
         none_unbounded_tag
       >

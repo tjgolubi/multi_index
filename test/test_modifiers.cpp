@@ -9,16 +9,15 @@
  */
 
 #include "test_modifiers.hpp"
+#include "pre_multi_index.hpp"
+#include "employee.hpp"
 
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/shared_ptr.hpp>
 #include <iterator>
 #include <vector>
-#include "pre_multi_index.hpp"
-#include "employee.hpp"
 
 using namespace boost::multi_index;
 
@@ -437,12 +436,12 @@ void test_modifiers()
   c.insert(2);c.insert(2);
 
   BOOST_TEST(std::distance(c.begin(),c.insert(c.begin(),1))==2);
-  BOOST_TEST(std::distance(c.begin(),c.insert(boost::next(c.begin()),1))==2);
+  BOOST_TEST(std::distance(c.begin(),c.insert(std::next(c.begin()),1))==2);
   BOOST_TEST(std::distance(c.begin(),c.insert(c.lower_bound(1),1))==2);
   BOOST_TEST(
-    std::distance(c.begin(),c.insert(boost::next(c.lower_bound(1)),1))==3);
+    std::distance(c.begin(),c.insert(std::next(c.lower_bound(1)),1))==3);
   BOOST_TEST(std::distance(c.begin(),c.insert(c.upper_bound(1),1))==8);
-  BOOST_TEST(std::distance(c.begin(),c.insert(boost::prior(c.end()),1))==9);
+  BOOST_TEST(std::distance(c.begin(),c.insert(std::prev(c.end()),1))==9);
   BOOST_TEST(std::distance(c.begin(),c.insert(c.end(),1))==10);
 
   /* testcase for erase() reentrancy */

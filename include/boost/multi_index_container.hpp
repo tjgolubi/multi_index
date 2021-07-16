@@ -12,11 +12,6 @@
 #define BOOST_MULTI_INDEX_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/core/addressof.hpp>
-#include <boost/mp11/algorithm.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mp11/utility.hpp>
 #include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/access_specifier.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
@@ -29,11 +24,12 @@
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/type_traits/integral_constant.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/utility/base_from_member.hpp>
-
+#include <boost/mp11/algorithm.hpp>
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/utility.hpp>
 #include <initializer_list>
+#include <algorithm>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/archive_constructed.hpp>
@@ -273,7 +269,7 @@ public:
   }
 
   multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
-    BOOST_COPY_ASSIGN_REF(multi_index_container) x)
+    const multi_index_container& x)
   {
     multi_index_container y(
       x,
@@ -549,13 +545,13 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   void construct_value(final_node_type* x,const Value& v)
   {
     node_alloc_traits::construct(
-      bfm_allocator::member,boost::addressof(x->value()),v);
+      bfm_allocator::member,std::addressof(x->value()),v);
   }
 
   void construct_value(final_node_type* x,Value&& v)
   {
     node_alloc_traits::construct(
-      bfm_allocator::member,boost::addressof(x->value()),std::move(v));
+      bfm_allocator::member,std::addressof(x->value()),std::move(v));
   }
 
   template<typename... Args>
@@ -566,7 +562,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   void destroy_value(final_node_type* x)
   {
     node_alloc_traits::destroy(
-      bfm_allocator::member,boost::addressof(x->value()));
+      bfm_allocator::member,std::addressof(x->value()));
   }
 
   bool empty_()const
@@ -974,7 +970,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
 
     for(iterator it=super::begin(),it_end=super::end();it!=it_end;++it){
       serialization::save_construct_data_adl(
-        ar,boost::addressof(*it),value_version);
+        ar,std::addressof(*it),value_version);
       ar<<serialization::make_nvp("item",*it);
       sm.add(it.get_node(),ar,version);
     }
@@ -1016,7 +1012,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
         archive::archive_exception(
           archive::archive_exception::other_exception));
       ar.reset_object_address(
-        boost::addressof(p.first->value()),boost::addressof(value.get()));
+        std::addressof(p.first->value()),std::addressof(value.get()));
       lm.add(p.first,ar,version);
     }
     lm.add_track(header(),ar,version);
@@ -1044,7 +1040,7 @@ private:
   void construct_value_impl(final_node_type* x,Args&&... args)
   {
     node_alloc_traits::construct(
-      bfm_allocator::member,boost::addressof(x->value()),
+      bfm_allocator::member,std::addressof(x->value()),
       std::forward<Args>(args)...);
   }
 

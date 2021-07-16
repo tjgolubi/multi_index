@@ -10,15 +10,6 @@
 #define BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/bind/bind.hpp>
-#include <boost/call_traits.hpp>
-#include <boost/core/addressof.hpp>
-#include <boost/foreach_fwd.hpp>
-#include <boost/iterator/reverse_iterator.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mp11/function.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
@@ -30,15 +21,21 @@
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/random_access_index_fwd.hpp>
-#include <boost/throw_exception.hpp> 
 #include <boost/tuple/tuple.hpp>
-#include <boost/type_traits/is_integral.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/call_traits.hpp>
+#include <boost/foreach_fwd.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
+#include <boost/throw_exception.hpp> 
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/function.hpp>
 #include <functional>
-#include <stdexcept> 
+#include <algorithm>
 #include <type_traits> 
 #include <utility>
-
-#include<initializer_list>
+#include <stdexcept> 
+#include <initializer_list>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/rnd_index_loader.hpp>
@@ -180,7 +177,7 @@ public:
   template <class InputIterator>
   void assign(InputIterator first,InputIterator last)
   {
-    assign_iter(first,last,mp11::mp_not<is_integral<InputIterator> >());
+    assign_iter(first,last,mp11::mp_not<std::is_integral<InputIterator> >());
   }
 
   void assign(std::initializer_list<value_type> list)
@@ -230,13 +227,13 @@ public:
   iterator iterator_to(const value_type& x)
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   const_iterator iterator_to(const value_type& x)const
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   /* capacity */
@@ -370,7 +367,7 @@ public:
   template<typename InputIterator>
   void insert(iterator position,InputIterator first,InputIterator last)
   {
-    insert_iter(position,first,last,mp11::mp_not<is_integral<InputIterator> >());
+    insert_iter(position,first,last,mp11::mp_not<std::is_integral<InputIterator> >());
   }
 
   void insert(iterator position,std::initializer_list<value_type> list)

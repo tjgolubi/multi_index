@@ -9,14 +9,12 @@
  */
 
 #include "test_update.hpp"
-
-#include <algorithm>
-#include <cstddef>
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 #include "pair_of_ints.hpp"
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/next_prior.hpp>
+#include <algorithm>
+#include <cstddef>
 
 struct do_nothing
 {
@@ -60,7 +58,7 @@ void test_stable_update()
     c.count(4)+c.count(5)+c.count(6)+c.count(7);
 
   for(size_type n=c.size();n--;){
-    iterator it=boost::next(c.begin(),(difference_type)n);
+    iterator it=std::next(c.begin(),(difference_type)n);
 
     c.replace(it,*it);
     BOOST_TEST((size_type)std::distance(c.begin(),it)==n);
@@ -79,7 +77,7 @@ void test_stable_update()
                   c.count(5)+c.count(6)+c.count(7)+c.count(8)==num_elems);
       if(b){
         c=cpy;
-        it=boost::next(c.begin(),(difference_type)n);
+        it=std::next(c.begin(),(difference_type)n);
       }
     }
   }
@@ -134,11 +132,11 @@ void test_update()
     BOOST_TEST(!ii2.replace(ii2.begin(),pair_of_ints(0,5)));
     BOOST_TEST(!ii1.replace(project<1>(iis,iis.begin()),pair_of_ints(5,11)));
     BOOST_TEST(!iis.replace(iis.begin(),pair_of_ints(11,5)));
-    BOOST_TEST(!iis.replace(boost::next(iis.begin()),pair_of_ints(10,5)));
+    BOOST_TEST(!iis.replace(std::next(iis.begin()),pair_of_ints(10,5)));
     BOOST_TEST(!ii1.replace(
-      project<1>(iis,boost::next(iis.begin())),pair_of_ints(5,10)));
-    BOOST_TEST(!iis.replace(boost::prior(iis.end()),pair_of_ints(5,10)));
-    BOOST_TEST(!ii2.replace(boost::prior(ii2.end()),pair_of_ints(10,5)));
+      project<1>(iis,std::next(iis.begin())),pair_of_ints(5,10)));
+    BOOST_TEST(!iis.replace(std::prev(iis.end()),pair_of_ints(5,10)));
+    BOOST_TEST(!ii2.replace(std::prev(ii2.end()),pair_of_ints(10,5)));
 
     BOOST_TEST(iis.modify(iis.begin(),increment_first));
     BOOST_TEST(ii2.modify(ii2.begin(),increment_first));
@@ -152,16 +150,16 @@ void test_update()
     BOOST_TEST(iis.size()==2);
 
     iis.insert(pair_of_ints(0,0));
-    BOOST_TEST(ii2.modify(boost::prior(ii2.end()),increment_second));
+    BOOST_TEST(ii2.modify(std::prev(ii2.end()),increment_second));
     BOOST_TEST(iis.modify(iis.begin(),increment_second));
-    BOOST_TEST(ii2.modify(boost::prior(ii2.end()),increment_second));
+    BOOST_TEST(ii2.modify(std::prev(ii2.end()),increment_second));
     BOOST_TEST(iis.modify(iis.begin(),increment_second,decrement_second));
 
     BOOST_TEST(!ii2.modify(
-      boost::prior(ii2.end()),increment_second,decrement_second));
+      std::prev(ii2.end()),increment_second,decrement_second));
     BOOST_TEST(ii2.size()==3);
 
-    BOOST_TEST(!ii2.modify(boost::prior(ii2.end()),increment_second));
+    BOOST_TEST(!ii2.modify(std::prev(ii2.end()),increment_second));
     BOOST_TEST(ii2.size()==2);
 
     iis.insert(pair_of_ints(0,0));
@@ -210,7 +208,7 @@ void test_update()
     BOOST_TEST(!iis.replace(p2,pair_of_ints(10,5)));
     BOOST_TEST(!iis.replace(p2,pair_of_ints(5,10)));
     BOOST_TEST(!iis.replace(p3,pair_of_ints(5,10)));
-    BOOST_TEST(!ii1.replace(boost::prior(ii1.end()),pair_of_ints(10,5)));
+    BOOST_TEST(!ii1.replace(std::prev(ii1.end()),pair_of_ints(10,5)));
 
     BOOST_TEST(iis.modify(p1,increment_first));
     BOOST_TEST(ii1.modify(ii1.begin(),increment_first));
@@ -224,16 +222,16 @@ void test_update()
     BOOST_TEST(iis.size()==2);
 
     p1=iis.insert(pair_of_ints(0,0)).first;
-    BOOST_TEST(ii1.modify(boost::prior(ii1.end()),increment_second));
+    BOOST_TEST(ii1.modify(std::prev(ii1.end()),increment_second));
     BOOST_TEST(iis.modify(p1,increment_second,decrement_second));
-    BOOST_TEST(ii1.modify(boost::prior(ii1.end()),increment_second));
+    BOOST_TEST(ii1.modify(std::prev(ii1.end()),increment_second));
     BOOST_TEST(iis.modify(p1,increment_second));
 
     BOOST_TEST(!ii1.modify(
-      boost::prior(ii1.end()),increment_second,decrement_second));
+      std::prev(ii1.end()),increment_second,decrement_second));
     BOOST_TEST(ii1.size()==3);
 
-    BOOST_TEST(!ii1.modify(boost::prior(ii1.end()),increment_second));
+    BOOST_TEST(!ii1.modify(std::prev(ii1.end()),increment_second));
     BOOST_TEST(ii1.size()==2);
   }
   {

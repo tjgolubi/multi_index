@@ -10,14 +10,6 @@
 #define BOOST_MULTI_INDEX_HASHED_INDEX_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/call_traits.hpp>
-#include <boost/core/addressof.hpp>
-#include <boost/foreach_fwd.hpp>
-#include <boost/limits.hpp>
-#include <boost/mp11/utility.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
@@ -32,14 +24,19 @@
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/hashed_index_fwd.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <boost/call_traits.hpp>
+#include <boost/foreach_fwd.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/limits.hpp>
+#include <boost/mp11/utility.hpp>
+#include <boost/mp11/list.hpp>
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <functional>
 #include <iterator>
 #include <type_traits>
 #include <utility>
-
 #include <initializer_list>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
@@ -234,13 +231,13 @@ public:
   iterator iterator_to(const value_type& x)
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   const_iterator iterator_to(const value_type& x)const
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   /* modifiers */
@@ -605,13 +602,13 @@ public:
   local_iterator local_iterator_to(const value_type& x)
   {
     return make_local_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   const_local_iterator local_iterator_to(const value_type& x)const
   {
     return make_local_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   /* hash policy */
@@ -1184,7 +1181,7 @@ private:
   };
 
   typedef mp11::mp_if<
-    is_same<Category,hashed_unique_tag>,
+    std::is_same<Category,hashed_unique_tag>,
     node_impl_base_pointer,
     link_info_non_unique
   >                                      link_info;

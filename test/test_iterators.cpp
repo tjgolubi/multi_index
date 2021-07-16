@@ -13,7 +13,6 @@
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/next_prior.hpp>
 
 using namespace boost::multi_index;
 
@@ -149,13 +148,13 @@ void test_non_const_rnd_iterators(Index& i,int target)
     n+=it->id;
     n+=it[off].id;
   }
-  if(odd)n+=(boost::prior(i.end()))->id;
+  if(odd)n+=(std::prev(i.end()))->id;
   int m=0;
   for(reverse_iterator rit=i.rbegin();rit!=rmiddle;++rit){
     m+=rit->id;
     m+=(rit+off)->id;
   }
-  if(odd)m+=(boost::prior(i.rend()))->id;
+  if(odd)m+=(std::prev(i.rend()))->id;
   int p=0;
   for(iterator it2=i.end();it2!=middle;){
     --it2;
@@ -197,13 +196,13 @@ void test_const_rnd_iterators(const Index& i,int target)
     n+=it->id;
     n+=it[off].id;
   }
-  if(odd)n+=(boost::prior(i.end()))->id;
+  if(odd)n+=(std::prev(i.end()))->id;
   int m=0;
   for(const_reverse_iterator rit=i.rbegin();rit!=rmiddle;++rit){
     m+=rit->id;
     m+=(rit+off)->id;
   }
-  if(odd)m+=(boost::prior(i.rend()))->id;
+  if(odd)m+=(std::prev(i.rend()))->id;
   int p=0;
   for(const_iterator it2=i.end();it2!=middle;){
     --it2;

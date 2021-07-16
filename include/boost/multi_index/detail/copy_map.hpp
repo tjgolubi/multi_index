@@ -10,13 +10,13 @@
 #define BOOST_MULTI_INDEX_DETAIL_COPY_MAP_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/core/addressof.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
+#include <algorithm>
 #include <functional>
+#include <memory>
 
 namespace boost{
 
@@ -86,7 +86,7 @@ public:
     if(!released){
       for(size_type i=0;i<n;++i){
         alloc_traits::destroy(
-          al_,boost::addressof((spc.data()+i)->second->value()));
+          al_,std::addressof((spc.data()+i)->second->value()));
         deallocate((spc.data()+i)->second);
       }
     }
@@ -136,7 +136,7 @@ private:
     (spc.data()+n)->second=raw_ptr<Node*>(allocate());
     try{
       alloc_traits::construct(
-        al_,boost::addressof((spc.data()+n)->second->value()),
+        al_,std::addressof((spc.data()+n)->second->value()),
         access(node->value()));
     }
     catch(...){

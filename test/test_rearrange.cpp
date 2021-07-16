@@ -16,7 +16,6 @@
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/preprocessor/seq/enum.hpp>
-#include <boost/next_prior.hpp>
 #include <vector>
 #include <algorithm>
 #include <iterator>
@@ -75,7 +74,7 @@ static void local_test_rearrange()
   CHECK_EQUAL(sc,(3)(2)(4)(5)(0)(1));
   BOOST_TEST(std::distance(it,it2)==3);
 
-  sc.relocate(boost::prior(sc.end()),it,it2);
+  sc.relocate(std::prev(sc.end()),it,it2);
   CHECK_EQUAL(sc,(3)(0)(2)(4)(5)(1));
 
   std::vector<std::reference_wrapper<const value_type> > v;

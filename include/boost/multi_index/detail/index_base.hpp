@@ -10,8 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_BASE_HPP
 #pragma once
 
-#include <boost/core/addressof.hpp>
-#include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/multi_index/detail/copy_map.hpp>
@@ -111,7 +109,7 @@ protected:
   {
     x=final().allocate_node();
     try{
-      final().construct_value(x,boost::move(const_cast<value_type&>(v)));
+      final().construct_value(x,std::move(const_cast<value_type&>(v)));
     }
     catch(...){
       final().deallocate_node(x);
@@ -163,7 +161,7 @@ protected:
 
   bool replace_(const value_type& v,index_node_type* x,rvalue_tag)
   {
-    x->value()=boost::move(const_cast<value_type&>(v));
+    x->value()=std::move(const_cast<value_type&>(v));
     return true;
   }
 

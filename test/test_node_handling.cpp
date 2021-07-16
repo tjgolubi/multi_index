@@ -20,7 +20,6 @@
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/multi_index/ranked_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <functional>
 #include "count_allocator.hpp"
@@ -203,7 +202,7 @@ void test_transfer_result(
 {
   if(res.inserted&&pos!=dst.end()&&
     (!is_key_based<Dst>::value||*pos==x)){
-    BOOST_TEST(boost::next(res.position)==pos);
+    BOOST_TEST(std::next(res.position)==pos);
   }
   test_transfer_result(dst,Ret(std::move(res)),n,x);
 }
@@ -215,7 +214,7 @@ void test_transfer_result(
 {
   if(n.empty()&&pos!=dst.end()&&
     (!is_key_based<Dst>::value||*pos==x)){
-    BOOST_TEST(boost::next(res)==pos);
+    BOOST_TEST(std::next(res)==pos);
   }
   test_transfer_result(dst,res,n,x);
 }

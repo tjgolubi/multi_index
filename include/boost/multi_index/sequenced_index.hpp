@@ -10,14 +10,6 @@
 #define BOOST_MULTI_INDEX_SEQUENCED_INDEX_HPP
 #pragma once
 
-#include <boost/bind/bind.hpp>
-#include <boost/call_traits.hpp>
-#include <boost/core/addressof.hpp>
-#include <boost/foreach_fwd.hpp>
-#include <boost/iterator/reverse_iterator.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mp11/function.hpp>
-#include <boost/mpl/bool.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
@@ -28,13 +20,18 @@
 #include <boost/multi_index/detail/seq_index_node.hpp>
 #include <boost/multi_index/detail/seq_index_ops.hpp>
 #include <boost/multi_index/sequenced_index_fwd.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/call_traits.hpp>
+#include <boost/foreach_fwd.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <boost/type_traits/is_integral.hpp>
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/function.hpp>
 #include <functional>
 #include <type_traits>
 #include <utility>
-
-#include<initializer_list>
+#include <initializer_list>
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #define BOOST_MULTI_INDEX_SEQ_INDEX_CHECK_INVARIANT_OF(x)                    \
@@ -166,7 +163,7 @@ public:
   template <class InputIterator>
   void assign(InputIterator first,InputIterator last)
   {
-    assign_iter(first,last,mp11::mp_not<is_integral<InputIterator> >());
+    assign_iter(first,last,mp11::mp_not<std::is_integral<InputIterator> >());
   }
 
   void assign(std::initializer_list<value_type> list)
@@ -216,13 +213,13 @@ public:
   iterator iterator_to(const value_type& x)
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   const_iterator iterator_to(const value_type& x)const
   {
     return make_iterator(
-      node_from_value<index_node_type>(boost::addressof(x)));
+      node_from_value<index_node_type>(std::addressof(x)));
   }
 
   /* capacity */
@@ -322,7 +319,7 @@ public:
   template<typename InputIterator>
   void insert(iterator position,InputIterator first,InputIterator last)
   {
-    insert_iter(position,first,last,mp11::mp_not<is_integral<InputIterator> >());
+    insert_iter(position,first,last,mp11::mp_not<std::is_integral<InputIterator> >());
   }
 
   void insert(iterator position,std::initializer_list<value_type> list)
