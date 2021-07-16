@@ -16,7 +16,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/core/addressof.hpp>
-#include <boost/core/no_exceptions_support.hpp>
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
@@ -141,16 +140,15 @@ private:
   {
     (spc.data()+n)->first=node;
     (spc.data()+n)->second=raw_ptr<Node*>(allocate());
-    BOOST_TRY{
+    try{
       alloc_traits::construct(
         al_,boost::addressof((spc.data()+n)->second->value()),
         access(node->value()));
     }
-    BOOST_CATCH(...){
+    catch(...){
       deallocate((spc.data()+n)->second);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
     ++n;
 
     if(n==size_){

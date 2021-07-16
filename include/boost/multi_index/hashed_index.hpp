@@ -17,7 +17,6 @@
 #include <algorithm>
 #include <boost/call_traits.hpp>
 #include <boost/core/addressof.hpp>
-#include <boost/core/no_exceptions_support.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/limits.hpp>
@@ -975,7 +974,7 @@ protected:
     unlink_undo undo;
     unlink(x,undo);
 
-    BOOST_TRY{
+    try{
       std::size_t  buc=find_bucket(v);
       link_info    pos(buckets.at(buc));
       if(link_point(v,pos)&&super::replace_(v,x,variant)){
@@ -985,29 +984,27 @@ protected:
       undo();
       return false;
     }
-    BOOST_CATCH(...){
+    catch(...){
       undo();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   bool modify_(index_node_type* x)
   {
     std::size_t buc;
     bool        b; 
-    BOOST_TRY{
+    try{
       buc=find_bucket(x->value());
       b=in_place(x->impl(),key(x->value()),buc);
     }
-    BOOST_CATCH(...){
+    catch(...){
       extract_(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
     if(!b){
       unlink(x);
-      BOOST_TRY{
+      try{
         link_info pos(buckets.at(buc));
         if(!link_point(x->value(),pos)){
           super::extract_(x);
@@ -1019,19 +1016,18 @@ protected:
         }
         link(x,pos);
       }
-      BOOST_CATCH(...){
+      catch(...){
         super::extract_(x);
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
       detach_iterators(x);
 #endif
 
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
 
-    BOOST_TRY{
+    try{
       if(!super::modify_(x)){
         unlink(x);
 
@@ -1042,16 +1038,15 @@ protected:
       }
       else return true;
     }
-    BOOST_CATCH(...){
+    catch(...){
       unlink(x);
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
       detach_iterators(x);
 #endif
 
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   bool modify_rollback_(index_node_type* x)
@@ -1064,7 +1059,7 @@ protected:
     unlink_undo undo;
     unlink(x,undo);
 
-    BOOST_TRY{
+    try{
       link_info pos(buckets.at(buc));
       if(link_point(x->value(),pos)&&super::modify_rollback_(x)){
         link(x,pos);
@@ -1073,11 +1068,10 @@ protected:
       undo();
       return false;
     }
-    BOOST_CATCH(...){
+    catch(...){
       undo();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   bool check_rollback_(index_node_type* x)const
@@ -1380,7 +1374,7 @@ private:
         node_impl_pointer,allocator_type> node_ptrs(get_allocator(),size());
       std::size_t                         i=0,size_=size();
       bool                                within_bucket=false;
-      BOOST_TRY{
+      try{
         for(;i!=size_;++i){
           node_impl_pointer x=end_->prior();
 
@@ -1393,7 +1387,7 @@ private:
           node_alg::link(x,buckets_cpy.at(buckets_cpy.position(h)),cpy_end);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         if(i!=0){
           std::size_t prev_buc=buckets.position(hashes.data()[i-1]);
           if(!within_bucket)prev_buc=~prev_buc;
@@ -1406,9 +1400,8 @@ private:
             prev_buc=buc;
           }
         }
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
 
     end_->prior()=cpy_end->prior()!=cpy_end?cpy_end->prior():end_;
@@ -1432,7 +1425,7 @@ private:
         node_impl_pointer,allocator_type> node_ptrs(get_allocator(),size());
       std::size_t                         i=0;
       bool                                within_bucket=false;
-      BOOST_TRY{
+      try{
         for(;;++i){
           node_impl_pointer x=end_->prior();
           if(x==end_)break;
@@ -1449,7 +1442,7 @@ private:
           within_bucket=!(p.second);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         if(i!=0){
           std::size_t prev_buc=buckets.position(hashes.data()[i-1]);
           if(!within_bucket)prev_buc=~prev_buc;
@@ -1467,9 +1460,8 @@ private:
             prev_buc=buc;
           }
         }
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
 
     end_->prior()=cpy_end->prior()!=cpy_end?cpy_end->prior():end_;

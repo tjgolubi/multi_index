@@ -18,7 +18,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/core/addressof.hpp>
-#include <boost/core/no_exceptions_support.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
@@ -229,7 +228,7 @@ public:
     node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
-    BOOST_TRY{
+    try{
       iterator hint=super::end();
       for(;first!=last;++first){
         hint=super::make_iterator(
@@ -237,11 +236,10 @@ public:
         ++hint;
       }
     }
-    BOOST_CATCH(...){
+    catch(...){
       clear_();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
 #if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
@@ -254,7 +252,7 @@ public:
     node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
-    BOOST_TRY{
+    try{
       typedef const Value* init_iterator;
 
       iterator hint=super::end();
@@ -264,11 +262,10 @@ public:
         ++hint;
       }
     }
-    BOOST_CATCH(...){
+    catch(...){
       clear_();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 #endif
 
@@ -576,7 +573,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT_OF(x);
-    BOOST_TRY{
+    try{
       copy_map_type map(bfm_allocator::member,x.size(),x.header(),header());
       for(const_iterator it=x.begin(),it_end=x.end();it!=it_end;++it){
         map.move_clone(it.get_node());
@@ -586,11 +583,10 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
       node_count=x.size();
       x.clear();
     }
-    BOOST_CATCH(...){
+    catch(...){
       x.clear();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
 
     /* Not until this point are the indices required to be consistent,
      * hence the position of the invariant checker.
@@ -710,9 +706,9 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   std::pair<final_node_type*,bool> insert_ref_(T& t)
   {
     final_node_type* x=allocate_node();
-    BOOST_TRY{
+    try{
       construct_value(x,t);
-      BOOST_TRY{
+      try{
         final_node_type* res=super::insert_(
           x->value(),x,detail::emplaced_tag());
         if(res==x){
@@ -724,17 +720,15 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
           return std::pair<final_node_type*,bool>(res,false);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         destroy_value(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
-    BOOST_CATCH(...){
+    catch(...){
       deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   std::pair<final_node_type*,bool> insert_ref_(const value_type& x)
@@ -768,9 +762,9 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
   {
     final_node_type* x=allocate_node();
-    BOOST_TRY{
+    try{
       construct_value(x,BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
-      BOOST_TRY{
+      try{
         final_node_type* res=super::insert_(
           x->value(),x,detail::emplaced_tag());
         if(res==x){
@@ -782,17 +776,15 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
           return std::pair<final_node_type*,bool>(res,false);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         destroy_value(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
-    BOOST_CATCH(...){
+    catch(...){
       deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   template<typename Variant>
@@ -827,9 +819,9 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     T& t,final_node_type* position)
   {
     final_node_type* x=allocate_node();
-    BOOST_TRY{
+    try{
       construct_value(x,t);
-      BOOST_TRY{
+      try{
         final_node_type* res=super::insert_(
           x->value(),position,x,detail::emplaced_tag());
         if(res==x){
@@ -841,17 +833,15 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
           return std::pair<final_node_type*,bool>(res,false);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         destroy_value(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
-    BOOST_CATCH(...){
+    catch(...){
       deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   std::pair<final_node_type*,bool> insert_ref_(
@@ -889,9 +879,9 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
   {
     final_node_type* x=allocate_node();
-    BOOST_TRY{
+    try{
       construct_value(x,BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
-      BOOST_TRY{
+      try{
         final_node_type* res=super::insert_(
           x->value(),position,x,detail::emplaced_tag());
         if(res==x){
@@ -903,17 +893,15 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
           return std::pair<final_node_type*,bool>(res,false);
         }
       }
-      BOOST_CATCH(...){
+      catch(...){
         destroy_value(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
-    BOOST_CATCH(...){
+    catch(...){
       deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   final_node_handle_type extract_(final_node_type* x)
@@ -996,16 +984,15 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   template<typename Modifier>
   bool modify_(Modifier& mod,final_node_type* x)
   {
-    BOOST_TRY{
+    try{
       mod(const_cast<value_type&>(x->value()));
     }
-    BOOST_CATCH(...){
+    catch(...){
       this->erase_(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
 
-    BOOST_TRY{
+    try{
       if(!super::modify_(x)){
         delete_node_(x);
         --node_count;
@@ -1013,45 +1000,41 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
       }
       else return true;
     }
-    BOOST_CATCH(...){
+    catch(...){
       delete_node_(x);
       --node_count;
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   template<typename Modifier,typename Rollback>
   bool modify_(Modifier& mod,Rollback& back_,final_node_type* x)
   {
-    BOOST_TRY{
+    try{
       mod(const_cast<value_type&>(x->value()));
     }
-    BOOST_CATCH(...){
+    catch(...){
       this->erase_(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
 
     bool b;
-    BOOST_TRY{
+    try{
       b=super::modify_rollback_(x);
     }
-    BOOST_CATCH(...){
-      BOOST_TRY{
+    catch(...){
+      try{
         back_(const_cast<value_type&>(x->value()));
         if(!super::check_rollback_(x))this->erase_(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH(...){
+      catch(...){
         this->erase_(x);
-        BOOST_RETHROW;
+        throw;
       }
-      BOOST_CATCH_END
     }
-    BOOST_CATCH_END
 
-    BOOST_TRY{
+    try{
       if(!b){
         back_(const_cast<value_type&>(x->value()));
         if(!super::check_rollback_(x))this->erase_(x);
@@ -1059,11 +1042,10 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
       }
       else return true;
     }
-    BOOST_CATCH(...){
+    catch(...){
       this->erase_(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)

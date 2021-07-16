@@ -15,7 +15,6 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/core/addressof.hpp>
-#include <boost/core/no_exceptions_support.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
@@ -104,28 +103,26 @@ protected:
   final_node_type* insert_(const value_type& v,final_node_type*& x,lvalue_tag)
   {
     x=final().allocate_node();
-    BOOST_TRY{
+    try{
       final().construct_value(x,v);
     }
-    BOOST_CATCH(...){
+    catch(...){
       final().deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
     return x;
   }
 
   final_node_type* insert_(const value_type& v,final_node_type*& x,rvalue_tag)
   {
     x=final().allocate_node();
-    BOOST_TRY{
+    try{
       final().construct_value(x,boost::move(const_cast<value_type&>(v)));
     }
-    BOOST_CATCH(...){
+    catch(...){
       final().deallocate_node(x);
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
     return x;
   }
 

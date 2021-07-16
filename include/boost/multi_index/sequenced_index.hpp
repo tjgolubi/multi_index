@@ -17,7 +17,6 @@
 #include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/core/addressof.hpp>
-#include <boost/core/no_exceptions_support.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/iterator/reverse_iterator.hpp>
@@ -778,7 +777,7 @@ protected:
 
   bool modify_(index_node_type* x)
   {
-    BOOST_TRY{
+    try{
       if(!super::modify_(x)){
         unlink(x);
 
@@ -790,16 +789,15 @@ protected:
       }
       else return true;
     }
-    BOOST_CATCH(...){
+    catch(...){
       unlink(x);
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
       detach_iterators(x);
 #endif
 
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   bool modify_rollback_(index_node_type* x)
