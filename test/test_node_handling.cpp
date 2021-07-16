@@ -12,7 +12,6 @@
 
 #include <boost/core/enable_if.hpp>
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/move/utility_core.hpp>
 #include "pre_multi_index.hpp"
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -65,17 +64,17 @@ void test_node_handle()
   BOOST_TEST(&n2.value()==addr0);
   BOOST_TEST(allocator_count==1);
 
-  node_type n3(boost::move(n2));
+  node_type n3(std::move(n2));
   BOOST_TEST(n2.empty());
   BOOST_TEST(!n3.empty());
   BOOST_TEST(&n3.value()==addr0);
   BOOST_TEST(allocator_count==1);
 
-  node_type n4(boost::move(n2));
+  node_type n4(std::move(n2));
   BOOST_TEST(n4.empty());
   BOOST_TEST(allocator_count==1);
 
-  n1=boost::move(n3);
+  n1=std::move(n3);
   BOOST_TEST(!n1.empty());
   BOOST_TEST(&n1.value()==addr0);
   BOOST_TEST(n3.empty());
@@ -110,19 +109,19 @@ void test_node_handle()
   BOOST_TEST(n2.empty());
   BOOST_TEST(allocator_count==2);
 
-  n2=boost::move(n3);
+  n2=std::move(n3);
   BOOST_TEST(n2.empty());
   BOOST_TEST(n3.empty());
   BOOST_TEST(allocator_count==2);
 
   BOOST_TEST(element_count==3);
-  n1=boost::move(n5);
+  n1=std::move(n5);
   BOOST_TEST(&n1.value()==addr0);
   BOOST_TEST(n5.empty());
   BOOST_TEST(element_count==2);
   BOOST_TEST(allocator_count==1);
 
-  n1=boost::move(n5);
+  n1=std::move(n5);
   BOOST_TEST(n1.empty());
   BOOST_TEST(element_count==1);
   BOOST_TEST(allocator_count==0);
@@ -206,7 +205,7 @@ void test_transfer_result(
     (!is_key_based<Dst>::value||*pos==x)){
     BOOST_TEST(boost::next(res.position)==pos);
   }
-  test_transfer_result(dst,Ret(boost::move(res)),n,x);
+  test_transfer_result(dst,Ret(std::move(res)),n,x);
 }
 
 template<typename Dst,typename NodeHandle,typename Value>
@@ -226,7 +225,7 @@ void test_transfer_result_empty(
   Dst& dst,typename Dst::iterator,Ret res,
   typename enable_if_not_iterator<Ret>::type=0)
 {
-  test_transfer_result_empty(dst,Ret(boost::move(res)));
+  test_transfer_result_empty(dst,Ret(std::move(res)));
 }
 
 template<typename Dst>
@@ -243,7 +242,7 @@ typename Src::node_type checked_extract(
 {
   typename Src::node_type n=src.extract(k);
   if(n)BOOST_TEST(src.key_extractor()(n.value())==k);
-  return boost::move(n);
+  return n;
 }
 
 template<typename Src>
@@ -252,7 +251,7 @@ typename Src::node_type checked_extract(Src& src,typename Src::iterator pos)
   typename Src::value_type x=*pos;
   typename Src::node_type  n=src.extract(pos);
   if(n)BOOST_TEST(n.value()==x);
-  return boost::move(n);
+  return n;
 }
 
 template<typename Src,typename Locator,typename Dst>
@@ -261,10 +260,10 @@ void test_transfer(Src& src,Locator loc,Dst& dst)
   typename Dst::node_type n=checked_extract(src,loc);
   if(n){
     typename Dst::value_type x=n.value();
-    test_transfer_result(dst,dst.insert(boost::move(n)),n,x);
+    test_transfer_result(dst,dst.insert(std::move(n)),n,x);
   }
   else{
-    test_transfer_result_empty(dst,dst.insert(boost::move(n)));
+    test_transfer_result_empty(dst,dst.insert(std::move(n)));
   }
 }
 
@@ -274,10 +273,10 @@ void test_transfer(Src& src,Locator loc,Dst& dst,Iterator pos)
   typename Dst::node_type n=checked_extract(src,loc);
   if(n){
     typename Dst::value_type x=n.value();
-    test_transfer_result(dst,pos,dst.insert(pos,boost::move(n)),n,x);
+    test_transfer_result(dst,pos,dst.insert(pos,std::move(n)),n,x);
   }
   else{
-    test_transfer_result_empty(dst,pos,dst.insert(pos,boost::move(n)));
+    test_transfer_result_empty(dst,pos,dst.insert(pos,std::move(n)));
   }
 }
 

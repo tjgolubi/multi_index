@@ -15,8 +15,6 @@
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/core/addressof.hpp>
-#include <boost/move/core.hpp>
-#include <boost/move/utility_core.hpp>
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
@@ -95,8 +93,6 @@ class multi_index_container:
     Value,IndexSpecifierList,Allocator>::type
 {
 private:
-  BOOST_COPYABLE_AND_MOVABLE(multi_index_container)
-
 #if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
   template <typename,typename,typename> friend class  detail::index_base;
   template <typename,typename>          friend struct detail::header_holder;
@@ -237,8 +233,8 @@ public:
     copy_construct_from(x);
   }
 
-  multi_index_container(BOOST_RV_REF(multi_index_container) x):
-    bfm_allocator(boost::move(x.bfm_allocator::member)),
+  multi_index_container(multi_index_container&& x):
+    bfm_allocator(std::move(x.bfm_allocator::member)),
     bfm_header(),
     super(x,detail::do_not_copy_elements_tag()),
     node_count(0)
@@ -260,7 +256,7 @@ public:
   }
 
   multi_index_container(
-    BOOST_RV_REF(multi_index_container) x,const allocator_type& al):
+    multi_index_container&& x,const allocator_type& al):
     bfm_allocator(al),
     bfm_header(),
     super(x,detail::do_not_copy_elements_tag()),
@@ -312,7 +308,7 @@ public:
   }
 
   multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
-    BOOST_RV_REF(multi_index_container) x)
+    multi_index_container&& x)
   {
     if constexpr(
       node_alloc_traits::propagate_on_container_move_assignment::value){
@@ -322,7 +318,7 @@ public:
       swap_(x,boost::false_type() /* swap_allocators */);
     }
     else{
-      multi_index_container y(boost::move(x),this->get_allocator());
+      multi_index_container y(std::move(x),this->get_allocator());
       swap_(y,boost::false_type() /* swap_allocators */);
     }
     return *this;
@@ -600,10 +596,10 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
       bfm_allocator::member,boost::addressof(x->value()),v);
   }
 
-  void construct_value(final_node_type* x,BOOST_RV_REF(Value) v)
+  void construct_value(final_node_type* x,Value&& v)
   {
     node_alloc_traits::construct(
-      bfm_allocator::member,boost::addressof(x->value()),boost::move(v));
+      bfm_allocator::member,boost::addressof(x->value()),std::move(v));
   }
 
   template<typename... Args>

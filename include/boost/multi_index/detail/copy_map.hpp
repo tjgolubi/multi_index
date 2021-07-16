@@ -12,8 +12,6 @@
 
 #include <algorithm>
 #include <boost/core/addressof.hpp>
-#include <boost/move/core.hpp>
-#include <boost/move/utility_core.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
@@ -61,7 +59,7 @@ struct copy_map_value_copier
 struct copy_map_value_mover
 {
   template<typename Value>
-  BOOST_RV_REF(Value) operator()(Value& x)const{return boost::move(x);}
+  Value&& operator()(Value& x)const{return std::move(x);}
 };
 
 template <typename Node,typename Allocator>

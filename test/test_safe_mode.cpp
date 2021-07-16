@@ -11,8 +11,6 @@
 #include "test_safe_mode.hpp"
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/move/core.hpp>
-#include <boost/move/utility_core.hpp>
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 #include "pair_of_ints.hpp"
@@ -209,7 +207,7 @@ static void local_test_safe_mode(
     node_type   nh=i.extract(it);
     container   c3(c2,allocator_type(-1));
     index_type& i3=Policy::index_from_container(c3);
-    Policy::insert(i3,boost::move(nh));
+    Policy::insert(i3,std::move(nh));
   CATCH_SAFE_MODE(safe_mode::unequal_allocators)
 
   /* testcase for bug reported at
@@ -374,9 +372,9 @@ struct key_based_index_policy_base:
     return i.insert(it,v);
   }
 
-  static void insert(index_type& i,BOOST_RV_REF(node_type) nh)
+  static void insert(index_type& i,node_type&& nh)
   {
-    i.insert(boost::move(nh));
+    i.insert(std::move(nh));
   }
 };
 
@@ -402,9 +400,9 @@ struct non_key_based_index_policy_base:
     return i.insert(it,v).first;
   }
 
-  static void insert(index_type& i,BOOST_RV_REF(node_type) nh)
+  static void insert(index_type& i,node_type&& nh)
   {
-    i.insert(i.end(),boost::move(nh));
+    i.insert(i.end(),std::move(nh));
   }
 };
 
