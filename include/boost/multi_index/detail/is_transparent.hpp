@@ -10,15 +10,10 @@
 #define BOOST_MULTI_INDEX_DETAIL_IS_TRANSPARENT_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/type_traits/intrinsics.hpp>
+#include <boost/mp11/function.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Metafunction that checks if f(arg,arg2) executes without argument type
  * conversion. By default (i.e. when it cannot be determined) it evaluates to
@@ -27,32 +22,6 @@ namespace detail{
 
 template<typename F,typename Arg1,typename Arg2,typename=void>
 struct is_transparent:std::true_type{};
-
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
-
-#if !defined(BOOST_NO_SFINAE)&&!defined(BOOST_NO_SFINAE_EXPR)&& \
-    !defined(BOOST_NO_CXX11_DECLTYPE)&& \
-    (defined(BOOST_NO_CXX11_FINAL)||defined(BOOST_IS_FINAL))
-
-#include <boost/mp11/function.hpp>
-#include <boost/type_traits/function_traits.hpp>
-#include <boost/type_traits/is_class.hpp>
-#include <boost/type_traits/is_final.hpp>
-#include <boost/type_traits/is_function.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/remove_pointer.hpp>
-#include <boost/utility/declval.hpp>
-#include <boost/utility/enable_if.hpp>
-
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
 
 struct not_is_transparent_result_type{};
 
@@ -70,11 +39,11 @@ struct is_transparent_class:std::true_type{};
 template<typename F,typename Arg1,typename Arg2>
 struct is_transparent_class<
   F,Arg1,Arg2,
-  typename enable_if<
-    is_same<
+  typename std::enable_if<
+    std::is_same_v<
       decltype(
-        declval<const is_transparent_class_helper<F,Arg1,Arg2> >()(
-          declval<const Arg1&>(),declval<const Arg2&>())
+        std::declval<const is_transparent_class_helper<F,Arg1,Arg2> >()(
+          std::declval<const Arg1&>(),std::declval<const Arg2&>())
       ),
       not_is_transparent_result_type
     >
@@ -84,11 +53,11 @@ struct is_transparent_class<
 template<typename F,typename Arg1,typename Arg2>
 struct is_transparent<
   F,Arg1,Arg2,
-  typename enable_if<
+  typename std::enable_if<
     mp11::mp_and<
-      is_class<F>,
-      mp11::mp_not<is_final<F> > /* is_transparent_class_helper derives from F */
-    >
+      std::is_class<F>,
+      mp11::mp_not<std::is_final<F> > /* is_transparent_class_helper derives from F */
+    >::value
   >::type
 >:is_transparent_class<F,Arg1,Arg2>{};
 
@@ -98,33 +67,28 @@ struct is_transparent_function:std::true_type{};
 template<typename F,typename Arg1,typename Arg2>
 struct is_transparent_function<
   F,Arg1,Arg2,
-  typename enable_if<
+  typename std::enable_if<
     mp11::mp_or<
       mp11::mp_not<mp11::mp_or<
-        is_same<typename function_traits<F>::arg1_type,const Arg1&>,
-        is_same<typename function_traits<F>::arg1_type,Arg1>
+        std::is_same<typename function_traits<F>::arg1_type,const Arg1&>,
+        std::is_same<typename function_traits<F>::arg1_type,Arg1>
       > >,
       mp11::mp_not<mp11::mp_or<
-        is_same<typename function_traits<F>::arg2_type,const Arg2&>,
-        is_same<typename function_traits<F>::arg2_type,Arg2>
+        std::is_same<typename function_traits<F>::arg2_type,const Arg2&>,
+        std::is_same<typename function_traits<F>::arg2_type,Arg2>
       > >
-    >
+    >::value
   >::type
 >:std::false_type{};
 
 template<typename F,typename Arg1,typename Arg2>
 struct is_transparent<
   F,Arg1,Arg2,
-  typename enable_if<
-    is_function<typename remove_pointer<F>::type>
+  typename std::enable_if<
+    std::is_function_v<typename std::remove_pointer<F>::type>
   >::type
->:is_transparent_function<typename remove_pointer<F>::type,Arg1,Arg2>{};
+>:is_transparent_function<typename std::remove_pointer<F>::type,Arg1,Arg2>{};
 
-} /* namespace multi_index::detail */
+} // boost::multi_index::detail
 
-} /* namespace multi_index */
-
-} /* namespace boost */
-
-#endif
 #endif
