@@ -10,9 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_NODE_BASE_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
+#include <type_traits>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
@@ -20,11 +18,7 @@
 #include <boost/throw_exception.hpp> 
 #endif
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* index_node_base tops the node hierarchy of multi_index_container. It holds
  * the value of the element contained.
@@ -33,10 +27,10 @@ namespace detail{
 template<typename Value>
 struct pod_value_holder
 {
-  typename aligned_storage<
+  typename std::aligned_storage_t<
     sizeof(Value),
-    alignment_of<Value>::value
-  >::type                      space;
+    std::alignment_of_v<Value>
+  >                      space;
 };
 
 template<typename Value,typename Allocator>
@@ -87,23 +81,12 @@ Node* node_from_value(const Value* p)
     index_node_base<Value,allocator_type>::from_value(p));
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 /* Index nodes never get constructed directly by Boost.Serialization,
  * as archives are always fed pointers to previously existent
  * nodes. So, if this is called it means we are dealing with a
  * somehow invalid archive.
  */
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-namespace serialization{
-#else
-namespace multi_index{
-namespace detail{
-#endif
 
 template<class Archive,typename Value,typename Allocator>
 inline void load_construct_data(
@@ -114,15 +97,8 @@ inline void load_construct_data(
     archive::archive_exception(archive::archive_exception::other_exception));
 }
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-} /* namespace serialization */
-#else
-} /* namespace multi_index::detail */
-} /* namespace multi_index */
 #endif
 
-#endif
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

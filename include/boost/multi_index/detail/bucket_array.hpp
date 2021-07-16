@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_BUCKET_ARRAY_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
@@ -29,11 +28,7 @@
 #include <boost/throw_exception.hpp> 
 #endif
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* bucket structure for use by hashed indices */
 
@@ -210,23 +205,12 @@ void swap(bucket_array<Allocator>& x,bucket_array<Allocator>& y)
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 /* bucket_arrays never get constructed directly by Boost.Serialization,
  * as archives are always fed pointers to previously existent
  * arrays. So, if this is called it means we are dealing with a
  * somehow invalid archive.
  */
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-namespace serialization{
-#else
-namespace multi_index{
-namespace detail{
-#endif
 
 template<class Archive,typename Allocator>
 inline void load_construct_data(
@@ -237,15 +221,8 @@ inline void load_construct_data(
     archive::archive_exception(archive::archive_exception::other_exception));
 }
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-} /* namespace serialization */
-#else
-} /* namespace multi_index::detail */
-} /* namespace multi_index */
 #endif
 
-#endif
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif
