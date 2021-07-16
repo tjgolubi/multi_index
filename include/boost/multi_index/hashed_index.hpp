@@ -26,7 +26,6 @@
 #include <boost/mp11/utility.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/multi_index/detail/access_specifier.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
@@ -88,7 +87,7 @@ template<
   typename SuperMeta,typename TagList,typename Category
 >
 class hashed_index:
-  BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS SuperMeta::type
+  protected SuperMeta::type
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   ,public safe_mode::safe_container<
@@ -664,7 +663,7 @@ public:
     rehash(static_cast<size_type>(std::ceil(static_cast<float>(n)/mlf)));
   }
 
-BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
+protected:
   hashed_index(const ctor_args_list& args_list,const allocator_type& al):
     super(args_list.get_tail(),al),
     key(tuples::get<1>(args_list.get_head())),

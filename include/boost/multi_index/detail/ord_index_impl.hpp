@@ -53,7 +53,6 @@
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/multi_index/detail/access_specifier.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
@@ -126,7 +125,7 @@ template<
   typename SuperMeta,typename TagList,typename Category,typename AugmentPolicy
 >
 class ordered_index_impl:
-  BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS SuperMeta::type
+  protected SuperMeta::type
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   ,public safe_mode::safe_container<
@@ -641,7 +640,7 @@ public:
     return range(lower,upper,dispatch());
   }
 
-BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
+protected:
   ordered_index_impl(const ctor_args_list& args_list,const allocator_type& al):
     super(args_list.get_tail(),al),
     key(tuples::get<0>(args_list.get_head())),

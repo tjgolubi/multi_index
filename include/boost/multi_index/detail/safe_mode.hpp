@@ -113,7 +113,6 @@
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
-#include <boost/multi_index/detail/access_specifier.hpp>
 #include <boost/multi_index/detail/iter_adaptor.hpp>
 #include <boost/multi_index/safe_mode_errors.hpp>
 #include <boost/noncopyable.hpp>
@@ -324,7 +323,7 @@ protected:
 
   const safe_container_base* owner()const{return cont;}
 
-BOOST_MULTI_INDEX_PRIVATE_IF_MEMBER_TEMPLATE_FRIENDS:
+private:
   friend class safe_container_base;
 
 #if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
@@ -345,7 +344,7 @@ class safe_container_base:private noncopyable
 public:
   safe_container_base(){}
 
-BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
+protected:
   friend class safe_iterator_base;
 
 #if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
