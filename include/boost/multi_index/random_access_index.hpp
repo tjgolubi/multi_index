@@ -32,7 +32,6 @@
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/multi_index/detail/vartempl_support.hpp>
 #include <boost/multi_index/random_access_index_fwd.hpp>
 #include <boost/throw_exception.hpp> 
 #include <boost/tuple/tuple.hpp>
@@ -160,10 +159,6 @@ private:
   typedef typename call_traits<
     value_type>::param_type                   value_param_type;
 
-  /* Needed to avoid commas in BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL
-   * expansion.
-   */
-
   typedef std::pair<iterator,bool>            emplace_return_type;
 
 public:
@@ -277,7 +272,7 @@ public:
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
     if(n>size())
       for(size_type m=n-size();m--;)
-        this->final_emplace_(BOOST_MULTI_INDEX_NULL_PARAM_PACK);
+        this->final_emplace_();
     else if(n<size())erase(begin()+n,end());
   }
 
@@ -309,8 +304,11 @@ public:
 
   /* modifiers */
 
-  BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL(
-    emplace_return_type,emplace_front,emplace_front_impl)
+  template<typename... Args>
+  emplace_return_type emplace_front(Args&&... args)
+  {
+    return emplace_front_impl(std::forward<Args>(args)...);
+  }
     
   std::pair<iterator,bool> push_front(const value_type& x)
                              {return insert(begin(),x);}
@@ -318,17 +316,23 @@ public:
                              {return insert(begin(),boost::move(x));}
   void                     pop_front(){erase(begin());}
 
-  BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL(
-    emplace_return_type,emplace_back,emplace_back_impl)
-
+  template<typename... Args>
+  emplace_return_type emplace_back(Args&&... args)
+  {
+    return emplace_back_impl(std::forward<Args>(args)...);
+  }
+    
   std::pair<iterator,bool> push_back(const value_type& x)
                              {return insert(end(),x);}
   std::pair<iterator,bool> push_back(BOOST_RV_REF(value_type) x)
                              {return insert(end(),boost::move(x));}
   void                     pop_back(){erase(--end());}
 
-  BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL_EXTRA_ARG(
-    emplace_return_type,emplace,emplace_impl,iterator,position)
+  template<typename... Args>
+  emplace_return_type emplace(iterator position, Args&&... args)
+  {
+    return emplace_impl(position, std::forward<Args>(args)...);
+  }
     
   std::pair<iterator,bool> insert(iterator position,const value_type& x)
   {
@@ -1035,29 +1039,26 @@ private:
     relocate(position,end()-s,end());
   }
  
-  template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
-  std::pair<iterator,bool> emplace_front_impl(
-    BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
+  template<typename... Args>
+  std::pair<iterator,bool> emplace_front_impl(Args&&... args)
   {
-    return emplace_impl(begin(),BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
+    return emplace_impl(begin(),std::forward<Args>(args)...);
   }
 
-  template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
-  std::pair<iterator,bool> emplace_back_impl(
-    BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
+  template<typename... Args>
+  std::pair<iterator,bool> emplace_back_impl(Args&&... args)
   {
-    return emplace_impl(end(),BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
+    return emplace_impl(end(),std::forward<Args>(args)...);
   }
 
-  template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
-  std::pair<iterator,bool> emplace_impl(
-    iterator position,BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
+  template<typename... Args>
+  std::pair<iterator,bool> emplace_impl(iterator position,Args&&... args)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(position);
     BOOST_MULTI_INDEX_CHECK_IS_OWNER(position,*this);
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
     std::pair<final_node_type*,bool> p=
-      this->final_emplace_(BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
+      this->final_emplace_(std::forward<Args>(args)...);
     if(p.second&&position.get_node()!=header()){
       relocate(position.get_node(),p.first);
     }

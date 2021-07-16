@@ -61,7 +61,6 @@
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/unbounded.hpp>
 #include <boost/multi_index/detail/value_compare.hpp>
-#include <boost/multi_index/detail/vartempl_support.hpp>
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
 #include <boost/ref.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -215,10 +214,6 @@ protected:
   typedef typename call_traits<
     key_type>::param_type                            key_param_type;
 
-  /* Needed to avoid commas in BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL
-   * expansion.
-   */
-
   typedef std::pair<iterator,bool>                   emplace_return_type;
 
 public:
@@ -281,11 +276,15 @@ public:
 
   /* modifiers */
 
-  BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL(
-    emplace_return_type,emplace,emplace_impl)
+  template<typename... Args>
+  emplace_return_type emplace(Args&&... args) {
+    return emplace_impl(std::forward<Args>(args)...);
+  }
 
-  BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL_EXTRA_ARG(
-    iterator,emplace_hint,emplace_hint_impl,iterator,position)
+  template<typename... Args>
+  iterator emplace_hint(iterator position, Args&&... args) {
+    return emplace_hint_impl(position, std::forward<Args>(args)...);
+  }
 
   std::pair<iterator,bool> insert(const value_type& x)
   {
@@ -1240,18 +1239,17 @@ private:
   }
 #endif
 
-  template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
-  std::pair<iterator,bool> emplace_impl(BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
+  template<typename... Args>
+  std::pair<iterator,bool> emplace_impl(Args&&... args)
   {
     BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT;
     std::pair<final_node_type*,bool>p=
-      this->final_emplace_(BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
+      this->final_emplace_(std::forward<Args>(args)...);
     return std::pair<iterator,bool>(make_iterator(p.first),p.second);
   }
 
-  template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
-  iterator emplace_hint_impl(
-    iterator position,BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)
+  template<typename... Args>
+  iterator emplace_hint_impl(iterator position,Args&&... args)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(position);
     BOOST_MULTI_INDEX_CHECK_IS_OWNER(position,*this);
@@ -1259,7 +1257,7 @@ private:
     std::pair<final_node_type*,bool>p=
       this->final_emplace_hint_(
         static_cast<final_node_type*>(position.get_node()),
-        BOOST_MULTI_INDEX_FORWARD_PARAM_PACK);
+        std::forward<Args>(args)...);
     return make_iterator(p.first);
   }
 
