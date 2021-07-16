@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_COPY_MAP_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
 #include <boost/core/addressof.hpp>
 #include <boost/move/core.hpp>
@@ -18,7 +17,7 @@
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
-#include <boost/noncopyable.hpp>
+#include <boost/multi_index/detail/noncopyable.hpp>
 #include <functional>
 
 namespace boost{

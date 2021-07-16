@@ -10,7 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_HEADER_HOLDER_HPP
 #pragma once
 
-#include <boost/noncopyable.hpp>
+#include <boost/multi_index/detail/noncopyable.hpp>
 
 namespace boost{
 

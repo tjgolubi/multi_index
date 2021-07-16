@@ -10,9 +10,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_MATCHER_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <algorithm>
-#include <boost/noncopyable.hpp>
+#include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <cstddef>

@@ -10,9 +10,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_SAVER_HPP
 #pragma once
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/multi_index/detail/index_matcher.hpp>
-#include <boost/noncopyable.hpp>
+#include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <cstddef>
 
