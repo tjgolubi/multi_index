@@ -8,55 +8,45 @@
 
 #ifndef BOOST_MULTI_INDEX_DETAIL_ARCHIVE_CONSTRUCTED_HPP
 #define BOOST_MULTI_INDEX_DETAIL_ARCHIVE_CONSTRUCTED_HPP
-
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-#include <boost/core/no_exceptions_support.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/serialization/serialization.hpp>
-#include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
+#include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* constructs a stack-based object from a serialization archive */
 
 template<typename T>
-struct archive_constructed:private noncopyable
+struct archive_constructed
 {
+  archive_constructed(const archive_constructed&) = delete;
+  archive_constructed& operator=(const archive_constructed&) = delete;
+
   template<class Archive>
   archive_constructed(Archive& ar,const unsigned int version)
   {
     serialization::load_construct_data_adl(ar,&get(),version);
-    BOOST_TRY{
+    try{
       ar>>get();
     }
-    BOOST_CATCH(...){
+    catch(...){
       (&get())->~T();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   template<class Archive>
   archive_constructed(const char* name,Archive& ar,const unsigned int version)
   {
     serialization::load_construct_data_adl(ar,&get(),version);
-    BOOST_TRY{
+    try{
       ar>>serialization::make_nvp(name,get());
     }
-    BOOST_CATCH(...){
+    catch(...){
       (&get())->~T();
-      BOOST_RETHROW;
+      throw;
     }
-    BOOST_CATCH_END
   }
 
   ~archive_constructed()
@@ -67,13 +57,10 @@ struct archive_constructed:private noncopyable
   T& get(){return *reinterpret_cast<T*>(&space);}
 
 private:
-  typename aligned_storage<sizeof(T),alignment_of<T>::value>::type space;
+  typename std::aligned_storage<sizeof(T),std::alignment_of<T>::value>::type
+      space;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif
