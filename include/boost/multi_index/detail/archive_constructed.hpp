@@ -64,11 +64,7 @@ struct archive_constructed:private noncopyable
     (&get())->~T();
   }
 
-#include <boost/multi_index/detail/ignore_wstrict_aliasing.hpp>
-
   T& get(){return *reinterpret_cast<T*>(&space);}
-
-#include <boost/multi_index/detail/restore_wstrict_aliasing.hpp>
 
 private:
   typename aligned_storage<sizeof(T),alignment_of<T>::value>::type space;

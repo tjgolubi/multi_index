@@ -157,8 +157,6 @@ private:
     }
   }
 
-#include <boost/multi_index/detail/ignore_wstrict_aliasing.hpp>
-
   const allocator_type* allocator_ptr()const
   {
     return reinterpret_cast<const allocator_type*>(&space);
@@ -168,8 +166,6 @@ private:
   {
     return reinterpret_cast<allocator_type*>(&space);
   }
-
-#include <boost/multi_index/detail/restore_wstrict_aliasing.hpp>
 
   void move_construct_allocator(BOOST_RV_REF(node_handle) x)
   {

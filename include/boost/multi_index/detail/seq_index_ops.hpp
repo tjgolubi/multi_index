@@ -110,8 +110,6 @@ BOOST_STATIC_CONSTANT(
   sequenced_index_sort_max_fill=
     (std::size_t)std::numeric_limits<std::size_t>::digits+1);
 
-#include <boost/multi_index/detail/ignore_wstrict_aliasing.hpp>
-
 template<typename Node,typename Compare>
 void sequenced_index_sort(Node* header,Compare comp)
 {
@@ -191,8 +189,6 @@ void sequenced_index_sort(Node* header,Compare comp)
   }
   BOOST_CATCH_END
 }
-
-#include <boost/multi_index/detail/restore_wstrict_aliasing.hpp>
 
 } /* namespace multi_index::detail */
 
