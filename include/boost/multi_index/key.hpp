@@ -34,7 +34,7 @@ struct typed_key_impl;
 template<typename Class,typename Type,Type Class::*PtrToMember>
 struct typed_key_impl<
   Type Class::*,PtrToMember,
-  typename std::enable_if<!std::is_function_v<Type>>::type
+  typename std::enable_if_t<!std::is_function_v<Type>>
 >
 {
   using value_type=Class;
@@ -125,14 +125,14 @@ template<typename T0,typename T1,typename... Ts>
 struct least_generic<T0,T1,Ts...>
 {
   static_assert(
-    std::is_convertible<const T0&,const T1&>::value||
-    std::is_convertible<const T1&,const T0&>::value,
+    std::is_convertible_v<const T0&,const T1&>||
+    std::is_convertible_v<const T1&,const T0&>,
     "one type should be convertible to the other");
     
   using type=typename least_generic<
-    typename std::conditional<
-      std::is_convertible<const T0&,const T1&>::value,T0,T1
-    >::type,
+    typename std::conditional_t<
+      std::is_convertible_v<const T0&,const T1&>,T0,T1
+    >,
     Ts...
   >::type;
 };
@@ -141,8 +141,8 @@ template<auto Key0,auto... Keys>
 struct key_impl<Key0,Keys...>
 {
   using value_type=typename least_generic<
-    typename std::decay<typename key_impl<Key0>::value_type>::type,
-    typename std::decay<typename key_impl<Keys>::value_type>::type...
+    typename std::decay_t<typename key_impl<Key0>::value_type>,
+    typename std::decay_t<typename key_impl<Keys>::value_type>...
   >::type;
   using type=composite_key<
     value_type,

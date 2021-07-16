@@ -9,9 +9,9 @@
  */
 
 #include "test_key.hpp"
+#include "pre_multi_index.hpp"
 
 #include <boost/detail/lightweight_test.hpp>
-#include "pre_multi_index.hpp"
 #include <boost/multi_index/key.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_KEY_SUPPORTED)

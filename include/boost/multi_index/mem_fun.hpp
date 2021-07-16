@@ -10,14 +10,9 @@
 #define BOOST_MULTI_INDEX_MEM_FUN_HPP
 #pragma once
 
-#include <boost/type_traits/remove_reference.hpp>
-#include <boost/utility/enable_if.hpp>
-
-#include <boost/type_traits/is_convertible.hpp>
+#include <type_traits>
 
 namespace boost{
-
-template<class T> class reference_wrapper; /* fwd decl. */
 
 namespace multi_index{
 
@@ -32,7 +27,7 @@ namespace multi_index{
  *   vref_mem_fun:     volatile ref-qualifed member functions (C++11)
  *   cvref_mem_fun:    const volatile ref-qualifed member functions (C++11)
  *
- * All of these classes are overloaded to support boost::referece_wrappers
+ * All of these classes are overloaded to support std::referece_wrappers
  * of T and "chained pointers" to T's. By chained pointer to T we mean a type
  * P such that, given a p of Type P
  *   *...n...*x is convertible to T&, for some n>=1.
@@ -48,13 +43,11 @@ template<
 >
 struct const_mem_fun_impl
 {
-  typedef typename remove_reference<Type>::type result_type;
+  typedef typename std::remove_reference_t<Type> result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -65,12 +58,12 @@ struct const_mem_fun_impl
     return (x.*PtrToMemberFunction)();
   }
 
-  Type operator()(const reference_wrapper<const Class>& x)const
+  Type operator()(const std::reference_wrapper<const Class>& x)const
   { 
     return operator()(x.get());
   }
 
-  Type operator()(const reference_wrapper<Class>& x)const
+  Type operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }
@@ -82,13 +75,11 @@ template<
 >
 struct mem_fun_impl
 {
-  typedef typename remove_reference<Type>::type result_type;
+  typedef typename std::remove_reference_t<Type> result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<ChainedPtr&,Class&>,Type>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<ChainedPtr&,Class&>,Type>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -99,7 +90,7 @@ struct mem_fun_impl
     return (x.*PtrToMemberFunction)();
   }
 
-  Type operator()(const reference_wrapper<Class>& x)const
+  Type operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }
@@ -176,13 +167,11 @@ template<
 >
 struct const_mem_fun_explicit
 {
-  typedef typename remove_reference<Type>::type result_type;
+  typedef typename std::remove_reference_t<Type> result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -193,12 +182,12 @@ struct const_mem_fun_explicit
     return (x.*PtrToMemberFunction)();
   }
 
-  Type operator()(const reference_wrapper<const Class>& x)const
+  Type operator()(const std::reference_wrapper<const Class>& x)const
   { 
     return operator()(x.get());
   }
 
-  Type operator()(const reference_wrapper<Class>& x)const
+  Type operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }
@@ -210,13 +199,11 @@ template<
 >
 struct mem_fun_explicit
 {
-  typedef typename remove_reference<Type>::type result_type;
+  typedef typename std::remove_reference_t<Type> result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<ChainedPtr&,Class&>,Type>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<ChainedPtr&,Class&>,Type>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -227,7 +214,7 @@ struct mem_fun_explicit
     return (x.*PtrToMemberFunction)();
   }
 
-  Type operator()(const reference_wrapper<Class>& x)const
+  Type operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }

@@ -11,15 +11,12 @@
 #pragma once
 
 #include <boost/mp11/utility.hpp>
-#include <boost/type_traits/is_const.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <type_traits>
 #include <cstddef>
 
 #include <boost/type_traits/is_convertible.hpp>
 
 namespace boost{
-
-template<class T> class reference_wrapper; /* fwd decl. */
 
 namespace multi_index{
 
@@ -41,10 +38,8 @@ struct const_member_base
   typedef Type result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-  
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type&>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -55,12 +50,12 @@ struct const_member_base
     return x.*PtrToMember;
   }
 
-  Type& operator()(const reference_wrapper<const Class>& x)const
+  Type& operator()(const std::reference_wrapper<const Class>& x)const
   {
     return operator()(x.get());
   }
 
-  Type& operator()(const reference_wrapper<Class>& x)const
+  Type& operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }
@@ -72,10 +67,8 @@ struct non_const_member_base
   typedef Type result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type&>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -91,12 +84,12 @@ struct non_const_member_base
     return x.*PtrToMember;
   }
 
-  const Type& operator()(const reference_wrapper<const Class>& x)const
+  const Type& operator()(const std::reference_wrapper<const Class>& x)const
   {
     return operator()(x.get());
   }
 
-  Type& operator()(const reference_wrapper<Class>& x)const
+  Type& operator()(const std::reference_wrapper<Class>& x)const
   { 
     return operator()(x.get());
   }
@@ -107,7 +100,7 @@ struct non_const_member_base
 template<class Class,typename Type,Type Class::*PtrToMember>
 struct member:
   mp11::mp_if_c<
-    is_const<Type>::value,
+    std::is_const_v<Type>,
     detail::const_member_base<Class,Type,PtrToMember>,
     detail::non_const_member_base<Class,Type,PtrToMember>
   >
@@ -139,10 +132,8 @@ struct const_member_offset_base
   typedef Type result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-    
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type&>::type
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -156,12 +147,12 @@ struct const_member_offset_base
           static_cast<const void *>(&x))+OffsetOfMember));
   }
 
-  Type& operator()(const reference_wrapper<const Class>& x)const
+  Type& operator()(const std::reference_wrapper<const Class>& x)const
   {
     return operator()(x.get());
   }
 
-  Type& operator()(const reference_wrapper<Class>& x)const
+  Type& operator()(const std::reference_wrapper<Class>& x)const
   {
     return operator()(x.get());
   }
@@ -173,10 +164,8 @@ struct non_const_member_offset_base
   typedef Type result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Class&>,Type&>::type
-  
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type&>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -197,12 +186,12 @@ struct non_const_member_offset_base
         static_cast<char*>(static_cast<void *>(&x))+OffsetOfMember));
   }
 
-  const Type& operator()(const reference_wrapper<const Class>& x)const
+  const Type& operator()(const std::reference_wrapper<const Class>& x)const
   {
     return operator()(x.get());
   }
 
-  Type& operator()(const reference_wrapper<Class>& x)const
+  Type& operator()(const std::reference_wrapper<Class>& x)const
   {
     return operator()(x.get());
   }
@@ -213,7 +202,7 @@ struct non_const_member_offset_base
 template<class Class,typename Type,std::size_t OffsetOfMember>
 struct member_offset:
   mp11::mp_if_c<
-    is_const<Type>::value,
+    std::is_const_v<Type>,
     detail::const_member_offset_base<Class,Type,OffsetOfMember>,
     detail::non_const_member_offset_base<Class,Type,OffsetOfMember>
   >

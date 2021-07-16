@@ -12,15 +12,9 @@
 
 #include <boost/mp11/utility.hpp>
 #include <boost/multi_index/identity_fwd.hpp>
-#include <boost/type_traits/is_const.hpp>
-#include <boost/type_traits/remove_const.hpp>
-#include <boost/utility/enable_if.hpp>
-
-#include <boost/type_traits/is_convertible.hpp>
+#include <type_traits>
 
 namespace boost{
-
-template<class Type> class reference_wrapper; /* fwd decl. */
 
 namespace multi_index{
 
@@ -42,9 +36,8 @@ struct const_identity_base
   typedef Type result_type;
 
   template<typename ChainedPtr>
-
-  typename disable_if<is_convertible<const ChainedPtr&,Type&>,Type&>::type
-  
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,Type&>,Type&>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -55,13 +48,13 @@ struct const_identity_base
     return x;
   }
 
-  Type& operator()(const reference_wrapper<Type>& x)const
+  Type& operator()(const std::reference_wrapper<Type>& x)const
   { 
     return x.get();
   }
 
   Type& operator()(
-    const reference_wrapper<typename remove_const<Type>::type>& x
+    const std::reference_wrapper<typename std::remove_const_t<Type>>& x
   )const
   { 
     return x.get();
@@ -76,10 +69,8 @@ struct non_const_identity_base
   /* templatized for pointer-like types */
   
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const Type&>,Type&>::type
-    
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const Type&>,Type&>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -95,12 +86,12 @@ struct non_const_identity_base
     return x;
   }
 
-  const Type& operator()(const reference_wrapper<const Type>& x)const
+  const Type& operator()(const std::reference_wrapper<const Type>& x)const
   { 
     return x.get();
   }
 
-  Type& operator()(const reference_wrapper<Type>& x)const
+  Type& operator()(const std::reference_wrapper<Type>& x)const
   { 
     return x.get();
   }
@@ -111,7 +102,7 @@ struct non_const_identity_base
 template<class Type>
 struct identity:
   mp11::mp_if_c<
-    is_const<Type>::value,
+    std::is_const_v<Type>,
     detail::const_identity_base<Type>,detail::non_const_identity_base<Type>
   >
 {

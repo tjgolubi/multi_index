@@ -10,6 +10,7 @@
 #define BOOST_MULTI_INDEX_COMPOSITE_KEY_HPP
 #pragma once
 
+#include <boost/multi_index/detail/cons_stdtuple.hpp>
 #include <boost/functional/hash_fwd.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
@@ -19,15 +20,8 @@
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp> 
 #include <boost/tuple/tuple.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/utility/enable_if.hpp>
 #include <functional>
-
-#include <boost/ref.hpp>
-
-#include <boost/type_traits/is_convertible.hpp>
-
-#include <boost/multi_index/detail/cons_stdtuple.hpp>
+#include <type_traits>
 
 /* A composite key stores n key extractors and "computes" the
  * result on a given value as a packed reference to the value and
@@ -89,8 +83,6 @@
   >::type
 
 namespace boost{
-
-template<class T> class reference_wrapper; /* fwd decl. */
 
 namespace multi_index{
 
@@ -236,8 +228,8 @@ template
 struct equal_ckey_ckey:
   mp11::mp_if<
     mp11::mp_or<
-      is_same<KeyCons1,tuples::null_type>,
-      is_same<KeyCons2,tuples::null_type>
+      std::is_same<KeyCons1,tuples::null_type>,
+      std::is_same<KeyCons2,tuples::null_type>
     >,
     equal_ckey_ckey_terminal<KeyCons1,Value1,KeyCons2,Value2,EqualCons>,
     equal_ckey_ckey_normal<KeyCons1,Value1,KeyCons2,Value2,EqualCons>
@@ -312,8 +304,8 @@ template
 struct equal_ckey_cval:
   mp11::mp_if<
     mp11::mp_or<
-      is_same<KeyCons,tuples::null_type>,
-      is_same<ValCons,tuples::null_type>
+      std::is_same<KeyCons,tuples::null_type>,
+      std::is_same<ValCons,tuples::null_type>
     >,
     equal_ckey_cval_terminal<KeyCons,Value,ValCons,EqualCons>,
     equal_ckey_cval_normal<KeyCons,Value,ValCons,EqualCons>
@@ -378,8 +370,8 @@ template
 struct compare_ckey_ckey:
   mp11::mp_if<
     mp11::mp_or<
-      is_same<KeyCons1,tuples::null_type>,
-      is_same<KeyCons2,tuples::null_type>
+      std::is_same<KeyCons1,tuples::null_type>,
+      std::is_same<KeyCons2,tuples::null_type>
     >,
     compare_ckey_ckey_terminal<KeyCons1,Value1,KeyCons2,Value2,CompareCons>,
     compare_ckey_ckey_normal<KeyCons1,Value1,KeyCons2,Value2,CompareCons>
@@ -456,8 +448,8 @@ template
 struct compare_ckey_cval:
   mp11::mp_if<
     mp11::mp_or<
-      is_same<KeyCons,tuples::null_type>,
-      is_same<ValCons,tuples::null_type>
+      std::is_same<KeyCons,tuples::null_type>,
+      std::is_same<ValCons,tuples::null_type>
     >,
     compare_ckey_cval_terminal<KeyCons,Value,ValCons,CompareCons>,
     compare_ckey_cval_normal<KeyCons,Value,ValCons,CompareCons>
@@ -497,7 +489,7 @@ struct hash_ckey_normal
 template<typename KeyCons,typename Value,typename HashCons>
 struct hash_ckey:
   mp11::mp_if<
-    is_same<KeyCons,tuples::null_type>,
+    std::is_same<KeyCons,tuples::null_type>,
     hash_ckey_terminal<KeyCons,Value,HashCons>,
     hash_ckey_normal<KeyCons,Value,HashCons>
   >
@@ -533,7 +525,7 @@ struct hash_cval_normal
 template<typename ValCons,typename HashCons>
 struct hash_cval:
   mp11::mp_if<
-    is_same<ValCons,tuples::null_type>,
+    std::is_same<ValCons,tuples::null_type>,
     hash_cval_terminal<ValCons,HashCons>,
     hash_cval_normal<ValCons,HashCons>
   >
@@ -587,10 +579,8 @@ public:
   key_extractor_tuple&       key_extractors(){return *this;}
 
   template<typename ChainedPtr>
-
-  typename disable_if<
-    is_convertible<const ChainedPtr&,const value_type&>,result_type>::type
-
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&,const value_type&>,result_type>
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -601,12 +591,12 @@ public:
     return result_type(*this,x);
   }
 
-  result_type operator()(const reference_wrapper<const value_type>& x)const
+  result_type operator()(const std::reference_wrapper<const value_type>& x)const
   {
     return result_type(*this,x.get());
   }
 
-  result_type operator()(const reference_wrapper<value_type>& x)const
+  result_type operator()(const std::reference_wrapper<value_type>& x)const
   {
     return result_type(*this,x.get());
   }
@@ -1103,7 +1093,7 @@ public:
     const composite_key_result<CompositeKey>& x,
     const Value& y)const
   {
-    return operator()(x,boost::make_tuple(boost::cref(y)));
+    return operator()(x,boost::make_tuple(std::cref(y)));
   }
 
   template
@@ -1136,7 +1126,7 @@ public:
     const Value& x,
     const composite_key_result<CompositeKey>& y)const
   {
-    return operator()(boost::make_tuple(boost::cref(x)),y);
+    return operator()(boost::make_tuple(std::cref(x)),y);
   }
 
   template
