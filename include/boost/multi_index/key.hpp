@@ -21,7 +21,6 @@
 
 #define BOOST_MULTI_INDEX_KEY_SUPPORTED
 
-#include <boost/multi_index/detail/is_function.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <type_traits>
 
@@ -39,7 +38,7 @@ struct typed_key_impl;
 template<typename Class,typename Type,Type Class::*PtrToMember>
 struct typed_key_impl<
   Type Class::*,PtrToMember,
-  typename std::enable_if<!is_function<Type>::value>::type
+  typename std::enable_if<!std::is_function_v<Type>>::type
 >
 {
   using value_type=Class;
