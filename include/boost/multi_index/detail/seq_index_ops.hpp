@@ -73,8 +73,8 @@ void sequenced_index_merge(SequencedIndex& x,SequencedIndex& y,Compare comp)
 
 template<typename Node,typename Compare>
 void sequenced_index_collate(
-  BOOST_DEDUCED_TYPENAME Node::impl_type* x,
-  BOOST_DEDUCED_TYPENAME Node::impl_type* y,
+  typename Node::impl_type* x,
+  typename Node::impl_type* y,
   Compare comp)
 {
   typedef typename Node::impl_type    impl_type;

@@ -1132,7 +1132,7 @@ get(
   static_assert(N>=0&&
     N<
     mp11::mp_size<
-      BOOST_DEDUCED_TYPENAME multi_index_type::index_type_list
+      typename multi_index_type::index_type_list
     >::value);
 
   return detail::converter<multi_index_type,index_type>::index(m);
@@ -1156,7 +1156,7 @@ get(
   static_assert(N>=0&&
     N<
     mp11::mp_size<
-      BOOST_DEDUCED_TYPENAME multi_index_type::index_type_list
+      typename multi_index_type::index_type_list
     >::value);
 
   return detail::converter<multi_index_type,index_type>::index(m);
@@ -1250,7 +1250,7 @@ project(
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
   static_assert((
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
+      typename multi_index_type::iterator_type_list,
       IteratorType>::value));
 #endif
 
@@ -1259,7 +1259,7 @@ project(
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef detail::converter<
     multi_index_type,
-    BOOST_DEDUCED_TYPENAME IteratorType::container_type> converter;
+    typename IteratorType::container_type> converter;
   BOOST_MULTI_INDEX_CHECK_IS_OWNER(it,converter::index(m));
 #endif
 
@@ -1283,10 +1283,10 @@ project(
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
   static_assert((
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
+      typename multi_index_type::iterator_type_list,
       IteratorType>::value||
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::const_iterator_type_list,
+      typename multi_index_type::const_iterator_type_list,
       IteratorType>::value));
 #endif
 
@@ -1295,7 +1295,7 @@ project(
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef detail::converter<
     multi_index_type,
-    BOOST_DEDUCED_TYPENAME IteratorType::container_type> converter;
+    typename IteratorType::container_type> converter;
   BOOST_MULTI_INDEX_CHECK_IS_OWNER(it,converter::index(m));
 #endif
 
@@ -1336,7 +1336,7 @@ project(
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
   static_assert((
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
+      typename multi_index_type::iterator_type_list,
       IteratorType>::value));
 #endif
 
@@ -1345,7 +1345,7 @@ project(
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef detail::converter<
     multi_index_type,
-    BOOST_DEDUCED_TYPENAME IteratorType::container_type> converter;
+    typename IteratorType::container_type> converter;
   BOOST_MULTI_INDEX_CHECK_IS_OWNER(it,converter::index(m));
 #endif
 
@@ -1370,10 +1370,10 @@ project(
 #if !defined(__SUNPRO_CC)||!(__SUNPRO_CC<0x580) /* Sun C++ 5.7 fails */
   static_assert((
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::iterator_type_list,
+      typename multi_index_type::iterator_type_list,
       IteratorType>::value||
     mp11::mp_contains<
-      BOOST_DEDUCED_TYPENAME multi_index_type::const_iterator_type_list,
+      typename multi_index_type::const_iterator_type_list,
       IteratorType>::value));
 #endif
 
@@ -1382,7 +1382,7 @@ project(
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef detail::converter<
     multi_index_type,
-    BOOST_DEDUCED_TYPENAME IteratorType::container_type> converter;
+    typename IteratorType::container_type> converter;
   BOOST_MULTI_INDEX_CHECK_IS_OWNER(it,converter::index(m));
 #endif
 

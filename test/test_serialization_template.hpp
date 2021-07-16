@@ -49,7 +49,7 @@ bool all_indices_equal(
   const MultiIndexContainer& m1,const MultiIndexContainer& m2)
 {
   static const int N=boost::mp11::mp_size<
-    BOOST_DEDUCED_TYPENAME MultiIndexContainer::index_type_list>::value;
+    typename MultiIndexContainer::index_type_list>::value;
 
   return all_indices_equal_helper<N-1>::compare(m1,m2);
 }

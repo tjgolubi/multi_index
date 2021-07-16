@@ -51,7 +51,7 @@ template<typename CompositeKeyResult>
 struct composite_key_result_length
 {
   static const int value=boost::tuples::length<
-      BOOST_DEDUCED_TYPENAME 
+      typename 
       CompositeKeyResult::composite_key_type::key_extractor_tuple
     >::value;
 };
