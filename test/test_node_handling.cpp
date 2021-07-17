@@ -19,11 +19,7 @@
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/multi_index/ranked_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
-
-#include <boost/type_traits/integral_constant.hpp>
-
 #include <boost/detail/lightweight_test.hpp>
-
 #include <functional>
 #include <type_traits>
 
@@ -133,8 +129,7 @@ void test_node_handle()
 }
 
 template<typename Index>
-struct is_key_based:boost::integral_constant<
-  bool,
+struct is_key_based:std::bool_constant<
   /* rather fragile if new index types are included in the library */
   (boost::tuples::length<typename Index::ctor_args>::value > 0)
 >
@@ -285,7 +280,7 @@ void test_transfer(Src& src,Locator loc,Dst& dst,Iterator pos)
 template<typename Src,typename Dst>
 void test_transfer(
   Src& src,Dst& dst0,Dst& /* dst1 */,Dst& /* dst2 */,Dst& /* dst3 */,
-  boost::false_type /* Src key-based */,boost::false_type /* Dst key-based */)
+  std::false_type /* Src key-based */,std::false_type /* Dst key-based */)
 {
   test_transfer(src,src.begin(),dst0,dst0.begin());
   test_transfer(src,src.begin(),dst0,dst0.begin());
@@ -295,7 +290,7 @@ void test_transfer(
 template<typename Src,typename Dst>
 void test_transfer(
   Src& src,Dst& dst0,Dst& dst1,Dst& /* dst2 */,Dst& /* dst3 */,
-  boost::false_type /* Src key-based */,boost::true_type /* Dst key-based */)
+  std::false_type /* Src key-based */,std::true_type /* Dst key-based */)
 {
   test_transfer(src,src.begin(),dst0);
   test_transfer(src,src.begin(),dst0);
@@ -307,7 +302,7 @@ void test_transfer(
 template<typename Src,typename Dst>
 void test_transfer(
   Src& src,Dst& dst0,Dst& dst1,Dst& /* dst2 */,Dst& /* dst3 */,
-  boost::true_type /* Src key-based */,boost::false_type /* Dst key-based */)
+  std::true_type /* Src key-based */,std::false_type /* Dst key-based */)
 {
   test_transfer(src, src.begin(),dst0,dst0.begin());
   test_transfer(src, src.begin(),dst0,dst0.begin());
@@ -320,7 +315,7 @@ void test_transfer(
 template<typename Src,typename Dst>
 void test_transfer(
   Src& src,Dst& dst0,Dst& dst1,Dst& dst2,Dst& dst3,
-  boost::true_type /* Src key-based */,boost::true_type /* Dst key-based */)
+  std::true_type /* Src key-based */,std::true_type /* Dst key-based */)
 {
   test_transfer(src, src.begin(),dst0);
   test_transfer(src, src.begin(),dst0);

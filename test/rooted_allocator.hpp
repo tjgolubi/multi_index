@@ -11,14 +11,14 @@
 #ifndef BOOST_MULTI_INDEX_TEST_ROOTED_ALLOCATOR_HPP
 #define BOOST_MULTI_INDEX_TEST_ROOTED_ALLOCATOR_HPP
 
-#include <boost/type_traits/integral_constant.hpp>
+#include <type_traits>
 #include <memory>
 
 template<typename T,bool Propagate,bool AlwaysEqual>
 class rooted_allocator:public std::allocator<T>
 {
-  typedef boost::integral_constant<bool,Propagate>   propagate_type;
-  typedef boost::integral_constant<bool,AlwaysEqual> always_equal_type;
+  typedef std::bool_constant<Propagate>   propagate_type;
+  typedef std::bool_constant<AlwaysEqual> always_equal_type;
 
 public:
   typedef propagate_type    propagate_on_container_copy_assignment;
