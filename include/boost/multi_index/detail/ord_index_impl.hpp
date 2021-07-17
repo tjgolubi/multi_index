@@ -63,12 +63,12 @@
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/iterator/reverse_iterator.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
 #include <algorithm>
 #include <utility>
 #include <initializer_list>
+#include <iterator>
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #define BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT_OF(x)                    \
@@ -159,9 +159,9 @@ public:
   typedef typename alloc_traits::pointer             pointer;
   typedef typename alloc_traits::const_pointer       const_pointer;
   typedef typename
-    boost::reverse_iterator<iterator>                reverse_iterator;
+    std::reverse_iterator<iterator>                  reverse_iterator;
   typedef typename
-    boost::reverse_iterator<const_iterator>          const_reverse_iterator;
+    std::reverse_iterator<const_iterator>            const_reverse_iterator;
   typedef typename super::final_node_handle_type     node_type;
   typedef detail::insert_return_type<
     iterator,node_type>                              insert_return_type;
@@ -228,13 +228,13 @@ public:
   const_iterator
     end()const noexcept{return make_iterator(header());}
   reverse_iterator
-    rbegin()noexcept{return boost::make_reverse_iterator(end());}
+    rbegin()noexcept{return std::make_reverse_iterator(end());}
   const_reverse_iterator
-    rbegin()const noexcept{return boost::make_reverse_iterator(end());}
+    rbegin()const noexcept{return std::make_reverse_iterator(end());}
   reverse_iterator
-    rend()noexcept{return boost::make_reverse_iterator(begin());}
+    rend()noexcept{return std::make_reverse_iterator(begin());}
   const_reverse_iterator
-    rend()const noexcept{return boost::make_reverse_iterator(begin());}
+    rend()const noexcept{return std::make_reverse_iterator(begin());}
   const_iterator
     cbegin()const noexcept{return begin();}
   const_iterator
