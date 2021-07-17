@@ -12,7 +12,6 @@
 
 #include <boost/multi_index/tag.hpp>
 #include <boost/mp11/utility.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <functional>
 #include <type_traits>
 
