@@ -8,8 +8,6 @@
  * See http://www.boost.org/libs/multi_index for library home page.
  */
 
-#include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
-
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -185,16 +183,6 @@ struct multiset_wrapper:Multiset
  * basis. Add your own versions if necessary.
  */
 
-#if defined(BOOST_DINKUMWARE_STDLIB)
-
-template<typename Container>
-size_t node_size(const Container&)
-{
-  return sizeof(*Container().begin()._Mynode());
-}
-
-#elif defined(__GLIBCPP__) || defined(__GLIBCXX__)
-
 template<typename Container>
 size_t node_size(const Container&)
 {
@@ -214,18 +202,6 @@ size_t node_size(const list_wrapper<List>&)
 {
   return sizeof(typename List::iterator::_Node);
 }
-
-#else
-
-/* default version returns 0 by convention */
-
-template<typename Container>
-size_t node_size(const Container&)
-{
-  return 0;
-}
-
-#endif
 
 /* mono_container runs the tested routine on multi_index and manual
  * simulations comprised of one standard container.

@@ -13,7 +13,6 @@
 #define BOOST_MULTI_INDEX_ENABLE_SAFE_MODE
 #endif
 
-#include <boost/config.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/random/binomial_distribution.hpp>
@@ -23,10 +22,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
-
-#if !defined(BOOST_NO_CXX11_HDR_RANDOM)
 #include <random>
-#endif
 
 using boost::multi_index_container;
 using namespace boost::multi_index;
@@ -38,7 +34,7 @@ using namespace boost::multi_index;
 
 class deck
 {
-  BOOST_STATIC_CONSTANT(std::size_t,num_cards=52);
+  static const std::size_t,num_cards=52;
 
   typedef multi_index_container<
     int,
@@ -198,21 +194,12 @@ struct random_shuffler
 private:
   deck_view    dv;
 
-#if !defined(BOOST_NO_CXX11_HDR_RANDOM)
   std::mt19937 e;
 
   void shuffle_view()
   {
     std::shuffle(dv.begin(),dv.end(),e);
   }
-#else
-  /* for pre-C++11 compilers we use std::random_shuffle */
-
-  void shuffle_view()
-  {
-    std::random_shuffle(dv.begin(),dv.end());
-  }
-#endif
 };
 
 /* Repeat a given shuffling algorithm repeats_num times
@@ -222,8 +209,7 @@ private:
 
 template<typename Shuffler>
 double shuffle_test(
- unsigned int repeats_num,unsigned int tests_num
- BOOST_APPEND_EXPLICIT_TEMPLATE_TYPE(Shuffler))
+ unsigned int repeats_num,unsigned int tests_num)
 {
   deck          d;
   Shuffler      sh;
