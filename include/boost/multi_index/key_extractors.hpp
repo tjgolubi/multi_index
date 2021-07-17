@@ -11,9 +11,9 @@
 #pragma once
 
 #include <boost/multi_index/composite_key.hpp>
-#include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/global_fun.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
+#include <boost/multi_index/identity.hpp>
 
 #endif

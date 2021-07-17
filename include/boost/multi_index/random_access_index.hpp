@@ -10,6 +10,7 @@
 #define BOOST_MULTI_INDEX_RANDOM_ACCESS_INDEX_HPP
 #pragma once
 
+#include <boost/multi_index/random_access_index_fwd.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
@@ -20,7 +21,11 @@
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/multi_index/random_access_index_fwd.hpp>
+
+#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
+#include <boost/multi_index/detail/rnd_index_loader.hpp>
+#endif
+
 #include <boost/tuple/tuple.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
@@ -36,10 +41,6 @@
 #include <utility>
 #include <stdexcept> 
 #include <initializer_list>
-
-#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
-#include <boost/multi_index/detail/rnd_index_loader.hpp>
-#endif
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #define BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT_OF(x)                    \

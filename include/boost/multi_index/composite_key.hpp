@@ -14,12 +14,12 @@
 #include <boost/functional/hash_fwd.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/control/expr_if.hpp>
 #include <boost/preprocessor/list/at.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp> 
-#include <boost/tuple/tuple.hpp>
 #include <functional>
 #include <type_traits>
 

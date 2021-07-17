@@ -10,8 +10,8 @@
 #define BOOST_MULTI_INDEX_ORDERED_INDEX_HPP
 #pragma once
 
-#include <boost/multi_index/detail/ord_index_impl.hpp>
 #include <boost/multi_index/ordered_index_fwd.hpp>
+#include <boost/multi_index/detail/ord_index_impl.hpp>
 
 namespace boost{
 

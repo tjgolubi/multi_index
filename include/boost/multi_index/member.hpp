@@ -11,10 +11,9 @@
 #pragma once
 
 #include <boost/mp11/utility.hpp>
+#include <boost/type_traits/is_convertible.hpp>
 #include <type_traits>
 #include <cstddef>
-
-#include <boost/type_traits/is_convertible.hpp>
 
 namespace boost{
 

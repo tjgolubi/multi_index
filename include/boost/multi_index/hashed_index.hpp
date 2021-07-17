@@ -10,6 +10,7 @@
 #define BOOST_MULTI_INDEX_HASHED_INDEX_HPP
 #pragma once
 
+#include <boost/multi_index/hashed_index_fwd.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
@@ -22,26 +23,25 @@
 #include <boost/multi_index/detail/promotes_arg.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/multi_index/hashed_index_fwd.hpp>
+#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
+#include <boost/serialization/nvp.hpp>
+#endif
+
 #include <boost/tuple/tuple.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/limits.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/mp11/list.hpp>
+#include <boost/limits.hpp>
 #include <algorithm>
-#include <cmath>
-#include <cstddef>
 #include <functional>
 #include <iterator>
 #include <type_traits>
 #include <utility>
 #include <initializer_list>
-
-#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
-#include <boost/serialization/nvp.hpp>
-#endif
+#include <cmath>
+#include <cstddef>
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #define BOOST_MULTI_INDEX_HASHED_INDEX_CHECK_INVARIANT_OF(x)                 \

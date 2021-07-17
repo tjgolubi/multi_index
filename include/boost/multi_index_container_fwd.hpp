@@ -10,9 +10,9 @@
 #define BOOST_MULTI_INDEX_FWD_HPP
 #pragma once
 
-#include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/indexed_by.hpp>
 #include <boost/multi_index/ordered_index_fwd.hpp>
+#include <boost/multi_index/indexed_by.hpp>
+#include <boost/multi_index/identity.hpp>
 #include <memory>
 
 namespace boost{

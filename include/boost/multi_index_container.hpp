@@ -14,22 +14,16 @@
 
 #include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/access_specifier.hpp>
-#include <boost/multi_index/detail/adl_swap.hpp>
-#include <boost/multi_index/detail/allocator_traits.hpp>
-#include <boost/multi_index/detail/base_type.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/converter.hpp>
-#include <boost/multi_index/detail/header_holder.hpp>
 #include <boost/multi_index/detail/has_tag.hpp>
-#include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
+#include <boost/multi_index/detail/no_duplicate_tags.hpp>
+#include <boost/multi_index/detail/header_holder.hpp>
+#include <boost/multi_index/detail/allocator_traits.hpp>
+#include <boost/multi_index/detail/base_type.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/utility/base_from_member.hpp>
-#include <boost/mp11/algorithm.hpp>
-#include <boost/mp11/list.hpp>
-#include <boost/mp11/utility.hpp>
-#include <initializer_list>
-#include <algorithm>
+#include <boost/multi_index/detail/adl_swap.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/archive_constructed.hpp>
@@ -40,6 +34,13 @@
 #include <boost/serialization/version.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
+
+#include <boost/utility/base_from_member.hpp>
+#include <boost/mp11/algorithm.hpp>
+#include <boost/mp11/list.hpp>
+#include <boost/mp11/utility.hpp>
+#include <initializer_list>
+#include <algorithm>
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #include <boost/multi_index/detail/invariant_assert.hpp>

@@ -10,16 +10,16 @@
 #define BOOST_MULTI_INDEX_SEQUENCED_INDEX_HPP
 #pragma once
 
+#include <boost/multi_index/sequenced_index_fwd.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
 #include <boost/multi_index/detail/node_handle.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
-#include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/seq_index_node.hpp>
 #include <boost/multi_index/detail/seq_index_ops.hpp>
-#include <boost/multi_index/sequenced_index_fwd.hpp>
+#include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>

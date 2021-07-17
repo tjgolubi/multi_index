@@ -11,8 +11,8 @@
 #pragma once
 
 #include <boost/multi_index/composite_key.hpp>
-#include <boost/multi_index/global_fun.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/multi_index/global_fun.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 
 #define BOOST_MULTI_INDEX_KEY_SUPPORTED
