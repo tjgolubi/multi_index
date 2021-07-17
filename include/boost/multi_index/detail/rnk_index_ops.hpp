@@ -12,9 +12,9 @@
 
 #include <boost/multi_index/detail/promotes_arg.hpp>
 #include <boost/mp11/function.hpp>
-#include <boost/core/pointer_traits.hpp>
 #include <type_traits>
 #include <utility>
+#include <memory>
 
 namespace boost{
 
@@ -29,7 +29,7 @@ namespace detail{
 template<typename Pointer>
 struct ranked_node_size_type
 {
-  typedef typename boost::pointer_traits<Pointer>::
+  typedef typename std::pointer_traits<Pointer>::
     element_type::size_type type;
 };
 
