@@ -18,7 +18,6 @@
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
-#include <boost/next_prior.hpp>
 #include <boost/tokenizer.hpp>
 #include <functional>
 #include <iostream>
@@ -278,7 +277,7 @@ int main()
       continue;
     }
 
-    it->second->execute(boost::next(tok.begin()),tok.end());
+    it->second->execute(std::next(tok.begin()),tok.end());
   }
   
   return 0;

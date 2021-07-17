@@ -10,21 +10,20 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 
-#include <algorithm>
-#include <assert.h>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
-#include <boost/next_prior.hpp>
-#include <climits>
-#include <ctime>
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <list>
 #include <set>
 #include <string>
 #include <vector>
+#include <climits>
+#include <ctime>
+#include <cassert>
 
 using namespace std;
 using namespace boost::multi_index;
@@ -164,7 +163,7 @@ struct list_wrapper:List
   pair<iterator,bool> insert(const value_type& v)
   {
     List::push_back(v);
-    return pair<iterator,bool>(boost::prior(List::end()),true);
+    return pair<iterator,bool>(std::prev(List::end()),true);
   }
 };
 
