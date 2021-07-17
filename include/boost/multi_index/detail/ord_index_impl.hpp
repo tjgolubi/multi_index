@@ -54,7 +54,6 @@
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
-#include <boost/bind/bind.hpp>
 #include <boost/multi_index/detail/duplicates_iterator.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
@@ -1365,10 +1364,9 @@ private:
     Archive& ar,const unsigned int version,const index_loader_type& lm,
     ordered_non_unique_tag)
   {
+    using namespace std::placeholders;
     lm.load(
-      ::boost::bind(
-        &ordered_index_impl::rearranger,this,
-        ::boost::arg<1>(),::boost::arg<2>()),
+      std::bind(&ordered_index_impl::rearranger,this,_1,_2),
       ar,version);
     super::load_(ar,version,lm);
   }

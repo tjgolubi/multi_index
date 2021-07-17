@@ -20,7 +20,6 @@
 #include <boost/multi_index/detail/seq_index_node.hpp>
 #include <boost/multi_index/detail/seq_index_ops.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
@@ -518,10 +517,10 @@ public:
 
   void remove(value_param_type value)
   {
+    using namespace std::placeholders;
     sequenced_index_remove(
       *this,
-      ::boost::bind<bool>(
-        std::equal_to<value_type>(),::boost::arg<1>(),value));
+      std::bind<bool>(std::equal_to<value_type>(),_1,value));
   }
 
   template<typename Predicate>
@@ -799,9 +798,9 @@ protected:
   void load_(
     Archive& ar,const unsigned int version,const index_loader_type& lm)
   {
+    using namespace std::placeholders;
     lm.load(
-      ::boost::bind(
-        &sequenced_index::rearranger,this,::boost::arg<1>(),::boost::arg<2>()),
+      std::bind(&sequenced_index::rearranger,this,_1,_2),
       ar,version);
     super::load_(ar,version,lm);
   }

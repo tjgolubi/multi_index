@@ -17,7 +17,6 @@
 
 #include <boost/preprocessor/seq/enum.hpp>
 
-#include <boost/bind/bind.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
 #include <functional>
@@ -41,13 +40,15 @@ typedef int_set::iterator int_set_iterator;
 #define CHECK_VOID_RANGE(p) BOOST_TEST((p).first==(p).second)
 
 #undef BIND1ST
-#define BIND1ST(f,x) ::boost::bind<bool>(f,x,::boost::arg<1>())
+#define BIND1ST(f,x) std::bind<bool>(f, x, _1)
 
 #undef BIND2ND
-#define BIND2ND(f,x) ::boost::bind<bool>(f,::boost::arg<1>(),x)
+#define BIND2ND(f,x) std::bind<bool>(f, _1, x)
 
 void test_range()
 {
+  using namespace std::placeholders;
+
   int_set is;
 
   for(int i=1;i<=10;++i)is.insert(i);

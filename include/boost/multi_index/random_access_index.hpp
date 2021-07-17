@@ -27,7 +27,6 @@
 #endif
 
 #include <boost/tuple/tuple.hpp>
-#include <boost/bind/bind.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
@@ -584,13 +583,13 @@ public:
 
   void remove(value_param_type value)
   {
+    using namespace std::placeholders;
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
     difference_type n=
       end()-make_iterator(
         random_access_index_remove<index_node_type>(
           ptrs,
-          ::boost::bind<bool>(
-            std::equal_to<value_type>(),::boost::arg<1>(),value)));
+          std::bind<bool>(std::equal_to<value_type>(),_1,value)));
     while(n--)pop_back();
   }
 
@@ -908,13 +907,13 @@ protected:
     Archive& ar,const unsigned int version,const index_loader_type& lm)
   {
     {
+      using namespace std::placeholders;
       typedef random_access_index_loader<
         index_node_type,allocator_type> loader;
 
       loader ld(get_allocator(),ptrs);
       lm.load(
-        ::boost::bind(
-          &loader::rearrange,&ld,::boost::arg<1>(),::boost::arg<2>()),
+        std::bind(&loader::rearrange,&ld,_1,_2),
         ar,version);
     } /* exit scope so that ld frees its resources */
     super::load_(ar,version,lm);
