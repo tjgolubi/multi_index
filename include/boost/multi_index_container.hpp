@@ -276,7 +276,7 @@ public:
       x,
       node_alloc_traits::propagate_on_container_copy_assignment::value?
         x.get_allocator():this->get_allocator());
-    swap_(y,boost::true_type() /* swap_allocators */);
+    swap_(y,std::true_type() /* swap_allocators */);
     return *this;
   }
 
@@ -285,14 +285,14 @@ public:
   {
     if constexpr(
       node_alloc_traits::propagate_on_container_move_assignment::value){
-      swap_(x,boost::true_type() /* swap_allocators */);
+      swap_(x,std::true_type() /* swap_allocators */);
     }
     else if(this->get_allocator()==x.get_allocator()){
-      swap_(x,boost::false_type() /* swap_allocators */);
+      swap_(x,std::false_type() /* swap_allocators */);
     }
     else{
       multi_index_container y(std::move(x),this->get_allocator());
-      swap_(y,boost::false_type() /* swap_allocators */);
+      swap_(y,std::false_type() /* swap_allocators */);
     }
     return *this;
   }
@@ -841,13 +841,13 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   {
     swap_(
       x,
-      boost::integral_constant<
-        bool,node_alloc_traits::propagate_on_container_swap::value>());
+      std::bool_constant<
+        node_alloc_traits::propagate_on_container_swap::value>());
   }
 
   void swap_(
     multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    boost::true_type swap_allocators)
+    std::true_type swap_allocators)
   {
     detail::adl_swap(bfm_allocator::member,x.bfm_allocator::member);
     std::swap(bfm_header::member,x.bfm_header::member);
@@ -857,7 +857,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
 
   void swap_(
     multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    boost::false_type swap_allocators)
+    std::false_type swap_allocators)
   {
     std::swap(bfm_header::member,x.bfm_header::member);
     super::swap_(x,swap_allocators);

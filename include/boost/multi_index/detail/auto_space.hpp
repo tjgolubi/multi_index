@@ -38,9 +38,8 @@ namespace boost::multi_index::detail{
 template<typename T,typename Allocator=std::allocator<T> >
 struct auto_space:private noncopyable
 {
-  typedef typename rebind_alloc_for<
-    Allocator,T>
-  ::type                                   allocator;
+  typedef typename rebind_alloc_for<Allocator,T>::type
+                                           allocator;
   typedef allocator_traits<allocator>      alloc_traits;
   typedef typename alloc_traits::pointer   pointer;
   typedef typename alloc_traits::size_type size_type;
@@ -59,18 +58,17 @@ struct auto_space:private noncopyable
   {
     swap(
       x,
-      boost::integral_constant<
-        bool,alloc_traits::propagate_on_container_swap::value>());
+      std::bool_constant<alloc_traits::propagate_on_container_swap::value>());
   }
 
-  void swap(auto_space& x,boost::true_type /* swap_allocators */)
+  void swap(auto_space& x,std::true_type /* swap_allocators */)
   {
     adl_swap(al_,x.al_);
     std::swap(n_,x.n_);
     std::swap(data_,x.data_);
   }
     
-  void swap(auto_space& x,boost::false_type /* swap_allocators */)
+  void swap(auto_space& x,std::false_type /* don't swap_allocators */)
   {
     std::swap(n_,x.n_);
     std::swap(data_,x.data_);
