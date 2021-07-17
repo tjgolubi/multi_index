@@ -104,7 +104,7 @@ void swap(
   multi_index_container<Value,IndexSpecifierList,Allocator>& x,
   multi_index_container<Value,IndexSpecifierList,Allocator>& y);
 
-} /* namespace multi_index */
+} // multi_index
 
 /* multi_index_container, being the main type of this library, is promoted to
  * namespace boost.
@@ -112,6 +112,6 @@ void swap(
 
 using multi_index::multi_index_container;
 
-} /* namespace boost */
+} // boost
 
 #endif

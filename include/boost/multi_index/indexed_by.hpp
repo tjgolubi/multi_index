@@ -17,16 +17,12 @@
  * of a multi_index_container.
  */
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 template<typename... T>
 using indexed_by=mp11::mp_list<T...>;
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #undef BOOST_MULTI_INDEX_INDEXED_BY_TEMPLATE_PARM
 #undef BOOST_MULTI_INDEX_INDEXED_BY_SIZE

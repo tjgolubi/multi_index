@@ -14,11 +14,7 @@
 #include <boost/mp11/utility.hpp>
 #include <tuple>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* std::tuple wrapper providing the cons-based interface of boost::tuple for
  * composite_key interoperability.
@@ -80,10 +76,6 @@ make_cons_stdtuple(const StdTuple& t)
   return cons_stdtuple_ctor<StdTuple>::create(t);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

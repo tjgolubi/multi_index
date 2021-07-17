@@ -10,11 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_DO_NOT_COPY_ELEMENTS_TAG_HPP
 #pragma once
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Used to mark a special ctor variant that copies the internal objects of
  * a container but not its elements.
@@ -22,10 +18,6 @@ namespace detail{
 
 struct do_not_copy_elements_tag{};
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

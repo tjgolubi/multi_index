@@ -63,7 +63,7 @@ namespace detail{
 
 struct unequal_alloc_move_ctor_tag{};
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<typename Value,typename IndexSpecifierList,typename Allocator>
 class multi_index_container:
@@ -1403,7 +1403,7 @@ bool operator<=(
   return get<0>(x)<=get<0>(y);
 }
 
-/*  specialized algorithms */
+/* specialized algorithms */
 
 template<typename Value,typename IndexSpecifierList,typename Allocator>
 void swap(
@@ -1413,7 +1413,7 @@ void swap(
   x.swap(y);
 }
 
-} /* namespace multi_index */
+} // multi_index
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 /* class version = 1 : we now serialize the size through
@@ -1429,7 +1429,7 @@ struct version<
 {
   static const int value=2;
 };
-} /* namespace serialization */
+} // serialization
 #endif
 
 /* Associated global functions are promoted to namespace boost, except
@@ -1439,7 +1439,7 @@ struct version<
 using multi_index::get;
 using multi_index::project;
 
-} /* namespace boost */
+} // boost
 
 #undef BOOST_MULTI_INDEX_CHECK_INVARIANT
 #undef BOOST_MULTI_INDEX_CHECK_INVARIANT_OF

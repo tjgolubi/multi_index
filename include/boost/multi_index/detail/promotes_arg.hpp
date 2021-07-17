@@ -19,11 +19,7 @@
 #include <boost/mp11/function.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
   
 template<typename F,typename Arg1,typename Arg2>
 struct promotes_1st_arg:
@@ -43,10 +39,6 @@ struct promotes_2nd_arg:
   >
 {};
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

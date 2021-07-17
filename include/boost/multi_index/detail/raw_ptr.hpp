@@ -12,11 +12,7 @@
 
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* gets the underlying pointer of a pointer-like value */
 
@@ -38,10 +34,6 @@ inline RawPointer raw_ptr(Pointer const& p)
   return raw_ptr<RawPointer>(p,std::is_same<RawPointer,Pointer>());
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

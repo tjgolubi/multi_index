@@ -16,11 +16,7 @@
 #include <functional>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Hashed index specifiers can be instantiated in two forms:
  *
@@ -78,10 +74,6 @@ struct hashed_index_args
   static_assert(!std::is_void_v<pred_type>);
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -14,9 +14,7 @@
 #include <boost/multi_index/identity_fwd.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -97,7 +95,7 @@ struct non_const_identity_base
   }
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<class Type>
 struct identity:
@@ -108,8 +106,6 @@ struct identity:
 {
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

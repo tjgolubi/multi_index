@@ -18,11 +18,7 @@
 
 #include <boost/operators.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Iterator class for hashed indices.
  */
@@ -145,16 +141,14 @@ bool operator==(
   return x.get_node()==y.get_node();
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
+} // boost::multi_index::detail
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 /* class version = 1 : hashed_index_iterator does no longer serialize a bucket
  * array pointer.
  */
 
-namespace serialization {
+namespace boost::serialization {
 template<
   typename Node,typename BucketArray,
   typename IndexCategory,typename IteratorCategory
@@ -167,9 +161,8 @@ struct version<
 {
   static const int value=1;
 };
-} /* namespace serialization */
-#endif
+} // boost::serialization
 
-} /* namespace boost */
+#endif
 
 #endif

@@ -82,11 +82,7 @@
 #define BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT
 #endif
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* ordered_index adds a layer of ordered indexing to a given Super and accepts
  * an augmenting policy for optional addition of order statistics.
@@ -1575,11 +1571,7 @@ void swap(
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 /* Boost.Foreach compatibility */
 

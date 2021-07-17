@@ -49,11 +49,7 @@
 
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* definition of red-black nodes for ordered_index */
 
@@ -647,10 +643,6 @@ public:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

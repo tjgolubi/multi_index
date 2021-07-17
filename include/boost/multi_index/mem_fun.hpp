@@ -12,9 +12,7 @@
 
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 /* mem_fun implements a read-only key extractor based on a given non-const
  * member function of a class.
@@ -96,7 +94,7 @@ struct mem_fun_impl
   }
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<class Class,typename Type,Type (Class::*PtrToMemberFunction)()const>
 struct const_mem_fun:detail::const_mem_fun_impl<
@@ -232,8 +230,6 @@ struct mem_fun_explicit
 #define BOOST_MULTI_INDEX_MEM_FUN(Class,Type,MemberFunName) \
 ::boost::multi_index::mem_fun< Class,Type,&Class::MemberFunName >
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

@@ -15,9 +15,7 @@
 #include <type_traits>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -94,7 +92,7 @@ struct non_const_member_base
   }
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<class Class,typename Type,Type Class::*PtrToMember>
 struct member:
@@ -196,7 +194,7 @@ struct non_const_member_offset_base
   }
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<class Class,typename Type,std::size_t OffsetOfMember>
 struct member_offset:
@@ -211,8 +209,6 @@ struct member_offset:
 #define BOOST_MULTI_INDEX_MEMBER(Class,Type,MemberName) \
 ::boost::multi_index::member< Class,Type,&Class::MemberName >
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

@@ -20,9 +20,7 @@
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 /* C++17 terse key specification syntax */
 
@@ -170,13 +168,11 @@ struct limited_size_key_impl
   using type=typename key_impl<Keys...>::type;
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<auto... Keys>
 using key=typename detail::limited_size_key_impl<Keys...>::type;
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

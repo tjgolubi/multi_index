@@ -10,11 +10,7 @@
 #define BOOST_MULTI_INDEX_SAFE_MODE_ERRORS_HPP
 #pragma once
 
-namespace boost{
-
-namespace multi_index{
-
-namespace safe_mode{
+namespace boost::multi_index::safe_mode{
 
 /* Error codes for Boost.MultiIndex safe mode. These go in a separate
  * header so that the user can include it when redefining
@@ -37,10 +33,6 @@ enum error_code
   unequal_allocators
 };
 
-} /* namespace multi_index::safe_mode */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::safe_mode
 
 #endif

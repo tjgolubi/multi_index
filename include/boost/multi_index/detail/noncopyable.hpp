@@ -23,4 +23,4 @@ protected:
 
 } // boost::multi_index::detail
 
-#endif // BOOST_MULTI_INDEX_DETAIL_NONCOPYABLE_HPP
+#endif

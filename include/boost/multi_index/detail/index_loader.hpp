@@ -19,11 +19,7 @@
 #include <algorithm>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Counterpart of index_saver (check index_saver.hpp for serialization
  * details.)* multi_index_container is in charge of supplying the info about
@@ -126,10 +122,6 @@ private:
   mutable bool                sorted;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

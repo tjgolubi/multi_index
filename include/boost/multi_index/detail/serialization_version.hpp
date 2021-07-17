@@ -13,11 +13,7 @@
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/version.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Helper class for storing and retrieving a given type serialization class
  * version while avoiding saving the number multiple times in the same
@@ -52,18 +48,14 @@ private:
   unsigned int value;
 };
 
-} /* namespace multi_index::detail */
+} // boost::multi_index::detail
 
-} /* namespace multi_index */
-
-namespace serialization {
+namespace boost::serialization {
 template<typename T>
 struct version<boost::multi_index::detail::serialization_version<T> >
 {
   static const int value=version<T>::value;
 };
-} /* namespace serialization */
-
-} /* namespace boost */
+} // boost::serialization
 
 #endif

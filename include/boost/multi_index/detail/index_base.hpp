@@ -27,11 +27,7 @@
 
 #include <utility>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* The role of this class is threefold:
  *   - tops the linear hierarchy of indices.
@@ -277,10 +273,6 @@ protected:
 #endif
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

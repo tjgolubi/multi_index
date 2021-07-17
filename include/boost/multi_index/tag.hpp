@@ -17,9 +17,7 @@
  * functions.
  */
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -31,7 +29,7 @@ struct is_tag
   static const bool value=(is_base_and_derived<tag_marker,T>::value);
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<typename... T>
 struct tag:private detail::tag_marker
@@ -39,8 +37,6 @@ struct tag:private detail::tag_marker
   static_assert(detail::no_duplicate_tags<tag>::value);
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

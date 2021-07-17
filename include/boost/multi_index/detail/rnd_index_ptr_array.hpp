@@ -16,11 +16,7 @@
 #include <boost/multi_index/detail/noncopyable.hpp>
 #include <algorithm>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* pointer structure for use by random access indices */
 
@@ -141,10 +137,6 @@ void swap(
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -13,11 +13,7 @@
 #include <boost/mp11/utility.hpp>
 #include <boost/operators.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Poor man's version of boost::iterator_adaptor. Used instead of the
  * original as compile times for the latter are significantly higher.
@@ -296,10 +292,6 @@ private:
   Base b;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

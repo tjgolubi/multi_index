@@ -13,9 +13,7 @@
 #include <boost/mp11/utility.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -123,7 +121,7 @@ struct non_ref_global_fun_base
   }
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 template<class Value,typename Type,Type (*PtrToFunction)(Value)>
 struct global_fun:
@@ -139,8 +137,6 @@ struct global_fun:
 {
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

@@ -13,11 +13,7 @@
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 #include <algorithm>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Common code for random_access_index memfuns having templatized and
  * non-templatized versions.
@@ -190,10 +186,6 @@ void random_access_index_sort(
   }
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

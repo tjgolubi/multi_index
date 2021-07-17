@@ -16,11 +16,7 @@
 #include <boost/multi_index/detail/noncopyable.hpp>
 #include <algorithm>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* This class implements a serialization rearranger for random access
  * indices. In order to achieve O(n) performance, the following strategy
@@ -162,10 +158,6 @@ public:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

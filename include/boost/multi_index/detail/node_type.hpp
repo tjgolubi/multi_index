@@ -16,11 +16,7 @@
 #include <boost/multi_index/detail/is_index_list.hpp>
 #include <boost/mp11/algorithm.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* MPL machinery to construct the internal node type associated to an
  * index list.
@@ -41,10 +37,6 @@ struct multi_index_node_type
   > type;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

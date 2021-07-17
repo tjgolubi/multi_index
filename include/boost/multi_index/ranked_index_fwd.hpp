@@ -13,9 +13,7 @@
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
 #include <boost/multi_index/detail/ord_index_args.hpp>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 /* ranked_index specifiers */
 
@@ -25,8 +23,6 @@ struct ranked_unique;
 template<typename Arg1,typename Arg2=void,typename Arg3=void>
 struct ranked_non_unique;
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

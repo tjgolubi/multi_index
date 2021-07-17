@@ -10,11 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_CONVERTER_HPP
 #pragma once
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* converter offers means to access indices of a given multi_index_container
  * and for convertibilty between index iterators, so providing a
@@ -42,10 +38,6 @@ struct converter
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

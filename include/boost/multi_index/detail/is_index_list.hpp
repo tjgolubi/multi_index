@@ -12,11 +12,7 @@
 
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 template<typename T>
 struct is_index_list:std::false_type{};
@@ -24,10 +20,6 @@ struct is_index_list:std::false_type{};
 template<template <class...> class L,typename T0,typename... T>
 struct is_index_list<L<T0,T...>>:std::true_type{};
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

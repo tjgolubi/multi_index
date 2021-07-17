@@ -42,11 +42,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Common code for index memfuns having templatized and
  * non-templatized versions.
@@ -254,10 +250,6 @@ inline std::pair<Node*,Node*> ordered_index_equal_range(
   return std::pair<Node*,Node*>(y,y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -17,11 +17,7 @@
 #include <functional>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail::index_matcher{
 
 /* index_matcher compares a sequence of elements against a
  * base sequence, identifying those elements that belong to the
@@ -51,8 +47,6 @@ namespace detail{
  * the sequences given are pointed to by index iterators (having a
  * get_node() memfun.)
  */
-
-namespace index_matcher{
 
 /* The algorithm stores the nodes of the base sequence and a number
  * of "piles" that are dynamically updated during the calculation
@@ -234,12 +228,6 @@ private:
   }
 };
 
-} /* namespace multi_index::detail::index_matcher */
-
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail::index_matcher
 
 #endif

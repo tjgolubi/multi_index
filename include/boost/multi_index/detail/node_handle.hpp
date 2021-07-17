@@ -17,11 +17,7 @@
 #include <new>
 #include <memory>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Node handle template class following [container.node] specs.
  */
@@ -212,10 +208,6 @@ private:
   insert_return_type& operator=(const insert_return_type&) = delete;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

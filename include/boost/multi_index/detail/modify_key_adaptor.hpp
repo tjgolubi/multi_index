@@ -10,11 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_MODIFY_KEY_ADAPTOR_HPP
 #pragma once
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Functional adaptor to resolve modify_key as a call to modify.
  * Preferred over compose_f_gx and stuff cause it eliminates problems
@@ -37,10 +33,6 @@ private:
   KeyFromValue kfv;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

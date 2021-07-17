@@ -12,11 +12,7 @@
 
 #include <boost/multi_index/detail/noncopyable.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* A utility class used to hold a pointer to the header node.
  * The base from member idiom is used because index classes, which are
@@ -38,10 +34,6 @@ private:
   Final& final(){return *static_cast<Final*>(this);}
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

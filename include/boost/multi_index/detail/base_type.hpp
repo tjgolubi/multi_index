@@ -17,11 +17,7 @@
 #include <boost/mp11/utility.hpp>
 #include <type_traits>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Mp11 machinery to construct a linear hierarchy of indices out of
  * a index list.
@@ -51,10 +47,6 @@ struct multi_index_base_type:nth_layer<0,Value,IndexSpecifierList,Allocator>
   static_assert(detail::is_index_list<IndexSpecifierList>::value);
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -12,11 +12,7 @@
 
 #include <boost/call_traits.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 template<typename Value,typename KeyFromValue,typename Compare>
 struct value_comparison
@@ -43,10 +39,6 @@ private:
   Compare      comp;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

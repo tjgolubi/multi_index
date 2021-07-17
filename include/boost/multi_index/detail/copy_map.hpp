@@ -18,11 +18,7 @@
 #include <functional>
 #include <memory>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* copy_map is used as an auxiliary structure during copy_() operations.
  * When a container with n nodes is replicated, node_map holds the pairings
@@ -153,10 +149,6 @@ private:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

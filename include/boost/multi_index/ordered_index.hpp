@@ -13,9 +13,7 @@
 #include <boost/multi_index/ordered_index_fwd.hpp>
 #include <boost/multi_index/detail/ord_index_impl.hpp>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -49,7 +47,7 @@ struct null_augment_policy
 #endif
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* ordered_index specifiers */
 
@@ -103,8 +101,6 @@ struct ordered_non_unique
   };
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

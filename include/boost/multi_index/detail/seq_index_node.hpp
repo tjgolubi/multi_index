@@ -14,11 +14,7 @@
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <algorithm>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* doubly-linked node for use by sequenced_index */
 
@@ -204,10 +200,6 @@ public:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -12,9 +12,7 @@
 
 #include <boost/multi_index/tag.hpp>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -74,15 +72,13 @@ void swap(
   sequenced_index<SuperMeta,TagList>& x,
   sequenced_index<SuperMeta,TagList>& y);
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* index specifiers */
 
 template <typename TagList=tag<> >
 struct sequenced;
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

@@ -17,11 +17,7 @@
 
 #include <boost/operators.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Iterator class for node-based indices with bidirectional
  * iterators (ordered and sequenced indices.)
@@ -101,10 +97,6 @@ bool operator==(
   return x.get_node()==y.get_node();
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

@@ -82,9 +82,7 @@
     BOOST_PP_LIST_AT(list,1),n                                               \
   >::type
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -532,7 +530,7 @@ struct hash_cval:
 {
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* composite_key_result */
 
@@ -1388,9 +1386,7 @@ public:
   using super::operator();
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 /* Specializations of std::equal_to, std::less, std::greater and boost::hash
  * for composite_key_results enabling interoperation with tuples of values.
@@ -1422,7 +1418,7 @@ struct greater<boost::multi_index::composite_key_result<CompositeKey> >:
 {
 };
 
-} /* namespace std */
+} // std
 
 namespace boost{
 
@@ -1434,7 +1430,7 @@ struct hash<boost::multi_index::composite_key_result<CompositeKey> >:
 {
 };
 
-} /* namespace boost */
+} // boost
 
 #undef BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER
 #undef BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER

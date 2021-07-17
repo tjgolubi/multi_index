@@ -55,9 +55,7 @@
 #define BOOST_MULTI_INDEX_HASHED_INDEX_CHECK_INVARIANT
 #endif
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -1683,7 +1681,7 @@ void swap(
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* hashed index specifiers */
 
@@ -1737,9 +1735,7 @@ struct hashed_non_unique
   };
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 /* Boost.Foreach compatibility */
 

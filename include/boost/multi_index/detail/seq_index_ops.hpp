@@ -15,11 +15,7 @@
 #include <type_traits>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Common code for sequenced_index memfuns having templatized and
  * non-templatized versions.
@@ -181,10 +177,6 @@ void sequenced_index_sort(Node* header,Compare comp)
   }
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

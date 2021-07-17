@@ -17,11 +17,7 @@
 
 #include <boost/operators.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Iterator class for node-based indices with random access iterators. */
 
@@ -127,10 +123,6 @@ typename Node::difference_type operator-(
   return Node::distance(y.get_node(),x.get_node());
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

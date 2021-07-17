@@ -17,11 +17,7 @@
 #include <functional>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 template<typename Allocator>
 struct random_access_index_node_impl
@@ -261,10 +257,6 @@ public:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

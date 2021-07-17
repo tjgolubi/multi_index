@@ -15,11 +15,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <cstddef>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* index_saver accepts a base sequence of previously saved elements
  * and saves a possibly reordered subsequence in an efficient manner,
@@ -122,10 +118,6 @@ private:
   index_matcher::algorithm<Node,Allocator> alg;
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

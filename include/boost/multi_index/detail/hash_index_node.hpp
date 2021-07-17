@@ -14,11 +14,7 @@
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <utility>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Certain C++ requirements on unordered associative containers (see LWG issue
  * #579) imply a data structure where nodes are linked in a single list, which
@@ -764,10 +760,6 @@ public:
   }
 };
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

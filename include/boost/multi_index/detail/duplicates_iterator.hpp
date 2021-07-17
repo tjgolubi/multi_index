@@ -12,11 +12,7 @@
 
 #include <iterator>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* duplicates_operator is given a range of ordered elements and
  * passes only over those which are duplicated.
@@ -106,10 +102,6 @@ bool operator!=(
   return !(x==y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

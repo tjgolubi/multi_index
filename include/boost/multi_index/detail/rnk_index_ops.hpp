@@ -16,11 +16,7 @@
 #include <utility>
 #include <memory>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* Common code for ranked_index memfuns having templatized and
  * non-templatized versions.
@@ -313,10 +309,6 @@ ranked_index_equal_range_rank(
   return std::pair<size_type,size_type>(s,s);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

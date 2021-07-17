@@ -571,6 +571,6 @@ struct version<
 } // boost::serialization
 #endif
 
-#endif /* BOOST_MULTI_INDEX_ENABLE_SAFE_MODE */
+#endif // BOOST_MULTI_INDEX_ENABLE_SAFE_MODE
 
 #endif

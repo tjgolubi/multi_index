@@ -14,11 +14,7 @@
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/set.hpp>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* no_duplicate_tags check at compile-time that a tag list
  * has no duplicate tags.
@@ -52,10 +48,6 @@ using no_duplicate_tags_in_index_list=no_duplicate_tags<
   >
 >;
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

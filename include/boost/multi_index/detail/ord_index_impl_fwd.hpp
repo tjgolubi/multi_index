@@ -10,11 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_FWD_HPP
 #pragma once
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 template<
   typename KeyFromValue,typename Compare,
@@ -116,10 +112,6 @@ void swap(
   ordered_index<
     KeyFromValue,Compare,SuperMeta,TagList,Category,AugmentPolicy>& y);
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

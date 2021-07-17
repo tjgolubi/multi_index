@@ -54,9 +54,7 @@
 #define BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT
 #endif
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -1133,7 +1131,7 @@ void swap(
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* random access index specifier */
 
@@ -1155,9 +1153,7 @@ struct random_access
   };
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 /* Boost.Foreach compatibility */
 

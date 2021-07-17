@@ -12,9 +12,7 @@
 
 #include <boost/multi_index/detail/hash_index_args.hpp>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -48,7 +46,7 @@ void swap(
   hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& x,
   hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& y);
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* hashed_index specifiers */
 
@@ -64,8 +62,6 @@ template<
 >
 struct hashed_non_unique;
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif

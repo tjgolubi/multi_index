@@ -17,11 +17,7 @@
 #include <algorithm>
 #include <memory>
 
-namespace boost{
-
-namespace multi_index{
-
-namespace detail{
+namespace boost::multi_index::detail{
 
 /* auto_space provides uninitialized space suitably to store
  * a given number of elements of a given type.
@@ -92,10 +88,6 @@ void swap(auto_space<T,Allocator>& x,auto_space<T,Allocator>& y)
   x.swap(y);
 }
 
-} /* namespace multi_index::detail */
-
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index::detail
 
 #endif

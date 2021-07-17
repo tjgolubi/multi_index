@@ -14,9 +14,7 @@
 #include <boost/multi_index/detail/ord_index_impl.hpp>
 #include <boost/multi_index/detail/rnk_index_ops.hpp>
 
-namespace boost{
-
-namespace multi_index{
+namespace boost::multi_index{
 
 namespace detail{
 
@@ -322,7 +320,7 @@ struct rank_policy
 #endif
 };
 
-} /* namespace multi_index::detail */
+} // detail
 
 /* ranked_index specifiers */
 
@@ -376,8 +374,6 @@ struct ranked_non_unique
   };
 };
 
-} /* namespace multi_index */
-
-} /* namespace boost */
+} // boost::multi_index
 
 #endif
