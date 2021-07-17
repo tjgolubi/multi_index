@@ -9,10 +9,9 @@
  */
 
 #include "test_node_handling.hpp"
-
-#include <boost/core/enable_if.hpp>
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
+#include "count_allocator.hpp"
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
@@ -20,9 +19,12 @@
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/multi_index/ranked_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
+
 #include <boost/type_traits/integral_constant.hpp>
+#include <boost/detail/lightweight_test.hpp>
+
 #include <functional>
-#include "count_allocator.hpp"
+#include <type_traits>
 
 using namespace boost::multi_index;
 
@@ -150,7 +152,7 @@ struct is_iterator
 };
 
 template<typename T>
-struct enable_if_not_iterator:boost::enable_if_c<
+struct enable_if_not_iterator:std::enable_if<
   !is_iterator<T>::value,
   void*
 >{};

@@ -11,9 +11,8 @@
 #pragma once
 
 #include <boost/multi_index/detail/seq_index_node.hpp>
-#include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
 #include <boost/limits.hpp>
+#include <type_traits>
 #include <cstddef>
 
 namespace boost{
@@ -122,22 +121,22 @@ void sequenced_index_sort(Node* header,Compare comp)
   typedef typename Node::impl_type      impl_type;
   typedef typename Node::impl_pointer   impl_pointer;
 
-  typedef typename aligned_storage<
+  typedef typename std::aligned_storage_t<
     sizeof(impl_type),
-    alignment_of<impl_type>::value
-  >::type                               carry_spc_type;
+    std::alignment_of_v<impl_type>
+  >                                     carry_spc_type;
   carry_spc_type                        carry_spc;
   impl_type&                            carry=
     *reinterpret_cast<impl_type*>(&carry_spc);
-  typedef typename aligned_storage<
+  typedef typename std::aligned_storage_t<
     sizeof(
       impl_type
         [sequenced_index_sort_max_fill]),
-    alignment_of<
+    std::alignment_of_v<
       impl_type
         [sequenced_index_sort_max_fill]
-    >::value
-  >::type                               counter_spc_type;
+    >
+  >                                     counter_spc_type;
   counter_spc_type                      counter_spc;
   impl_type*                            counter=
     reinterpret_cast<impl_type*>(&counter_spc);

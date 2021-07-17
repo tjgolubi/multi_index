@@ -13,9 +13,9 @@
 #include <boost/multi_index/detail/index_base.hpp>
 #include <boost/multi_index/detail/is_index_list.hpp>
 #include <boost/mp11/algorithm.hpp>
-#include <boost/mp11/integral.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
+#include <type_traits>
 
 namespace boost{
 
@@ -40,7 +40,7 @@ struct nth_layer
     N==length,
     index_base<Value,IndexSpecifierList,Allocator>,
     nth_layer_index,
-    IndexSpecifierList,mp11::mp_int<N>,
+    IndexSpecifierList,std::integral_constant<int,N>,
     nth_layer<N+1,Value,IndexSpecifierList,Allocator>
   > type;
 };

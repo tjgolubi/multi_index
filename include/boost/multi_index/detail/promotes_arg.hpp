@@ -17,7 +17,7 @@
 
 #include <boost/multi_index/detail/is_transparent.hpp>
 #include <boost/mp11/function.hpp>
-#include <boost/type_traits/is_convertible.hpp>
+#include <type_traits>
 
 namespace boost{
 
@@ -29,7 +29,7 @@ template<typename F,typename Arg1,typename Arg2>
 struct promotes_1st_arg:
   mp11::mp_and<
     mp11::mp_not<is_transparent<F,Arg1,Arg2> >,
-    is_convertible<const Arg1,Arg2>,
+    std::is_convertible<const Arg1,Arg2>,
     is_transparent<F,Arg2,Arg2>
   >
 {};
@@ -38,7 +38,7 @@ template<typename F,typename Arg1,typename Arg2>
 struct promotes_2nd_arg:
   mp11::mp_and<
     mp11::mp_not<is_transparent<F,Arg1,Arg2> >,
-    is_convertible<const Arg2,Arg1>,
+    std::is_convertible<const Arg2,Arg1>,
     is_transparent<F,Arg1,Arg1>
   >
 {};

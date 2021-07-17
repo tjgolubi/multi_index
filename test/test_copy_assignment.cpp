@@ -9,15 +9,16 @@
  */
 
 #include "test_copy_assignment.hpp"
+#include "pre_multi_index.hpp"
+#include "small_allocator.hpp"
+#include "employee.hpp"
 
+#include <boost/detail/lightweight_test.hpp>
 #include <algorithm>
 #include <list>
-#include <numeric>
 #include <vector>
-#include "pre_multi_index.hpp"
-#include "employee.hpp"
-#include "small_allocator.hpp"
-#include <boost/detail/lightweight_test.hpp>
+#include <numeric>
+#include <type_traits>
 
 using namespace boost::multi_index;
 
@@ -240,35 +241,35 @@ void test_copy_assignment()
   typedef small_container::nth_index<4>::type small_container_4;
 
   static_assert((
-    boost::is_same<small_container::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container::difference_type,small_alloc::difference_type>));
   static_assert((
-    boost::is_same<small_container_0::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container_0::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container_0::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container_0::difference_type,small_alloc::difference_type>));
   static_assert((
-    boost::is_same<small_container_1::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container_1::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container_1::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container_1::difference_type,small_alloc::difference_type>));
   static_assert((
-    boost::is_same<small_container_2::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container_2::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container_2::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container_2::difference_type,small_alloc::difference_type>));
   static_assert((
-    boost::is_same<small_container_3::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container_3::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container_3::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container_3::difference_type,small_alloc::difference_type>));
   static_assert((
-    boost::is_same<small_container_4::size_type,small_alloc::size_type>::value));
+    std::is_same_v<small_container_4::size_type,small_alloc::size_type>));
   static_assert((
-    boost::is_same<
-      small_container_4::difference_type,small_alloc::difference_type>::value));
+    std::is_same_v<
+      small_container_4::difference_type,small_alloc::difference_type>));
 
   small_container        sc;
   small_container_0&     sc0=sc.get<0>();

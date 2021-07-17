@@ -10,12 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_BIDIR_NODE_ITERATOR_HPP
 #pragma once
 
-#include <boost/operators.hpp>
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_member.hpp>
 #endif
+
+#include <boost/operators.hpp>
 
 namespace boost{
 

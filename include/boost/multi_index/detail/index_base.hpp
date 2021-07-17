@@ -16,12 +16,15 @@
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/node_handle.hpp>
 #include <boost/multi_index/detail/node_type.hpp>
-#include <boost/tuple/tuple.hpp>
-#include <boost/mp11/list.hpp>
+
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/index_loader.hpp>
 #include <boost/multi_index/detail/index_saver.hpp>
 #endif
+
+#include <boost/tuple/tuple.hpp>
+#include <boost/mp11/list.hpp>
+
 #include <utility>
 
 namespace boost{

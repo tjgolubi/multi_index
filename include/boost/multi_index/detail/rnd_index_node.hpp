@@ -12,7 +12,7 @@
 
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
-#include <boost/integer/common_factor_rt.hpp>
+#include <numeric>
 #include <algorithm>
 #include <functional>
 #include <cstddef>
@@ -102,7 +102,7 @@ struct random_access_index_node_impl
     std::ptrdiff_t n=end-begin;
     std::ptrdiff_t m=middle-begin;
     std::ptrdiff_t n_m=n-m;
-    std::ptrdiff_t p=integer::gcd(n,m);
+    std::ptrdiff_t p=std::gcd(n,m);
 
     for(std::ptrdiff_t i=0;i<p;++i){
       pointer tmp=begin[i];

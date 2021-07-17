@@ -51,15 +51,15 @@ struct ordered_index_args
     Arg3,
     Arg2>                                        supplied_compare_type;
   typedef mp11::mp_eval_if_c<
-    !std::is_void<supplied_compare_type>::value,
+    !std::is_void_v<supplied_compare_type>,
     supplied_compare_type,
     std::less,
     typename key_from_value_type::result_type
   >                                              compare_type;
 
   static_assert(is_tag<tag_list_type>::value);
-  static_assert(!std::is_void<key_from_value_type>::value);
-  static_assert(!std::is_void<compare_type>::value);
+  static_assert(!std::is_void_v<key_from_value_type>);
+  static_assert(!std::is_void_v<compare_type>);
 };
 
 } /* namespace multi_index::detail */

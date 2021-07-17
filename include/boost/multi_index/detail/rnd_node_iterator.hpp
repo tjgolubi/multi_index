@@ -14,6 +14,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_member.hpp>
 #endif
+
 #include <boost/operators.hpp>
 
 namespace boost{

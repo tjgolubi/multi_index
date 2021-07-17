@@ -51,6 +51,14 @@
 #include <boost/multi_index/detail/value_compare.hpp>
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
+
+#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
+#include <boost/archive/archive_exception.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/multi_index/detail/duplicates_iterator.hpp>
+#include <boost/throw_exception.hpp> 
+#endif
+
 #include <boost/tuple/tuple.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
@@ -61,13 +69,6 @@
 #include <algorithm>
 #include <utility>
 #include <initializer_list>
-
-#if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
-#include <boost/archive/archive_exception.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/multi_index/detail/duplicates_iterator.hpp>
-#include <boost/throw_exception.hpp> 
-#endif
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
 #define BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT_OF(x)                    \

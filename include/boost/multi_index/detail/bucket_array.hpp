@@ -14,15 +14,18 @@
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/hash_index_node.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
+
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/seq/elem.hpp>
 #include <boost/preprocessor/seq/enum.hpp>
 #include <boost/preprocessor/seq/size.hpp>
+
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
+
 #include <algorithm>
 #include <cstddef>
 #include <limits.h>

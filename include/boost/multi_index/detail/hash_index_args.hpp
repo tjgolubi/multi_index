@@ -13,7 +13,6 @@
 #include <boost/multi_index/tag.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/functional/hash.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <functional>
 #include <type_traits>
 
@@ -57,7 +56,7 @@ struct hashed_index_args
     Arg3,
     Arg2>                                     supplied_hash_type;
   typedef mp11::mp_eval_if_c<
-    !std::is_void<supplied_hash_type>::value,
+    !std::is_void_v<supplied_hash_type>,
     supplied_hash_type,
     boost::hash,
     typename key_from_value_type::result_type
@@ -67,16 +66,16 @@ struct hashed_index_args
     Arg4,
     Arg3>                                     supplied_pred_type;
   typedef mp11::mp_eval_if_c<
-    !std::is_void<supplied_pred_type>::value,
+    !std::is_void_v<supplied_pred_type>,
     supplied_pred_type,
     std::equal_to,
     typename key_from_value_type::result_type
   >                                           pred_type;
 
   static_assert(is_tag<tag_list_type>::value);
-  static_assert(!std::is_void<key_from_value_type>::value);
-  static_assert(!std::is_void<hash_type>::value);
-  static_assert(!std::is_void<pred_type>::value);
+  static_assert(!std::is_void_v<key_from_value_type>);
+  static_assert(!std::is_void_v<hash_type>);
+  static_assert(!std::is_void_v<pred_type>);
 };
 
 } /* namespace multi_index::detail */

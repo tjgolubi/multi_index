@@ -39,13 +39,14 @@
 
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
+
 #if !defined(BOOST_MULTI_INDEX_DISABLE_COMPRESSED_ORDERED_INDEX_NODES)
+#include <boost/multi_index/detail/uintptr_type.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
-#include <boost/multi_index/detail/uintptr_type.hpp>
-#include <boost/type_traits/alignment_of.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <type_traits>
 #endif
+
 #include <cstddef>
 
 namespace boost{
@@ -211,12 +212,12 @@ struct ordered_index_node_impl_base:
   AugmentPolicy::template augmented_node<
     mp11::mp_if_c<
       !(has_uintptr_type::value)||
-      (alignment_of<
+      (std::alignment_of<
         ordered_index_node_compressed_base<AugmentPolicy,Allocator>
        >::value%2)||
-      !(is_same<
+      !(std::is_same_v<
         typename ordered_index_node_traits<AugmentPolicy,Allocator>::pointer,
-        ordered_index_node_impl<AugmentPolicy,Allocator>*>::value),
+        ordered_index_node_impl<AugmentPolicy,Allocator>*>),
       ordered_index_node_std_base<AugmentPolicy,Allocator>,
       ordered_index_node_compressed_base<AugmentPolicy,Allocator>
     >

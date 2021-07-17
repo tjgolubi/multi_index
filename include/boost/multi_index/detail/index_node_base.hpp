@@ -15,6 +15,7 @@
 #include <boost/serialization/access.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
+
 #include <type_traits>
 
 namespace boost::multi_index::detail{
