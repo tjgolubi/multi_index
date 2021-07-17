@@ -13,12 +13,11 @@
 #include "employee.hpp"
 
 #include <boost/iterator/iterator_facade.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
 #include <iterator>
 #include <vector>
+#include <memory>
 
 using namespace boost::multi_index;
 
@@ -63,9 +62,9 @@ inline std::size_t hash_value(const always_one& x)
 
 class linked_object
 {
-  struct impl:boost::enable_shared_from_this<impl>
+  struct impl: std::enable_shared_from_this<impl>
   {
-    typedef boost::shared_ptr<const impl> ptr;
+    typedef std::shared_ptr<const impl> ptr;
 
     impl(int n_,ptr next_=ptr()):n(n_),next(next_){}
 

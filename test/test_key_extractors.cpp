@@ -12,10 +12,10 @@
 #include "pre_multi_index.hpp"
 
 #include <boost/multi_index/key_extractors.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
 #include <list>
+#include <memory>
 
 using namespace boost::multi_index;
 using namespace boost::tuples;
@@ -211,8 +211,8 @@ void test_key_extractors()
   test_class**                               tpp=&tp;
   const test_class**                         ctpp=&ctp;
 
-  boost::scoped_ptr<test_class*>             tap(new test_class*(tp));
-  boost::scoped_ptr<const test_class*>       ctap(new const test_class*(ctp));
+  auto tap  = std::make_unique<test_class*>(tp);
+  auto ctap = std::make_unique<const test_class*>(ctp);
 
   std::reference_wrapper<test_class>         tw(tr);
   std::reference_wrapper<const test_class>   ctw(tr);
