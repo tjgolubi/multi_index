@@ -8,14 +8,14 @@
  * See http://www.boost.org/libs/multi_index for library home page.
  */
 
+#include "pre_multi_index.hpp"
+#include <boost/multi_index_container.hpp>
+#include <boost/mp11/list.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/mp11/list.hpp>
-#include "pre_multi_index.hpp"
-#include <boost/multi_index_container.hpp>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 template<int N>

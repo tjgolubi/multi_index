@@ -9,18 +9,21 @@
  */
 
 #include "test_composite_key.hpp"
-
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
-#include <boost/mp11/utility.hpp>
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
+
+#include <boost/mp11/utility.hpp>
+
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
+
+#include <boost/detail/lightweight_test.hpp>
 
 using namespace boost::multi_index;
 using namespace boost::tuples;

@@ -12,10 +12,11 @@
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 
-#include <boost/detail/lightweight_test.hpp>
-#include <boost/enable_shared_from_this.hpp>
 #include <boost/iterator/iterator_facade.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/detail/lightweight_test.hpp>
+
 #include <iterator>
 #include <vector>
 

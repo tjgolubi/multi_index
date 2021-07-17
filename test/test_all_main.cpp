@@ -8,7 +8,6 @@
  * See http://www.boost.org/libs/multi_index for library home page.
  */
 
-#include <boost/detail/lightweight_test.hpp>
 #include "test_alloc_awareness.hpp"
 #include "test_basic.hpp"
 #include "test_capacity.hpp"
@@ -34,6 +33,8 @@
 #include "test_set_ops.hpp"
 #include "test_special_set_ops.hpp"
 #include "test_update.hpp"
+
+#include <boost/detail/lightweight_test.hpp>
 
 int main()
 {

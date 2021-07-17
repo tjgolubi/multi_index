@@ -8,8 +8,8 @@
  * See http://www.boost.org/libs/multi_index for library home page.
  */
 
-#include <boost/detail/lightweight_test.hpp>
 #include "test_mpl_ops.hpp"
+#include <boost/detail/lightweight_test.hpp>
 
 int main()
 {

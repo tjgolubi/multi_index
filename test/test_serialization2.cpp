@@ -10,13 +10,13 @@
 
 #include "test_serialization2.hpp"
 #include "test_serialization_template.hpp"
+#include "non_std_allocator.hpp"
+#include "pair_of_ints.hpp"
 
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/multi_index/key_extractors.hpp>
-#include "non_std_allocator.hpp"
-#include "pair_of_ints.hpp"
 
 using namespace boost::multi_index;
 

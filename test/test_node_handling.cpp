@@ -21,6 +21,7 @@
 #include <boost/multi_index/sequenced_index.hpp>
 
 #include <boost/type_traits/integral_constant.hpp>
+
 #include <boost/detail/lightweight_test.hpp>
 
 #include <functional>

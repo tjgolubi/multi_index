@@ -9,15 +9,15 @@
  */
 
 #include "test_hash_ops.hpp"
-
-#include <iterator>
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
-#include <vector>
+#include <boost/detail/lightweight_test.hpp>
 
+#include <vector>
+#include <iterator>
 #include <iostream>
 
 using namespace boost::multi_index;

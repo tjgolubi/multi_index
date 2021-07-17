@@ -9,16 +9,19 @@
  */
 
 #include "test_range.hpp"
-
-#include <algorithm>
-#include <boost/bind/bind.hpp>
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
+
 #include <boost/preprocessor/seq/enum.hpp>
+
+#include <boost/bind/bind.hpp>
+#include <boost/detail/lightweight_test.hpp>
+
 #include <functional>
+#include <algorithm>
 
 using namespace boost::multi_index;
 

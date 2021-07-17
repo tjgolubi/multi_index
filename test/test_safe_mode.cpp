@@ -9,12 +9,13 @@
  */
 
 #include "test_safe_mode.hpp"
-
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 #include "pair_of_ints.hpp"
-#include <stdexcept>
+
 #include <boost/detail/lightweight_test.hpp>
+
+#include <stdexcept>
 
 using namespace boost::multi_index;
 

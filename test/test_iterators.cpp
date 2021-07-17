@@ -9,9 +9,9 @@
  */
 
 #include "test_iterators.hpp"
-
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
+
 #include <boost/detail/lightweight_test.hpp>
 
 using namespace boost::multi_index;

@@ -9,12 +9,13 @@
  */
 
 #include "test_special_set_ops.hpp"
+#include "pre_multi_index.hpp"
+#include "employee.hpp"
+
+#include <boost/detail/lightweight_test.hpp>
 
 #include <algorithm>
 #include <sstream>
-#include "pre_multi_index.hpp"
-#include "employee.hpp"
-#include <boost/detail/lightweight_test.hpp>
 
 using namespace boost::multi_index;
 

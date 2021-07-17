@@ -9,17 +9,19 @@
  */
 
 #include "test_list_ops.hpp"
-
-#include <algorithm>
-#include <vector>
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/random_access_index.hpp>
+
 #include <boost/preprocessor/seq/enum.hpp>
+#include <boost/detail/lightweight_test.hpp>
+
+#include <algorithm>
+#include <vector>
 
 using namespace boost::multi_index;
 

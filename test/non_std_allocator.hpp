@@ -13,8 +13,8 @@
 
 #include <boost/throw_exception.hpp>
 #include <iterator>
-#include <cstddef>
 #include <stdexcept>
+#include <cstddef>
 
 template<typename T>
 class non_raw_pointer

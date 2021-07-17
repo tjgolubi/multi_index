@@ -15,6 +15,7 @@
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
+
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/list.hpp>
 

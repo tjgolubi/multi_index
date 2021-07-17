@@ -11,9 +11,10 @@
 #include "test_key_extractors.hpp"
 #include "pre_multi_index.hpp"
 
-#include <boost/detail/lightweight_test.hpp>
 #include <boost/multi_index/key_extractors.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/detail/lightweight_test.hpp>
+
 #include <list>
 
 using namespace boost::multi_index;

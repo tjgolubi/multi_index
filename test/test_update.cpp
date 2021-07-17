@@ -12,7 +12,9 @@
 #include "pre_multi_index.hpp"
 #include "employee.hpp"
 #include "pair_of_ints.hpp"
+
 #include <boost/detail/lightweight_test.hpp>
+
 #include <algorithm>
 #include <cstddef>
 

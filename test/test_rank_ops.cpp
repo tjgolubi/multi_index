@@ -9,15 +9,17 @@
  */
 
 #include "test_rank_ops.hpp"
-
-#include <algorithm>
-#include <iterator>
-#include <set>
-#include <boost/detail/lightweight_test.hpp>
 #include "pre_multi_index.hpp"
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/ranked_index.hpp>
+
+#include <boost/detail/lightweight_test.hpp>
+
+#include <algorithm>
+#include <set>
+#include <iterator>
 
 using namespace boost::multi_index;
 
