@@ -10,12 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_BASE_TYPE_HPP
 #pragma once
 
+#include <boost/multi_index/detail/index_base.hpp>
+#include <boost/multi_index/detail/is_index_list.hpp>
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/integral.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
-#include <boost/multi_index/detail/index_base.hpp>
-#include <boost/multi_index/detail/is_index_list.hpp>
 
 namespace boost{
 

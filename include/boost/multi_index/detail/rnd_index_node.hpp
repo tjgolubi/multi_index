@@ -10,12 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_NODE_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/integer/common_factor_rt.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
-#include <cstddef>
+#include <boost/integer/common_factor_rt.hpp>
+#include <algorithm>
 #include <functional>
+#include <cstddef>
 
 namespace boost{
 

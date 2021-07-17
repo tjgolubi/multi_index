@@ -10,13 +10,13 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_LOADER_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/archive/archive_exception.hpp>
-#include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
+#include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/archive/archive_exception.hpp>
 #include <boost/throw_exception.hpp> 
+#include <algorithm>
 #include <cstddef>
 
 namespace boost{

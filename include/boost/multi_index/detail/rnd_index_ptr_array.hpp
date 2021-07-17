@@ -10,11 +10,11 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_PTR_ARRAY_HPP
 #pragma once
 
-#include <algorithm>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/rnd_index_node.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
+#include <algorithm>
 
 namespace boost{
 

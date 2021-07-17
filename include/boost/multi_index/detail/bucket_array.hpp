@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_BUCKET_ARRAY_HPP
 #pragma once
 
-#include <algorithm>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/hash_index_node.hpp>
@@ -19,14 +18,14 @@
 #include <boost/preprocessor/seq/elem.hpp>
 #include <boost/preprocessor/seq/enum.hpp>
 #include <boost/preprocessor/seq/size.hpp>
-#include <cstddef>
-#include <limits.h>
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
+#include <algorithm>
+#include <cstddef>
+#include <limits.h>
 
 namespace boost::multi_index::detail{
 

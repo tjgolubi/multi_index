@@ -10,13 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_NODE_BASE_HPP
 #pragma once
 
-#include <type_traits>
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/throw_exception.hpp> 
 #endif
+#include <type_traits>
 
 namespace boost::multi_index::detail{
 

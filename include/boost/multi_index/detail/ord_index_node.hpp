@@ -37,10 +37,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_NODE_HPP
 #pragma once
 
-#include <cstddef>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
-
 #if !defined(BOOST_MULTI_INDEX_DISABLE_COMPRESSED_ORDERED_INDEX_NODES)
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
@@ -48,6 +46,7 @@
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/is_same.hpp>
 #endif
+#include <cstddef>
 
 namespace boost{
 

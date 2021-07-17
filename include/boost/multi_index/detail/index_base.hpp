@@ -10,20 +10,19 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_BASE_HPP
 #pragma once
 
+#include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
-#include <boost/mp11/list.hpp>
 #include <boost/multi_index/detail/copy_map.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/node_handle.hpp>
 #include <boost/multi_index/detail/node_type.hpp>
-#include <boost/multi_index_container_fwd.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <utility>
-
+#include <boost/mp11/list.hpp>
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/index_loader.hpp>
 #include <boost/multi_index/detail/index_saver.hpp>
 #endif
+#include <utility>
 
 namespace boost{
 

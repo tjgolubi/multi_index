@@ -15,8 +15,8 @@
  * promotion is assumed.
  */
 
-#include <boost/mp11/function.hpp>
 #include <boost/multi_index/detail/is_transparent.hpp>
+#include <boost/mp11/function.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 
 namespace boost{

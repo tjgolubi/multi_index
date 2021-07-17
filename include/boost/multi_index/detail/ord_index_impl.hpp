@@ -37,7 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_IMPL_HPP
 #pragma once
 
-#include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
@@ -51,6 +50,7 @@
 #include <boost/multi_index/detail/unbounded.hpp>
 #include <boost/multi_index/detail/value_compare.hpp>
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
+#include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>

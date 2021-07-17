@@ -10,11 +10,11 @@
 #define BOOST_MULTI_INDEX_DETAIL_AUTO_SPACE_HPP
 #pragma once
 
-#include <algorithm>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/type_traits/integral_constant.hpp>
+#include <algorithm>
 #include <memory>
 
 namespace boost{

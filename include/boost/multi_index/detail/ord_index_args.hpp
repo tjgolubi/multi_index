@@ -10,8 +10,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_ARGS_HPP
 #pragma once
 
-#include <boost/mp11/utility.hpp>
 #include <boost/multi_index/tag.hpp>
+#include <boost/mp11/utility.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <functional>
 #include <type_traits>

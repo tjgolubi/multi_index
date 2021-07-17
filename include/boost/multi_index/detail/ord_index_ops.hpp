@@ -37,8 +37,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_OPS_HPP
 #pragma once
 
-#include <boost/mp11/function.hpp>
 #include <boost/multi_index/detail/promotes_arg.hpp>
+#include <boost/mp11/function.hpp>
 #include <type_traits>
 #include <utility>
 

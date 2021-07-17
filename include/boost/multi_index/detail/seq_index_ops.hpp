@@ -11,9 +11,9 @@
 #pragma once
 
 #include <boost/multi_index/detail/seq_index_node.hpp>
-#include <boost/limits.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
 #include <boost/type_traits/alignment_of.hpp> 
+#include <boost/limits.hpp>
 #include <cstddef>
 
 namespace boost{

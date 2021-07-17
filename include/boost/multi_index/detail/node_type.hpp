@@ -10,11 +10,11 @@
 #define BOOST_MULTI_INDEX_DETAIL_NODE_TYPE_HPP
 #pragma once
 
-#include <boost/mp11/algorithm.hpp>
 #include <boost/multi_index_container_fwd.hpp>
 #include <boost/multi_index/detail/header_holder.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
 #include <boost/multi_index/detail/is_index_list.hpp>
+#include <boost/mp11/algorithm.hpp>
 
 namespace boost{
 

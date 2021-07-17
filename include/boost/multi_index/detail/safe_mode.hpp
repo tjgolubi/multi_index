@@ -108,7 +108,7 @@
     safe_mode::unequal_allocators);
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
-#include <algorithm>
+
 #include <boost/multi_index/detail/iter_adaptor.hpp>
 #include <boost/multi_index/safe_mode_errors.hpp>
 
@@ -118,6 +118,7 @@
 #endif
 
 #include <mutex>
+#include <algorithm>
 
 namespace boost::multi_index{
 

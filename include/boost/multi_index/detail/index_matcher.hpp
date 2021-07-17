@@ -10,12 +10,12 @@
 #define BOOST_MULTI_INDEX_DETAIL_INDEX_MATCHER_HPP
 #pragma once
 
-#include <algorithm>
-#include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
-#include <cstddef>
+#include <boost/multi_index/detail/noncopyable.hpp>
+#include <algorithm>
 #include <functional>
+#include <cstddef>
 
 namespace boost{
 

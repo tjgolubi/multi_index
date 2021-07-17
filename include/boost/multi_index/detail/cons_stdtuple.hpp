@@ -10,8 +10,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_CONS_STDTUPLE_HPP
 #pragma once
 
-#include <boost/mp11/utility.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/mp11/utility.hpp>
 #include <tuple>
 
 namespace boost{

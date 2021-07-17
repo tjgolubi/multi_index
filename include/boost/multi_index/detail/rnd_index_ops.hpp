@@ -10,8 +10,8 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_OPS_HPP
 #pragma once
 
-#include <algorithm>
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
+#include <algorithm>
 
 namespace boost{
 
