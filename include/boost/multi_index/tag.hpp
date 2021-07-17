@@ -11,7 +11,7 @@
 #pragma once
 
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
+#include <type_traits>
 
 /* A Mp11 list containing types used as tag names for indices in get()
  * functions.
@@ -24,10 +24,7 @@ namespace detail{
 struct tag_marker{};
 
 template<typename T>
-struct is_tag
-{
-  static const bool value=(is_base_and_derived<tag_marker,T>::value);
-};
+struct is_tag: std::is_base_of<tag_marker, T> { };
 
 } // detail
 
