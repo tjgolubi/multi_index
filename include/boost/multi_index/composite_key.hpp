@@ -58,11 +58,11 @@
   BOOST_PP_ENUM_PARAMS(BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE,param)
 
 /* if n==0 ->   text0
- * otherwise -> textn=tuples::null_type
+ * otherwise -> textn=boost::tuples::null_type
  */
 
 #define BOOST_MULTI_INDEX_CK_TEMPLATE_PARM(z,n,text)                         \
-  typename BOOST_PP_CAT(text,n) BOOST_PP_EXPR_IF(n,=tuples::null_type)
+  typename BOOST_PP_CAT(text,n) BOOST_PP_EXPR_IF(n,=boost::tuples::null_type)
 
 /* const textn& kn=textn() */
 
@@ -87,14 +87,14 @@ struct nth_key_from_value
 {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename mp11::mp_if_c<
-    N<tuples::length<key_extractor_tuple>::value,
-    tuples::element<N,key_extractor_tuple>,
-    mp11::mp_identity<tuples::null_type>
+    N<boost::tuples::length<key_extractor_tuple>::value,
+    boost::tuples::element<N,key_extractor_tuple>,
+    mp11::mp_identity<boost::tuples::null_type>
   >::type                                            type;
 };
 
 /* nth_composite_key_##name<CompositeKey,N>::type yields
- * functor<nth_key_from_value<CompositeKey,N> >, or tuples::null_type
+ * functor<nth_key_from_value<CompositeKey,N> >, or boost::tuples::null_type
  * if N exceeds the length of the composite key.
  */
 
@@ -110,8 +110,8 @@ struct key_equal_to {
 };
 
 template<>
-struct key_equal_to<tuples::null_type> {
-  typedef tuples::null_type type;
+struct key_equal_to<boost::tuples::null_type> {
+  typedef boost::tuples::null_type type;
 };
 
 template<typename CompositeKey,int N>
@@ -125,8 +125,8 @@ struct key_less {
   typedef std::less<typename KeyFromValue::result_type> type;
 };
 
-template<> struct key_less<tuples::null_type> {
-  typedef tuples::null_type type;
+template<> struct key_less<boost::tuples::null_type> {
+  typedef boost::tuples::null_type type;
 };
 
 template<typename CompositeKey,int N>
@@ -140,8 +140,8 @@ struct key_greater {
   typedef std::greater<typename KeyFromValue::result_type> type;
 };
 
-template<> struct key_greater<tuples::null_type> {
-  typedef tuples::null_type type;
+template<> struct key_greater<boost::tuples::null_type> {
+  typedef boost::tuples::null_type type;
 };
 
 template<typename CompositeKey,int N>
@@ -155,8 +155,8 @@ struct key_hash {
   typedef std::hash<typename KeyFromValue::result_type> type;
 };
 
-template<> struct key_hash<tuples::null_type> {
-  typedef tuples::null_type type;
+template<> struct key_hash<boost::tuples::null_type> {
+  typedef boost::tuples::null_type type;
 };
 
 template<typename CompositeKey,int N>
@@ -268,8 +268,8 @@ template
 struct equal_ckey_ckey:
   mp11::mp_if<
     mp11::mp_or<
-      std::is_same<KeyCons1,tuples::null_type>,
-      std::is_same<KeyCons2,tuples::null_type>
+      std::is_same<KeyCons1,boost::tuples::null_type>,
+      std::is_same<KeyCons2,boost::tuples::null_type>
     >,
     equal_ckey_ckey_terminal<KeyCons1,Value1,KeyCons2,Value2,EqualCons>,
     equal_ckey_ckey_normal<KeyCons1,Value1,KeyCons2,Value2,EqualCons>
@@ -344,8 +344,8 @@ template
 struct equal_ckey_cval:
   mp11::mp_if<
     mp11::mp_or<
-      std::is_same<KeyCons,tuples::null_type>,
-      std::is_same<ValCons,tuples::null_type>
+      std::is_same<KeyCons,boost::tuples::null_type>,
+      std::is_same<ValCons,boost::tuples::null_type>
     >,
     equal_ckey_cval_terminal<KeyCons,Value,ValCons,EqualCons>,
     equal_ckey_cval_normal<KeyCons,Value,ValCons,EqualCons>
@@ -410,8 +410,8 @@ template
 struct compare_ckey_ckey:
   mp11::mp_if<
     mp11::mp_or<
-      std::is_same<KeyCons1,tuples::null_type>,
-      std::is_same<KeyCons2,tuples::null_type>
+      std::is_same<KeyCons1,boost::tuples::null_type>,
+      std::is_same<KeyCons2,boost::tuples::null_type>
     >,
     compare_ckey_ckey_terminal<KeyCons1,Value1,KeyCons2,Value2,CompareCons>,
     compare_ckey_ckey_normal<KeyCons1,Value1,KeyCons2,Value2,CompareCons>
@@ -488,8 +488,8 @@ template
 struct compare_ckey_cval:
   mp11::mp_if<
     mp11::mp_or<
-      std::is_same<KeyCons,tuples::null_type>,
-      std::is_same<ValCons,tuples::null_type>
+      std::is_same<KeyCons,boost::tuples::null_type>,
+      std::is_same<ValCons,boost::tuples::null_type>
     >,
     compare_ckey_cval_terminal<KeyCons,Value,ValCons,CompareCons>,
     compare_ckey_cval_normal<KeyCons,Value,ValCons,CompareCons>
@@ -529,7 +529,7 @@ struct hash_ckey_normal
 template<typename KeyCons,typename Value,typename HashCons>
 struct hash_ckey:
   mp11::mp_if<
-    std::is_same<KeyCons,tuples::null_type>,
+    std::is_same<KeyCons,boost::tuples::null_type>,
     hash_ckey_terminal<KeyCons,Value,HashCons>,
     hash_ckey_normal<KeyCons,Value,HashCons>
   >
@@ -565,7 +565,7 @@ struct hash_cval_normal
 template<typename ValCons,typename HashCons>
 struct hash_cval:
   mp11::mp_if<
-    std::is_same<ValCons,tuples::null_type>,
+    std::is_same<ValCons,boost::tuples::null_type>,
     hash_cval_terminal<ValCons,HashCons>,
     hash_cval_normal<ValCons,HashCons>
   >
@@ -596,15 +596,15 @@ struct composite_key_result
 template<
   typename Value,
   typename KeyFromValue0,
-  typename KeyFromValue1=tuples::null_type,
-  typename KeyFromValue2=tuples::null_type,
-  typename KeyFromValue3=tuples::null_type,
-  typename KeyFromValue4=tuples::null_type,
-  typename KeyFromValue5=tuples::null_type,
-  typename KeyFromValue6=tuples::null_type,
-  typename KeyFromValue7=tuples::null_type,
-  typename KeyFromValue8=tuples::null_type,
-  typename KeyFromValue9=tuples::null_type
+  typename KeyFromValue1=boost::tuples::null_type,
+  typename KeyFromValue2=boost::tuples::null_type,
+  typename KeyFromValue3=boost::tuples::null_type,
+  typename KeyFromValue4=boost::tuples::null_type,
+  typename KeyFromValue5=boost::tuples::null_type,
+  typename KeyFromValue6=boost::tuples::null_type,
+  typename KeyFromValue7=boost::tuples::null_type,
+  typename KeyFromValue8=boost::tuples::null_type,
+  typename KeyFromValue9=boost::tuples::null_type
 >
 struct composite_key:
   private tuple<
@@ -680,8 +680,8 @@ inline bool operator==(
   typedef typename CompositeKey2::value_type          value_type2;
 
   static_assert(
-    tuples::length<key_extractor_tuple1>::value==
-    tuples::length<key_extractor_tuple2>::value);
+    boost::tuples::length<key_extractor_tuple1>::value==
+    boost::tuples::length<key_extractor_tuple2>::value);
 
   return detail::equal_ckey_ckey<
     key_extractor_tuple1,value_type1,
@@ -712,8 +712,8 @@ inline bool operator==(
                 Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   static_assert(
-    tuples::length<key_extractor_tuple>::value==
-    tuples::length<key_tuple>::value);
+    boost::tuples::length<key_extractor_tuple>::value==
+    boost::tuples::length<key_tuple>::value);
 
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
@@ -742,8 +742,8 @@ inline bool operator==(
                 Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   static_assert(
-    tuples::length<key_extractor_tuple>::value==
-    tuples::length<key_tuple>::value);
+    boost::tuples::length<key_extractor_tuple>::value==
+    boost::tuples::length<key_tuple>::value);
 
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
@@ -765,7 +765,7 @@ inline bool operator==(
     key_tuple>::result_type                          cons_key_tuple;
 
   static_assert(
-    static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
+    static_cast<std::size_t>(boost::tuples::length<key_extractor_tuple>::value)==
     std::tuple_size<key_tuple>::value);
 
   return detail::equal_ckey_cval<
@@ -788,7 +788,7 @@ inline bool operator==(
     key_tuple>::result_type                          cons_key_tuple;
 
   static_assert(
-    static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
+    static_cast<std::size_t>(boost::tuples::length<key_extractor_tuple>::value)==
     std::tuple_size<key_tuple>::value);
 
   return detail::equal_ckey_cval<
@@ -1084,15 +1084,15 @@ inline bool operator<=(const std::tuple<Values...>& x,
 /* composite_key_equal_to */
 
 template <typename Pred0,
-          typename Pred1=tuples::null_type,
-          typename Pred2=tuples::null_type,
-          typename Pred3=tuples::null_type,
-          typename Pred4=tuples::null_type,
-          typename Pred5=tuples::null_type,
-          typename Pred6=tuples::null_type,
-          typename Pred7=tuples::null_type,
-          typename Pred8=tuples::null_type,
-          typename Pred9=tuples::null_type
+          typename Pred1=boost::tuples::null_type,
+          typename Pred2=boost::tuples::null_type,
+          typename Pred3=boost::tuples::null_type,
+          typename Pred4=boost::tuples::null_type,
+          typename Pred5=boost::tuples::null_type,
+          typename Pred6=boost::tuples::null_type,
+          typename Pred7=boost::tuples::null_type,
+          typename Pred8=boost::tuples::null_type,
+          typename Pred9=boost::tuples::null_type
 >
 struct composite_key_equal_to:
   private tuple<Pred0, Pred1, Pred2, Pred3, Pred4,
@@ -1134,10 +1134,10 @@ public:
     typedef typename CompositeKey2::value_type          value_type2;
 
     static_assert(
-      tuples::length<key_extractor_tuple1>::value<=
-      tuples::length<key_eq_tuple>::value&&
-      tuples::length<key_extractor_tuple1>::value==
-      tuples::length<key_extractor_tuple2>::value);
+      boost::tuples::length<key_extractor_tuple1>::value<=
+      boost::tuples::length<key_eq_tuple>::value&&
+      boost::tuples::length<key_extractor_tuple1>::value==
+      boost::tuples::length<key_extractor_tuple2>::value);
 
     return detail::equal_ckey_ckey<
       key_extractor_tuple1,value_type1,
@@ -1167,10 +1167,10 @@ public:
                   Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_eq_tuple>::value&&
-      tuples::length<key_extractor_tuple>::value==
-      tuples::length<key_tuple>::value);
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_eq_tuple>::value&&
+      boost::tuples::length<key_extractor_tuple>::value==
+      boost::tuples::length<key_tuple>::value);
 
     return detail::equal_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1196,10 +1196,10 @@ public:
                   Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
-      tuples::length<key_tuple>::value<=
-      tuples::length<key_eq_tuple>::value&&
-      tuples::length<key_tuple>::value==
-      tuples::length<key_extractor_tuple>::value);
+      boost::tuples::length<key_tuple>::value<=
+      boost::tuples::length<key_eq_tuple>::value&&
+      boost::tuples::length<key_tuple>::value==
+      boost::tuples::length<key_extractor_tuple>::value);
 
     return detail::equal_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1219,9 +1219,9 @@ public:
       key_tuple>::result_type                          cons_key_tuple;
 
     static_assert(
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_eq_tuple>::value&&
-      static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value)==
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_eq_tuple>::value&&
+      static_cast<std::size_t>(boost::tuples::length<key_extractor_tuple>::value)==
       std::tuple_size<key_tuple>::value);
 
     return detail::equal_ckey_cval<
@@ -1245,9 +1245,9 @@ public:
 
     static_assert(
       std::tuple_size<key_tuple>::value<=
-      static_cast<std::size_t>(tuples::length<key_eq_tuple>::value)&&
+      static_cast<std::size_t>(boost::tuples::length<key_eq_tuple>::value)&&
       std::tuple_size<key_tuple>::value==
-      static_cast<std::size_t>(tuples::length<key_extractor_tuple>::value));
+      static_cast<std::size_t>(boost::tuples::length<key_extractor_tuple>::value));
 
     return detail::equal_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1262,15 +1262,15 @@ public:
 
 template<
   typename Compare0,
-  typename Compare1=tuples::null_type,
-  typename Compare2=tuples::null_type,
-  typename Compare3=tuples::null_type,
-  typename Compare4=tuples::null_type,
-  typename Compare5=tuples::null_type,
-  typename Compare6=tuples::null_type,
-  typename Compare7=tuples::null_type,
-  typename Compare8=tuples::null_type,
-  typename Compare9=tuples::null_type
+  typename Compare1=boost::tuples::null_type,
+  typename Compare2=boost::tuples::null_type,
+  typename Compare3=boost::tuples::null_type,
+  typename Compare4=boost::tuples::null_type,
+  typename Compare5=boost::tuples::null_type,
+  typename Compare6=boost::tuples::null_type,
+  typename Compare7=boost::tuples::null_type,
+  typename Compare8=boost::tuples::null_type,
+  typename Compare9=boost::tuples::null_type
 >
 struct composite_key_compare:
   private tuple<Compare0, Compare1, Compare2, Compare3, Compare4,
@@ -1312,10 +1312,10 @@ public:
     typedef typename CompositeKey2::value_type          value_type2;
 
     static_assert(
-      tuples::length<key_extractor_tuple1>::value<=
-      tuples::length<key_comp_tuple>::value||
-      tuples::length<key_extractor_tuple2>::value<=
-      tuples::length<key_comp_tuple>::value);
+      boost::tuples::length<key_extractor_tuple1>::value<=
+      boost::tuples::length<key_comp_tuple>::value||
+      boost::tuples::length<key_extractor_tuple2>::value<=
+      boost::tuples::length<key_comp_tuple>::value);
 
     return detail::compare_ckey_ckey<
       key_extractor_tuple1,value_type1,
@@ -1352,10 +1352,10 @@ public:
                   Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_comp_tuple>::value||
-      tuples::length<key_tuple>::value<=
-      tuples::length<key_comp_tuple>::value);
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value||
+      boost::tuples::length<key_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value);
 
     return detail::compare_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1389,10 +1389,10 @@ public:
                   Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
-      tuples::length<key_tuple>::value<=
-      tuples::length<key_comp_tuple>::value||
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_comp_tuple>::value);
+      boost::tuples::length<key_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value||
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value);
 
     return detail::compare_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1412,10 +1412,10 @@ public:
       key_tuple>::result_type                          cons_key_tuple;
 
     static_assert(
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_comp_tuple>::value||
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value||
       std::tuple_size<key_tuple>::value<=
-      static_cast<std::size_t>(tuples::length<key_comp_tuple>::value));
+      static_cast<std::size_t>(boost::tuples::length<key_comp_tuple>::value));
 
     return detail::compare_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1438,9 +1438,9 @@ public:
 
     static_assert(
       std::tuple_size<key_tuple>::value<=
-      static_cast<std::size_t>(tuples::length<key_comp_tuple>::value)||
-      tuples::length<key_extractor_tuple>::value<=
-      tuples::length<key_comp_tuple>::value);
+      static_cast<std::size_t>(boost::tuples::length<key_comp_tuple>::value)||
+      boost::tuples::length<key_extractor_tuple>::value<=
+      boost::tuples::length<key_comp_tuple>::value);
 
     return detail::compare_ckey_cval<
       key_extractor_tuple,value_type,
@@ -1455,15 +1455,15 @@ public:
 
 template<
   typename Hash0,
-  typename Hash1=tuples::null_type,
-  typename Hash2=tuples::null_type,
-  typename Hash3=tuples::null_type,
-  typename Hash4=tuples::null_type,
-  typename Hash5=tuples::null_type,
-  typename Hash6=tuples::null_type,
-  typename Hash7=tuples::null_type,
-  typename Hash8=tuples::null_type,
-  typename Hash9=tuples::null_type
+  typename Hash1=boost::tuples::null_type,
+  typename Hash2=boost::tuples::null_type,
+  typename Hash3=boost::tuples::null_type,
+  typename Hash4=boost::tuples::null_type,
+  typename Hash5=boost::tuples::null_type,
+  typename Hash6=boost::tuples::null_type,
+  typename Hash7=boost::tuples::null_type,
+  typename Hash8=boost::tuples::null_type,
+  typename Hash9=boost::tuples::null_type
 >
 struct composite_key_hash:
   private tuple<Hash0, Hash1, Hash2, Hash3, Hash4,
@@ -1501,8 +1501,8 @@ public:
     typedef typename CompositeKey::value_type          value_type;
 
     static_assert(
-      tuples::length<key_extractor_tuple>::value==
-      tuples::length<key_hasher_tuple>::value);
+      boost::tuples::length<key_extractor_tuple>::value==
+      boost::tuples::length<key_hasher_tuple>::value);
 
     return detail::hash_ckey<
       key_extractor_tuple,value_type,
@@ -1523,8 +1523,8 @@ public:
                   Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
-      tuples::length<key_tuple>::value==
-      tuples::length<key_hasher_tuple>::value);
+      boost::tuples::length<key_tuple>::value==
+      boost::tuples::length<key_hasher_tuple>::value);
 
     return detail::hash_cval<
       key_tuple,key_hasher_tuple
@@ -1540,7 +1540,7 @@ public:
 
     static_assert(
       std::tuple_size<key_tuple>::value==
-      static_cast<std::size_t>(tuples::length<key_hasher_tuple>::value));
+      static_cast<std::size_t>(boost::tuples::length<key_hasher_tuple>::value));
 
     return detail::hash_cval<
       cons_key_tuple,key_hasher_tuple

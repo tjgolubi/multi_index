@@ -144,7 +144,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef tuples::cons<
+  typedef boost::tuples::cons<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<
@@ -638,10 +638,10 @@ public:
 protected:
   hashed_index(const ctor_args_list& args_list,const allocator_type& al):
     super(args_list.get_tail(),al),
-    key(tuples::get<1>(args_list.get_head())),
-    hash_(tuples::get<2>(args_list.get_head())),
-    eq_(tuples::get<3>(args_list.get_head())),
-    buckets(al,header()->impl(),tuples::get<0>(args_list.get_head())),
+    key(boost::tuples::get<1>(args_list.get_head())),
+    hash_(boost::tuples::get<2>(args_list.get_head())),
+    eq_(boost::tuples::get<3>(args_list.get_head())),
+    buckets(al,header()->impl(),boost::tuples::get<0>(args_list.get_head())),
     mlf(1.0f)
   {
     calculate_max_load();

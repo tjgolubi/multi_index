@@ -86,7 +86,7 @@ public:
   /* types */
 
   typedef typename index_node_type::value_type   value_type;
-  typedef tuples::null_type                      ctor_args;
+  typedef boost::tuples::null_type               ctor_args;
   typedef typename super::final_allocator_type   allocator_type;
   typedef value_type&                            reference;
   typedef const value_type&                      const_reference;
@@ -120,7 +120,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef tuples::cons<
+  typedef boost::tuples::cons<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<

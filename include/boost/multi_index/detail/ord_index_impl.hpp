@@ -168,7 +168,7 @@ public:
 
 protected:
   typedef typename super::final_node_type            final_node_type;
-  typedef tuples::cons<
+  typedef boost::tuples::cons<
     ctor_args, 
     typename super::ctor_args_list>                  ctor_args_list;
   typedef mp11::mp_push_front<
@@ -612,8 +612,8 @@ public:
 protected:
   ordered_index_impl(const ctor_args_list& args_list,const allocator_type& al):
     super(args_list.get_tail(),al),
-    key(tuples::get<0>(args_list.get_head())),
-    comp_(tuples::get<1>(args_list.get_head()))
+    key(boost::tuples::get<0>(args_list.get_head())),
+    comp_(boost::tuples::get<1>(args_list.get_head()))
   {
     empty_initialize();
   }

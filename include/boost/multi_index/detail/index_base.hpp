@@ -50,7 +50,7 @@ protected:
     Value,IndexSpecifierList,Allocator>::type final_node_type;
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>       final_type;
-  typedef tuples::null_type                   ctor_args_list;
+  typedef boost::tuples::null_type            ctor_args_list;
   typedef typename rebind_alloc_for<
     Allocator,typename Allocator::value_type
   >::type                                     final_allocator_type;
