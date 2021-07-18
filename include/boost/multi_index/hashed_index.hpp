@@ -114,7 +114,7 @@ public:
   typedef const value_type&                      const_reference;
   typedef typename alloc_traits::size_type       size_type;
   typedef typename alloc_traits::difference_type difference_type;
-  typedef tuple<size_type,
+  typedef boost::tuple<size_type,
     key_from_value,hasher,key_equal>             ctor_args;
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)

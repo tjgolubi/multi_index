@@ -134,7 +134,7 @@ public:
   typedef Compare                                    key_compare;
   typedef value_comparison<
     value_type,KeyFromValue,Compare>                 value_compare;
-  typedef tuple<key_from_value,key_compare>          ctor_args;
+  typedef boost::tuple<key_from_value,key_compare>   ctor_args;
   typedef typename super::final_allocator_type       allocator_type;
   typedef value_type&                                reference;
   typedef const value_type&                          const_reference;

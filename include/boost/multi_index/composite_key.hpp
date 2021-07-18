@@ -40,7 +40,7 @@
 
 /* maximum number of key extractors in a composite key */
 
-#if BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE<10 /* max length of a tuple */
+#if BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE<10 /* max length of a boost::tuple */
 #define BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE \
   BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE
 #else
@@ -175,16 +175,18 @@ struct generic_operator_equal
   bool operator()(const T& x,const Q& y)const{return x==y;}
 };
 
-typedef tuple<detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal,
-              detail::generic_operator_equal> generic_operator_equal_tuple;
+typedef boost::tuple<
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal,
+  detail::generic_operator_equal
+> generic_operator_equal_tuple;
 
 struct generic_operator_less
 {
@@ -192,22 +194,24 @@ struct generic_operator_less
   bool operator()(const T& x,const Q& y)const{return x<y;}
 };
 
-typedef tuple<detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less,
-              detail::generic_operator_less> generic_operator_less_tuple;
+typedef boost::tuple<
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less,
+  detail::generic_operator_less
+> generic_operator_less_tuple;
 
 /* Metaprogramming machinery for implementing equality, comparison and
  * hashing operations of composite_key_result.
  *
  * equal_* checks for equality between composite_key_results and
- * between those and tuples, accepting a tuple of basic equality functors.
+ * between those and tuples, accepting a boost::tuple of basic equality functors.
  * compare_* does lexicographical comparison.
  * hash_* computes a combination of elementwise hash values.
  */
@@ -607,13 +611,13 @@ template<
   typename KeyFromValue9=boost::tuples::null_type
 >
 struct composite_key:
-  private tuple<
+  private boost::tuple<
     KeyFromValue0, KeyFromValue1, KeyFromValue2, KeyFromValue3, KeyFromValue4,
     KeyFromValue5, KeyFromValue6, KeyFromValue7, KeyFromValue8, KeyFromValue9
   >
 {
 private:
-  typedef tuple<
+  typedef boost::tuple<
     KeyFromValue0, KeyFromValue1, KeyFromValue2, KeyFromValue3, KeyFromValue4,
     KeyFromValue5, KeyFromValue6, KeyFromValue7, KeyFromValue8, KeyFromValue9
   > super;
@@ -703,13 +707,13 @@ template<
 >
 inline bool operator==(
   const composite_key_result<CompositeKey>& x,
-  const tuple<Value0, Value1, Value2, Value3, Value4,
-              Value5, Value6, Value7, Value8, Value9>& y)
+  const boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                     Value5, Value6, Value7, Value8, Value9>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
   typedef typename CompositeKey::value_type              value_type;
-  typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                Value5, Value6, Value7, Value8, Value9>  key_tuple;
+  typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                       Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   static_assert(
     boost::tuples::length<key_extractor_tuple>::value==
@@ -732,14 +736,14 @@ template <
   typename CompositeKey
 >
 inline bool operator==(
-  const tuple<Value0, Value1, Value2, Value3, Value4,
-              Value5, Value6, Value7, Value8, Value9>& x,
+  const boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                     Value5, Value6, Value7, Value8, Value9>& x,
   const composite_key_result<CompositeKey>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
   typedef typename CompositeKey::value_type              value_type;
-  typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                Value5, Value6, Value7, Value8, Value9>  key_tuple;
+  typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                       Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   static_assert(
     boost::tuples::length<key_extractor_tuple>::value==
@@ -830,13 +834,13 @@ template <
   typename Value8, typename Value9
 >
 inline bool operator<(const composite_key_result<CompositeKey>& x,
-                      const tuple<Value0, Value1, Value2, Value3, Value4,
-                                  Value5, Value6, Value7, Value8, Value9>& y)
+                const boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                                   Value5, Value6, Value7, Value8, Value9>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
   typedef typename CompositeKey::value_type              value_type;
-  typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                Value5, Value6, Value7, Value8, Value9>  key_tuple;
+  typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                       Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
@@ -854,14 +858,15 @@ template <
   typename Value8, typename Value9,
   typename CompositeKey
 >
-inline bool operator<(const tuple<Value0, Value1, Value2, Value3, Value4,
-                                  Value5, Value6, Value7, Value8, Value9>& x,
+inline bool operator<(
+    const boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                       Value5, Value6, Value7, Value8, Value9>& x,
   const composite_key_result<CompositeKey>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
   typedef typename CompositeKey::value_type              value_type;
-  typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                Value5, Value6, Value7, Value8, Value9>  key_tuple;
+  typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                       Value5, Value6, Value7, Value8, Value9>  key_tuple;
 
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
@@ -960,8 +965,8 @@ template<typename CompositeKey,
          typename Value8, typename Value9>
 inline
 bool operator!=(const composite_key_result<CompositeKey>& x,
-                const tuple<Value0, Value1, Value2, Value3, Value4,
-                            Value5, Value6, Value7, Value8, Value9>& y)
+                const boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                                   Value5, Value6, Value7, Value8, Value9>& y)
 { return !(x==y); }
 
 template<typename CompositeKey,
@@ -971,7 +976,7 @@ template<typename CompositeKey,
          typename Value6, typename Value7,
          typename Value8, typename Value9>
 inline bool operator>(const composite_key_result<CompositeKey>& x,
-                      const tuple<Value0, Value1, Value2, Value3, Value4,
+               const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                   Value5, Value6, Value7, Value8, Value9>& y)
 { return y<x; }
 
@@ -982,7 +987,7 @@ template<typename CompositeKey,
          typename Value6, typename Value7,
          typename Value8, typename Value9>
 inline bool operator>=(const composite_key_result<CompositeKey>& x,
-                       const tuple< Value0, Value1, Value2, Value3, Value4,
+                const boost::tuple< Value0, Value1, Value2, Value3, Value4,
                                     Value5, Value6, Value7, Value8, Value9>& y)
 { return !(x<y); }
 
@@ -993,7 +998,7 @@ template<typename CompositeKey,
          typename Value6, typename Value7,
          typename Value8, typename Value9>
 inline bool operator<=(const composite_key_result<CompositeKey>& x,
-                       const tuple<Value0, Value1, Value2, Value3, Value4,
+                const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                    Value5, Value6, Value7, Value8, Value9>& y)
 { return !(y<x); }
 
@@ -1003,8 +1008,9 @@ template<typename Value0, typename Value1,
          typename Value6, typename Value7,
          typename Value8, typename Value9,
          typename CompositeKey>
-inline bool operator!=(const tuple< Value0, Value1, Value2, Value3, Value4,
-                                    Value5, Value6, Value7, Value8, Value9>& x,
+inline bool operator!=(
+              const boost::tuple< Value0, Value1, Value2, Value3, Value4,
+                                  Value5, Value6, Value7, Value8, Value9>& x,
                        const composite_key_result<CompositeKey>& y)
 { return !(x==y); }
 
@@ -1014,7 +1020,8 @@ template<typename Value0, typename Value1,
          typename Value6, typename Value7,
          typename Value8, typename Value9,
          typename CompositeKey>
-inline bool operator>(const tuple<Value0, Value1, Value2, Value3, Value4,
+inline bool operator>(
+               const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                   Value5, Value6, Value7, Value8, Value9>& x,
         const composite_key_result<CompositeKey>& y)
 { return y<x; }
@@ -1025,7 +1032,8 @@ template<typename Value0, typename Value1,
          typename Value6, typename Value7,
          typename Value8, typename Value9,
          typename CompositeKey>
-inline bool operator>=(const tuple<Value0, Value1, Value2, Value3, Value4,
+inline bool operator>=(
+                const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                    Value5, Value6, Value7, Value8, Value9>& x,
         const composite_key_result<CompositeKey>& y)
 { return !(x<y); }
@@ -1036,7 +1044,8 @@ template<typename Value0, typename Value1,
          typename Value6, typename Value7,
          typename Value8, typename Value9,
          typename CompositeKey>
-inline bool operator<=(const tuple<Value0, Value1, Value2, Value3, Value4,
+inline bool operator<=(
+                const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                    Value5, Value6, Value7, Value8, Value9>& x,
         const composite_key_result<CompositeKey>& y)
 { return !(y<x); }
@@ -1095,12 +1104,12 @@ template <typename Pred0,
           typename Pred9=boost::tuples::null_type
 >
 struct composite_key_equal_to:
-  private tuple<Pred0, Pred1, Pred2, Pred3, Pred4,
-                Pred5, Pred6, Pred7, Pred8, Pred9>
+  private boost::tuple<Pred0, Pred1, Pred2, Pred3, Pred4,
+                       Pred5, Pred6, Pred7, Pred8, Pred9>
 {
 private:
-  typedef tuple<Pred0, Pred1, Pred2, Pred3, Pred4,
-                Pred5, Pred6, Pred7, Pred8, Pred9> super;
+  typedef boost::tuple<Pred0, Pred1, Pred2, Pred3, Pred4,
+                       Pred5, Pred6, Pred7, Pred8, Pred9> super;
 
 public:
   typedef super key_eq_tuple;
@@ -1158,13 +1167,13 @@ public:
     typename Value8, typename Value9
   >
   bool operator()(const composite_key_result<CompositeKey>& x,
-                  const tuple<Value0, Value1, Value2, Value3, Value4,
+           const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                               Value5, Value6, Value7, Value8, Value9>& y)const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                  Value5, Value6, Value7, Value8, Value9> key_tuple;
+    typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                         Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
       boost::tuples::length<key_extractor_tuple>::value<=
@@ -1186,14 +1195,15 @@ public:
     typename Value8, typename Value9,
     typename CompositeKey
   >
-  bool operator()(const tuple<Value0, Value1, Value2, Value3, Value4,
+  bool operator()(
+           const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                               Value5, Value6, Value7, Value8, Value9>& x,
                   const composite_key_result<CompositeKey>& y)const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                  Value5, Value6, Value7, Value8, Value9> key_tuple;
+    typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                         Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
       boost::tuples::length<key_tuple>::value<=
@@ -1273,12 +1283,12 @@ template<
   typename Compare9=boost::tuples::null_type
 >
 struct composite_key_compare:
-  private tuple<Compare0, Compare1, Compare2, Compare3, Compare4,
-                Compare5, Compare6, Compare7, Compare8, Compare9>
+  private boost::tuple<Compare0, Compare1, Compare2, Compare3, Compare4,
+                       Compare5, Compare6, Compare7, Compare8, Compare9>
 {
 private:
-  typedef tuple<Compare0, Compare1, Compare2, Compare3, Compare4,
-                Compare5, Compare6, Compare7, Compare8, Compare9> super;
+  typedef boost::tuple<Compare0, Compare1, Compare2, Compare3, Compare4,
+                       Compare5, Compare6, Compare7, Compare8, Compare9> super;
 
 public:
   typedef super key_comp_tuple;
@@ -1343,13 +1353,13 @@ public:
            typename Value8, typename Value9
   >
   bool operator()(const composite_key_result<CompositeKey>& x,
-                  const tuple<Value0, Value1, Value2, Value3, Value4,
+           const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                               Value5, Value6, Value7, Value8, Value9>& y)const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                  Value5, Value6, Value7, Value8, Value9> key_tuple;
+    typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                         Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
       boost::tuples::length<key_extractor_tuple>::value<=
@@ -1379,14 +1389,15 @@ public:
     typename Value8, typename Value9,
     typename CompositeKey
   >
-  bool operator()(const tuple<Value0, Value1, Value2, Value3, Value4,
+  bool operator()(
+           const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                               Value5, Value6, Value7, Value8, Value9>& x,
                   const composite_key_result<CompositeKey>& y)const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                  Value5, Value6, Value7, Value8, Value9> key_tuple;
+    typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                         Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
       boost::tuples::length<key_tuple>::value<=
@@ -1466,12 +1477,12 @@ template<
   typename Hash9=boost::tuples::null_type
 >
 struct composite_key_hash:
-  private tuple<Hash0, Hash1, Hash2, Hash3, Hash4,
-                Hash5, Hash6, Hash7, Hash8, Hash9>
+  private boost::tuple<Hash0, Hash1, Hash2, Hash3, Hash4,
+                       Hash5, Hash6, Hash7, Hash8, Hash9>
 {
 private:
-  typedef tuple<Hash0, Hash1, Hash2, Hash3, Hash4,
-                Hash5, Hash6, Hash7, Hash8, Hash9> super;
+  typedef boost::tuple<Hash0, Hash1, Hash2, Hash3, Hash4,
+                       Hash5, Hash6, Hash7, Hash8, Hash9> super;
 
 public:
   typedef super key_hasher_tuple;
@@ -1515,12 +1526,13 @@ public:
            typename Value4, typename Value5,
            typename Value6, typename Value7,
            typename Value8, typename Value9>
-  std::size_t operator()(const tuple<Value0, Value1, Value2, Value3, Value4,
+  std::size_t operator()(
+                  const boost::tuple<Value0, Value1, Value2, Value3, Value4,
                                      Value5, Value6, Value7, Value8, Value9>& x)
   const
   {
-    typedef tuple<Value0, Value1, Value2, Value3, Value4,
-                  Value5, Value6, Value7, Value8, Value9> key_tuple;
+    typedef boost::tuple<Value0, Value1, Value2, Value3, Value4,
+                         Value5, Value6, Value7, Value8, Value9> key_tuple;
 
     static_assert(
       boost::tuples::length<key_tuple>::value==
