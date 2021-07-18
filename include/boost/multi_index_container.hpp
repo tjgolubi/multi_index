@@ -1009,7 +1009,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
       detail::archive_constructed<Value> value("item",ar,value_version);
       std::pair<final_node_type*,bool> p=insert_rv_(
         value.get(),super::end().get_node());
-      if(!p.second)throw_exception(
+      if(!p.second)boost::throw_exception(
         archive::archive_exception(
           archive::archive_exception::other_exception));
       ar.reset_object_address(

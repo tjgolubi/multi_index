@@ -1378,7 +1378,7 @@ private:
     }
     else if(comp_(key(x->value()),key(position->value()))){
       /* inconsistent rearrangement */
-      throw_exception(
+      boost::throw_exception(
         archive::archive_exception(
           archive::archive_exception::other_exception));
     }

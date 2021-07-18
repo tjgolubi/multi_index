@@ -110,7 +110,7 @@ private:
   void check_node(Node* node)const
   {
     if(node!=0&&!std::binary_search(entries(),entries()+size_,node)){
-      throw_exception(
+      boost::throw_exception(
         archive::archive_exception(
           archive::archive_exception::other_exception));
     }

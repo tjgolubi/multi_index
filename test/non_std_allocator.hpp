@@ -11,7 +11,6 @@
 #ifndef BOOST_MULTI_INDEX_TEST_NON_STD_ALLOCATOR_HPP
 #define BOOST_MULTI_INDEX_TEST_NON_STD_ALLOCATOR_HPP
 
-#include <boost/throw_exception.hpp>
 #include <iterator>
 #include <stdexcept>
 #include <cstddef>
@@ -31,7 +30,7 @@ public:
 
   T& operator*()const
   {
-    if(!p)boost::throw_exception(std::runtime_error("null indirection"));
+    if(!p) throw std::runtime_error("null indirection");
 
     return *p;
   }

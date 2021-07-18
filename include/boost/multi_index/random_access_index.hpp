@@ -30,7 +30,6 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/throw_exception.hpp> 
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/function.hpp>
 #include <functional>
@@ -281,7 +280,7 @@ public:
 
   const_reference at(size_type n)const
   {
-    if(n>=size())throw_exception(std::out_of_range("random access index"));
+    if(n>=size()) throw std::out_of_range("random access index");
     return index_node_type::from_impl(*ptrs.at(n))->value();
   }
 

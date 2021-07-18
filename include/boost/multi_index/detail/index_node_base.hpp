@@ -93,7 +93,7 @@ inline void load_construct_data(
   Archive&,boost::multi_index::detail::index_node_base<Value,Allocator>*,
   const unsigned int)
 {
-  throw_exception(
+  boost::throw_exception(
     archive::archive_exception(archive::archive_exception::other_exception));
 }
 
