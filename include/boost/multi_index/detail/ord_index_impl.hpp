@@ -51,6 +51,7 @@
 #include <boost/multi_index/detail/value_compare.hpp>
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
+#include <boost/multi_index/detail/call_traits.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
@@ -59,7 +60,6 @@
 #endif
 
 #include <boost/tuple/tuple.hpp>
-#include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mp11/list.hpp>
@@ -196,9 +196,9 @@ protected:
     ordered_index_impl>                              safe_super;
 #endif
 
-  typedef typename call_traits<
+  typedef typename detail::call_traits<
     value_type>::param_type                          value_param_type;
-  typedef typename call_traits<
+  typedef typename detail::call_traits<
     key_type>::param_type                            key_param_type;
 
   typedef std::pair<iterator,bool>                   emplace_return_type;

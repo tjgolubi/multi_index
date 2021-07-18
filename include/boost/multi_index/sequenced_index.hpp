@@ -20,7 +20,7 @@
 #include <boost/multi_index/detail/seq_index_node.hpp>
 #include <boost/multi_index/detail/seq_index_ops.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
-#include <boost/call_traits.hpp>
+#include <boost/multi_index/detail/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -132,7 +132,7 @@ private:
     sequenced_index>                          safe_super;
 #endif
 
-  typedef typename call_traits<value_type>::param_type value_param_type;
+  typedef typename detail::call_traits<value_type>::param_type value_param_type;
 
   typedef std::pair<iterator,bool>                     emplace_return_type;
 

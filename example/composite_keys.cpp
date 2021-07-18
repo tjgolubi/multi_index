@@ -13,7 +13,6 @@
 #define BOOST_MULTI_INDEX_ENABLE_SAFE_MODE
 #endif
 
-#include <boost/call_traits.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/member.hpp>

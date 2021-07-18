@@ -10,7 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_VALUE_COMPARE_HPP
 #pragma once
 
-#include <boost/call_traits.hpp>
+#include <boost/multi_index/detail/call_traits.hpp>
 
 namespace boost::multi_index::detail{
 
@@ -28,8 +28,8 @@ struct value_comparison
   }
 
   bool operator()(
-    typename call_traits<Value>::param_type x,
-    typename call_traits<Value>::param_type y)const
+    typename detail::call_traits<Value>::param_type x,
+    typename detail::call_traits<Value>::param_type y)const
   {
     return comp(key(x),key(y));
   }

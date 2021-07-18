@@ -21,13 +21,13 @@
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
+#include <boost/multi_index/detail/call_traits.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/rnd_index_loader.hpp>
 #endif
 
 #include <boost/tuple/tuple.hpp>
-#include <boost/call_traits.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/throw_exception.hpp> 
@@ -146,7 +146,7 @@ private:
     random_access_index>                      safe_super;
 #endif
 
-  typedef typename call_traits<
+  typedef typename detail::call_traits<
     value_type>::param_type                   value_param_type;
 
   typedef std::pair<iterator,bool>            emplace_return_type;
