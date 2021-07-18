@@ -11,8 +11,8 @@
 #pragma once
 
 #if !defined(BOOST_MULTI_INDEX_INVARIANT_ASSERT)
-#include <boost/assert.hpp>
-#define BOOST_MULTI_INDEX_INVARIANT_ASSERT BOOST_ASSERT
+#include <cassert>
+#define BOOST_MULTI_INDEX_INVARIANT_ASSERT assert
 #endif
 
 #endif

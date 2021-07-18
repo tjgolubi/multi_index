@@ -47,8 +47,8 @@
 #define BOOST_MULTI_INDEX_SAFE_MODE_ASSERT(expr,error_code) ((void)0)
 #else
 #if !defined(BOOST_MULTI_INDEX_SAFE_MODE_ASSERT)
-#include <boost/assert.hpp>
-#define BOOST_MULTI_INDEX_SAFE_MODE_ASSERT(expr,error_code) BOOST_ASSERT(expr)
+#include <cassert>
+#define BOOST_MULTI_INDEX_SAFE_MODE_ASSERT(expr,error_code) assert(expr)
 #endif
 #endif
 
