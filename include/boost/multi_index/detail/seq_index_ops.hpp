@@ -11,8 +11,8 @@
 #pragma once
 
 #include <boost/multi_index/detail/seq_index_node.hpp>
-#include <boost/limits.hpp>
 #include <type_traits>
+#include <limits>
 #include <cstddef>
 
 namespace boost::multi_index::detail{

@@ -33,13 +33,13 @@
 #include <boost/mpl/bool.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/mp11/list.hpp>
-#include <boost/limits.hpp>
 #include <algorithm>
 #include <functional>
 #include <iterator>
 #include <type_traits>
 #include <utility>
 #include <initializer_list>
+#include <limits>
 #include <cmath>
 #include <cstddef>
 
