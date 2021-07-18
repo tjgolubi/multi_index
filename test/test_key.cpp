@@ -16,9 +16,7 @@
 
 #if !defined(BOOST_MULTI_INDEX_KEY_SUPPORTED)
 
-#include <boost/config/pragma_message.hpp>
-
-BOOST_PRAGMA_MESSAGE("boost::multi_index::key not supported, skipping test")
+#pragma message "boost::multi_index::key not supported, skipping test"
 
 void test_key()
 {
