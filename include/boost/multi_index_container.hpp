@@ -24,6 +24,7 @@
 #include <boost/multi_index/detail/base_type.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
+#include <boost/multi_index/detail/base_from_member.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/multi_index/detail/archive_constructed.hpp>
@@ -35,7 +36,6 @@
 #include <boost/throw_exception.hpp> 
 #endif
 
-#include <boost/utility/base_from_member.hpp>
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
@@ -67,7 +67,7 @@ struct unequal_alloc_move_ctor_tag{};
 
 template<typename Value,typename IndexSpecifierList,typename Allocator>
 class multi_index_container:
-  private ::boost::base_from_member<
+  private detail::base_from_member<
     typename detail::rebind_alloc_for<
       Allocator,
       typename detail::multi_index_node_type<
@@ -99,7 +99,7 @@ private:
   >::type                                          node_allocator;
   typedef detail::allocator_traits<node_allocator> node_alloc_traits;
   typedef typename node_alloc_traits::pointer      node_pointer;
-  typedef ::boost::base_from_member<
+  typedef detail::base_from_member<
     node_allocator>                                bfm_allocator;
   typedef detail::header_holder<
     node_pointer,
