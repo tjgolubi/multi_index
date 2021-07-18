@@ -311,7 +311,7 @@ void test_copy_assignment()
   BOOST_TEST(sc2.max_size()<=ms);
   s=sc2.erase(1);
   s=sc2.count(0);
-  s=sc2.count(0,boost::hash<int>(),std::equal_to<int>());
+  s=sc2.count(0,std::hash<int>(),std::equal_to<int>());
   s=sc2.bucket_count();
   BOOST_TEST(sc2.max_bucket_count()<=ms);
   BOOST_TEST(sc2.bucket_size((small_alloc::size_type)(0))<=ms);

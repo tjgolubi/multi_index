@@ -602,18 +602,18 @@ void test_composite_key_template()
   ckey_t3 ck6;
 
   typedef composite_key_hash<
-    boost::hash<std::string>,
-    boost::hash<int>,
-    boost::hash<int>
+    std::hash<std::string>,
+    std::hash<int>,
+    std::hash<int>
   > ckey_hash_t;
 
   ckey_hash_t ch1;
   ckey_hash_t ch2(ch1);
   ckey_hash_t ch3(
     boost::make_tuple(
-      boost::hash<std::string>(),
-      boost::hash<int>(),
-      boost::hash<int>()));
+      std::hash<std::string>(),
+      std::hash<int>(),
+      std::hash<int>()));
   ckey_hash_t ch4(get<0>(ch1.key_hash_functions()));
 
   ch2=ch3; /* prevent unused var */
@@ -627,7 +627,7 @@ void test_composite_key_template()
     ch1(ck6(xystr(4,5,"world")))==
     ch1(TupleMaker::create(std::string("world"),4,5)));
 
-  typedef boost::hash<composite_key_result<ckey_t3> > ckeyres_hash_t;
+  typedef std::hash<composite_key_result<ckey_t3> > ckeyres_hash_t;
 
   ckeyres_hash_t crh;
 

@@ -11,7 +11,6 @@
 #pragma once
 
 #include <boost/multi_index/detail/cons_stdtuple.hpp>
-#include <boost/functional/hash_fwd.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -133,7 +132,7 @@ struct BOOST_PP_CAT(nth_composite_key_,name)                                 \
 BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(equal_to,std::equal_to)
 BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(less,std::less)
 BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(greater,std::greater)
-BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(hash,boost::hash)
+BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(hash,std::hash)
 
 /* used for defining equality and comparison ops of composite_key_result */
 
@@ -1280,7 +1279,7 @@ public:
  * composite_key_result_equal_to uses std::equal_to of the values.
  * composite_key_result_less     uses std::less.
  * composite_key_result_greater  uses std::greater.
- * composite_key_result_hash     uses boost::hash.
+ * composite_key_result_hash     uses std::hash.
  */
 
 #define BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER                           \
@@ -1388,7 +1387,7 @@ public:
 
 } // boost::multi_index
 
-/* Specializations of std::equal_to, std::less, std::greater and boost::hash
+/* Specializations of std::equal_to, std::less, std::greater and std::hash
  * for composite_key_results enabling interoperation with tuples of values.
  */
 
@@ -1418,10 +1417,6 @@ struct greater<boost::multi_index::composite_key_result<CompositeKey> >:
 {
 };
 
-} // std
-
-namespace boost{
-
 template<typename CompositeKey>
 struct hash<boost::multi_index::composite_key_result<CompositeKey> >:
   boost::multi_index::composite_key_result_hash<
@@ -1430,7 +1425,7 @@ struct hash<boost::multi_index::composite_key_result<CompositeKey> >:
 {
 };
 
-} // boost
+} // std
 
 #undef BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER
 #undef BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER

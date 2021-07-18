@@ -12,7 +12,6 @@
 
 #include <boost/multi_index/tag.hpp>
 #include <boost/mp11/utility.hpp>
-#include <boost/functional/hash.hpp>
 #include <functional>
 #include <type_traits>
 
@@ -22,12 +21,12 @@ namespace boost::multi_index::detail{
  *
  *   (hashed_unique|hashed_non_unique)<
  *     KeyFromValue,
- *     Hash=boost::hash<KeyFromValue::result_type>,
+ *     Hash=std::hash<KeyFromValue::result_type>,
  *     Pred=std::equal_to<KeyFromValue::result_type> >
  *   (hashed_unique|hashed_non_unique)<
  *     TagList,
  *     KeyFromValue,
- *     Hash=boost::hash<KeyFromValue::result_type>,
+ *     Hash=std::hash<KeyFromValue::result_type>,
  *     Pred=std::equal_to<KeyFromValue::result_type> >
  *
  * hashed_index_args implements the machinery to accept this
@@ -54,7 +53,7 @@ struct hashed_index_args
   typedef mp11::mp_eval_if_c<
     !std::is_void_v<supplied_hash_type>,
     supplied_hash_type,
-    boost::hash,
+    std::hash,
     typename key_from_value_type::result_type
   >                                           hash_type;
   typedef mp11::mp_if<

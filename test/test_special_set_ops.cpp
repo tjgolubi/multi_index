@@ -44,7 +44,7 @@ struct hash_string_as_int
 {
   int operator()(const std::string& x)const
   {
-    return static_cast<int>(boost::hash<int>()(string_to_int(x)));
+    return static_cast<int>(std::hash<int>()(string_to_int(x)));
   }
 };
 

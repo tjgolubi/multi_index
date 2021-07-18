@@ -45,11 +45,17 @@ inline bool operator<(const move_tracker& x,const move_tracker& y)
   return x.n<y.n;
 }
 
-inline std::size_t hash_value(const move_tracker& x)
-{
-  boost::hash<int> h;
-  return h(x.n);
-}
+namespace std {
+
+template<>
+struct hash<move_tracker> {
+  std::size_t operator()(const move_tracker& x) const noexcept {
+    std::hash<int> h;
+    return h(x.n);
+  }
+}; // hash<move_tracker>
+
+} // std
 
 template<bool Propagate,bool AlwaysEqual>
 void test_allocator_awareness_for()

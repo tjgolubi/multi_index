@@ -55,10 +55,17 @@ inline bool operator==(const always_one& x,const always_one& y)
   return x.get()==y.get();
 }
 
-inline std::size_t hash_value(const always_one& x)
-{
-  return static_cast<std::size_t>(x.get());
-}
+namespace std {
+
+template<>
+struct hash<always_one> {
+
+  std::size_t operator()(const always_one& x) const noexcept
+  { return static_cast<std::size_t>(x.get()); }
+
+}; // hash<always_one>
+
+} // std
 
 class linked_object
 {

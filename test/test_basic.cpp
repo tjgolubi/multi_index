@@ -46,11 +46,17 @@ bool operator<(const no_addressof_type& x,const no_addressof_type& y)
   return x.n<y.n;
 }
 
-inline std::size_t hash_value(const no_addressof_type& x)
-{
-  boost::hash<int> h;
-  return h(x.n);
-}
+namespace std {
+
+template<>
+struct hash<no_addressof_type> {
+  std::size_t operator()(const no_addressof_type& x) const noexcept {
+    std::hash<int> h;
+    return h(x.n);
+  }
+}; // hash<no_addressof_type>
+
+} // std
 
 void test_basic()
 {
