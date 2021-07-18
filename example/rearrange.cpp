@@ -15,9 +15,6 @@
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/random_access_index.hpp>
-#include <boost/random/binomial_distribution.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/mersenne_twister.hpp>
 #include <algorithm>
 #include <iostream>
 #include <iterator>
@@ -112,10 +109,10 @@ public:
  */
 
 template<typename T>
-class implicit_reference_wrapper:public boost::reference_wrapper<T>
+class implicit_reference_wrapper:public std::reference_wrapper<T>
 {
 private:
-  typedef boost::reference_wrapper<T> super;
+  typedef std::reference_wrapper<T> super;
 public:
   implicit_reference_wrapper(T& t):super(t){}
 };
@@ -133,13 +130,13 @@ void riffle_shuffle(
   RandomAccessIterator first,RandomAccessIterator last,
   OutputIterator out)
 {
-  static boost::mt19937 rnd_gen;
+  static std::mt19937 rnd_gen;
 
   typedef typename std::iterator_traits<
     RandomAccessIterator>::difference_type difference_type;
-  typedef boost::binomial_distribution<
+  typedef std::binomial_distribution<
     difference_type>                       rnd_cut_select_type;
-  typedef boost::uniform_real<>            rnd_deck_select_type;
+  typedef std::uniform_real<>              rnd_deck_select_type;
 
   rnd_cut_select_type  cut_select(last-first);
   RandomAccessIterator middle=first+cut_select(rnd_gen);
