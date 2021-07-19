@@ -17,6 +17,7 @@
 
 #define BOOST_MULTI_INDEX_KEY_SUPPORTED
 
+#include <boost/preprocessor/facilities/empty.hpp>
 #include <type_traits>
 
 namespace boost::multi_index{
@@ -78,9 +79,8 @@ template<typename R,typename C,typename... Args>                \
 struct remove_noexcept<R(C::*)(Args...,...)qualifier noexcept>  \
   {using type=R(C::*)(Args...,...)qualifier;};
 
-#define BOOST_MULTI_KEY_EMPTY()
-
-BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(BOOST_MULTI_KEY_EMPTY())
+BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(BOOST_PP_EMPTY())
+                                             /* VS warns without dummy arg */
 BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(const)
 BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(volatile)
 BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(const volatile)
@@ -126,7 +126,7 @@ struct least_generic<T0,T1,Ts...>
     std::is_convertible_v<const T0&,const T1&>||
     std::is_convertible_v<const T1&,const T0&>,
     "one type should be convertible to the other");
-
+    
   using type=typename least_generic<
     typename std::conditional_t<
       std::is_convertible_v<const T0&,const T1&>,T0,T1
