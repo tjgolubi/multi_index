@@ -11,6 +11,7 @@
 #pragma once
 
 #include <boost/multi_index/detail/cons_stdtuple.hpp>
+#include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -144,10 +145,11 @@ struct generic_operator_equal
   bool operator()(const T& x,const Q& y)const{return x==y;}
 };
 
-typedef boost::tuple<
-  BOOST_MULTI_INDEX_CK_ENUM(
-    BOOST_MULTI_INDEX_CK_IDENTITY_ENUM_MACRO,
-    detail::generic_operator_equal)>          generic_operator_equal_tuple;
+typedef mp11::mp_rename<
+  mp11::mp_repeat_c<mp11::mp_list<generic_operator_equal>,
+                    BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE>,
+  boost::tuple
+> generic_operator_equal_tuple;
 
 struct generic_operator_less
 {
@@ -155,10 +157,8 @@ struct generic_operator_less
   bool operator()(const T& x,const Q& y)const{return x<y;}
 };
 
-typedef boost::tuple<
-  BOOST_MULTI_INDEX_CK_ENUM(
-    BOOST_MULTI_INDEX_CK_IDENTITY_ENUM_MACRO,
-    detail::generic_operator_less)>           generic_operator_less_tuple;
+typedef mp11::mp_fill<generic_operator_equal_tuple, generic_operator_less>
+  generic_operator_less_tuple;
 
 /* Metaprogramming machinery for implementing equality, comparison and
  * hashing operations of composite_key_result.
@@ -565,7 +565,7 @@ public:
   typedef Value                               value_type;
   typedef composite_key_result<composite_key> result_type;
 
-  composite_key(
+  explicit composite_key(
     BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_CTOR_ARG,KeyFromValue)):
     super(BOOST_MULTI_INDEX_CK_ENUM_PARAMS(k))
   {}
@@ -604,9 +604,8 @@ public:
 /* == */
 
 template<typename CompositeKey1,typename CompositeKey2>
-inline bool operator==(
-  const composite_key_result<CompositeKey1>& x,
-  const composite_key_result<CompositeKey2>& y)
+inline bool operator==(const composite_key_result<CompositeKey1>& x,
+                       const composite_key_result<CompositeKey2>& y)
 {
   typedef typename CompositeKey1::key_extractor_tuple key_extractor_tuple1;
   typedef typename CompositeKey1::value_type          value_type1;
@@ -646,9 +645,8 @@ inline bool operator==(
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
     key_tuple,detail::generic_operator_equal_tuple
-  >::compare(
-    x.composite_key.key_extractors(),x.value,
-    y,detail::generic_operator_equal_tuple());
+  >::compare(x.composite_key.key_extractors(), x.value, y,
+             detail::generic_operator_equal_tuple());
 }
 
 template
@@ -671,15 +669,13 @@ inline bool operator==(
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
     key_tuple,detail::generic_operator_equal_tuple
-  >::compare(
-    x,y.composite_key.key_extractors(),
-    y.value,detail::generic_operator_equal_tuple());
+  >::compare(x, y.composite_key.key_extractors(), y.value,
+             detail::generic_operator_equal_tuple());
 }
 
 template<typename CompositeKey,typename... Values>
-inline bool operator==(
-  const composite_key_result<CompositeKey>& x,
-  const std::tuple<Values...>& y)
+inline bool operator==(const composite_key_result<CompositeKey>& x,
+                       const std::tuple<Values...>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename CompositeKey::value_type          value_type;
@@ -694,15 +690,14 @@ inline bool operator==(
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
     cons_key_tuple,detail::generic_operator_equal_tuple
-  >::compare(
-    x.composite_key.key_extractors(),x.value,
-    detail::make_cons_stdtuple(y),detail::generic_operator_equal_tuple());
+  >::compare(x.composite_key.key_extractors(), x.value,
+             detail::make_cons_stdtuple(y),
+             detail::generic_operator_equal_tuple());
 }
 
 template<typename CompositeKey,typename... Values>
-inline bool operator==(
-  const std::tuple<Values...>& x,
-  const composite_key_result<CompositeKey>& y)
+inline bool operator==(const std::tuple<Values...>& x,
+                       const composite_key_result<CompositeKey>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename CompositeKey::value_type          value_type;
@@ -717,9 +712,8 @@ inline bool operator==(
   return detail::equal_ckey_cval<
     key_extractor_tuple,value_type,
     cons_key_tuple,detail::generic_operator_equal_tuple
-  >::compare(
-    detail::make_cons_stdtuple(x),y.composite_key.key_extractors(),
-    y.value,detail::generic_operator_equal_tuple());
+  >::compare(detail::make_cons_stdtuple(x), y.composite_key.key_extractors(),
+             y.value, detail::generic_operator_equal_tuple());
 }
 
 /* < */
@@ -738,10 +732,9 @@ inline bool operator<(
    key_extractor_tuple1,value_type1,
    key_extractor_tuple2,value_type2,
    detail::generic_operator_less_tuple
-  >::compare(
-    x.composite_key.key_extractors(),x.value,
-    y.composite_key.key_extractors(),y.value,
-    detail::generic_operator_less_tuple());
+  >::compare(x.composite_key.key_extractors(), x.value,
+             y.composite_key.key_extractors(), y.value,
+             detail::generic_operator_less_tuple());
 }
 
 template
@@ -760,9 +753,8 @@ inline bool operator<(
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
     key_tuple,detail::generic_operator_less_tuple
-  >::compare(
-    x.composite_key.key_extractors(),x.value,
-    y,detail::generic_operator_less_tuple());
+  >::compare(x.composite_key.key_extractors(), x.value, y,
+             detail::generic_operator_less_tuple());
 }
 
 template
@@ -781,15 +773,13 @@ inline bool operator<(
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
     key_tuple,detail::generic_operator_less_tuple
-  >::compare(
-    x,y.composite_key.key_extractors(),
-    y.value,detail::generic_operator_less_tuple());
+  >::compare(x, y.composite_key.key_extractors(), y.value,
+             detail::generic_operator_less_tuple());
 }
 
 template<typename CompositeKey,typename... Values>
-inline bool operator<(
-  const composite_key_result<CompositeKey>& x,
-  const std::tuple<Values...>& y)
+inline bool operator<(const composite_key_result<CompositeKey>& x,
+                      const std::tuple<Values...>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename CompositeKey::value_type          value_type;
@@ -800,15 +790,14 @@ inline bool operator<(
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
     cons_key_tuple,detail::generic_operator_less_tuple
-  >::compare(
-    x.composite_key.key_extractors(),x.value,
-    detail::make_cons_stdtuple(y),detail::generic_operator_less_tuple());
+  >::compare(x.composite_key.key_extractors(), x.value,
+             detail::make_cons_stdtuple(y),
+             detail::generic_operator_less_tuple());
 }
 
-template<typename CompositeKey,typename... Values>
-inline bool operator<(
-  const std::tuple<Values...>& x,
-  const composite_key_result<CompositeKey>& y)
+template<typename CompositeKey, typename... Values>
+inline bool operator<(const std::tuple<Values...>& x,
+                      const composite_key_result<CompositeKey>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename CompositeKey::value_type          value_type;
@@ -819,9 +808,8 @@ inline bool operator<(
   return detail::compare_ckey_cval<
     key_extractor_tuple,value_type,
     cons_key_tuple,detail::generic_operator_less_tuple
-  >::compare(
-    detail::make_cons_stdtuple(x),y.composite_key.key_extractors(),
-    y.value,detail::generic_operator_less_tuple());
+  >::compare(detail::make_cons_stdtuple(x), y.composite_key.key_extractors(),
+             y.value, detail::generic_operator_less_tuple());
 }
 
 /* rest of comparison operators */
