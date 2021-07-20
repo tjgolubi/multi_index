@@ -11,7 +11,6 @@
 #pragma once
 
 #include <boost/mp11/function.hpp>
-#include <boost/type_traits/function_traits.hpp>
 #include <type_traits>
 
 namespace boost::multi_index::detail{
@@ -65,20 +64,33 @@ struct is_transparent<
 template<typename F,typename Arg1,typename Arg2,typename=void>
 struct is_transparent_function:std::true_type{};
 
+template<typename F> struct function_traits_helper;
+
+template<typename R, typename T1, typename T2>
+struct function_traits_helper<R (*)(T1, T2)> {
+  static const unsigned arity = 2;
+  typedef R result_type;
+  typedef T1 arg1_type;
+  typedef T2 arg2_type;
+}; // function_traits_helper
+
+template<typename F>
+struct function_traits
+  : public function_traits_helper<std::add_pointer_t<F>>
+{ };
+
 template<typename F,typename Arg1,typename Arg2>
 struct is_transparent_function<
   F,Arg1,Arg2,
   typename std::enable_if<
     mp11::mp_or<
       mp11::mp_not<mp11::mp_or<
-        std::is_same<typename boost::function_traits<F>::arg1_type,
-                     const Arg1&>,
-        std::is_same<typename boost::function_traits<F>::arg1_type, Arg1>
+        std::is_same<typename function_traits<F>::arg1_type, const Arg1&>,
+        std::is_same<typename function_traits<F>::arg1_type, Arg1>
       > >,
       mp11::mp_not<mp11::mp_or<
-        std::is_same<typename boost::function_traits<F>::arg2_type,
-                     const Arg2&>,
-        std::is_same<typename boost::function_traits<F>::arg2_type, Arg2>
+        std::is_same<typename function_traits<F>::arg2_type, const Arg2&>,
+        std::is_same<typename function_traits<F>::arg2_type, Arg2>
       > >
     >::value
   >::type

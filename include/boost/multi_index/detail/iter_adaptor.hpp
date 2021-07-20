@@ -10,8 +10,9 @@
 #define BOOST_MULTI_INDEX_DETAIL_ITER_ADAPTOR_HPP
 #pragma once
 
+#include <boost/multi_index/detail/operators.hpp>
+
 #include <boost/mp11/utility.hpp>
-#include <boost/operators.hpp>
 
 namespace boost::multi_index::detail{
 
