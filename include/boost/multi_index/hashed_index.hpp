@@ -24,15 +24,17 @@
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/call_traits.hpp>
+
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/serialization/nvp.hpp>
 #endif
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mp11/utility.hpp>
 #include <boost/mp11/list.hpp>
+
+#include <tuple>
 #include <algorithm>
 #include <functional>
 #include <iterator>
@@ -114,8 +116,8 @@ public:
   typedef const value_type&                      const_reference;
   typedef typename alloc_traits::size_type       size_type;
   typedef typename alloc_traits::difference_type difference_type;
-  typedef boost::tuple<size_type,
-    key_from_value,hasher,key_equal>             ctor_args;
+  typedef std::tuple<size_type,
+    key_from_value, hasher,key_equal>            ctor_args;
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef safe_mode::safe_iterator<
@@ -144,7 +146,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef boost::tuples::cons<
+  typedef std::tuple<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<
@@ -637,11 +639,11 @@ public:
 
 protected:
   hashed_index(const ctor_args_list& args_list,const allocator_type& al):
-    super(args_list.get_tail(),al),
-    key(boost::tuples::get<1>(args_list.get_head())),
-    hash_(boost::tuples::get<2>(args_list.get_head())),
-    eq_(boost::tuples::get<3>(args_list.get_head())),
-    buckets(al,header()->impl(),boost::tuples::get<0>(args_list.get_head())),
+    super(get<1>(args_list),al),
+    key(get<1>(get<0>(args_list))),
+    hash_(get<2>(get<0>(args_list))),
+    eq_(get<3>(get<0>(args_list))),
+    buckets(al,header()->impl(),get<0>(get<0>(args_list))),
     mlf(1.0f)
   {
     calculate_max_load();
@@ -1079,7 +1081,7 @@ protected:
     if(size()!=x.size())return false;
     for(const_iterator it=begin(),it_end=end();it!=it_end;){
       const_iterator it2,it2_last;
-      boost::tie(it2,it2_last)=x.equal_range(key(*it));
+      std::tie(it2,it2_last)=x.equal_range(key(*it));
       if(it2==it2_last)return false;
 
       const_iterator it_last=make_iterator(
