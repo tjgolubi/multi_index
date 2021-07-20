@@ -16,8 +16,11 @@
 
 #include <algorithm>
 #include <vector>
+#include <tuple>
 
 using namespace boost::multi_index;
+
+template<typename T> struct print_type;
 
 struct type1{};
 
@@ -115,12 +118,18 @@ void test_set_ops()
 
   /* check promotion detection does not break with functions */
 
-  multi_index_container<
+  auto arg = std::make_tuple(
+      std::make_tuple(identity<type1>(), &less_type1_f),
+      std::make_tuple());
+
+  using mic = multi_index_container<
     type1,
     indexed_by<
-      ordered_unique<identity<type1>,bool(*)(type1,type1)>
+      ordered_unique<identity<type1>, bool(*)(type1, type1)>
     >
-  > c2(boost::make_tuple(boost::make_tuple(identity<type1>(),&less_type1_f)));
+  >;
+
+  mic c2(arg);
   c2.insert(type1());
 
   BOOST_TEST(c2.find(type3())==c2.begin());

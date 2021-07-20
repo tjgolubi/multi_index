@@ -131,7 +131,7 @@ void test_node_handle()
 template<typename Index>
 struct is_key_based:std::bool_constant<
   /* rather fragile if new index types are included in the library */
-  (boost::tuples::length<typename Index::ctor_args>::value > 0)
+  (std::tuple_size<typename Index::ctor_args>::value > 0)
 >
 {};
 

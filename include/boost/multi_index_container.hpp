@@ -66,8 +66,8 @@ struct unequal_alloc_move_ctor_tag{};
 } // detail
 
 template<typename Value,typename IndexSpecifierList,typename Allocator>
-class multi_index_container:
-  private detail::base_from_member<
+class multi_index_container
+  : private detail::base_from_member<
     typename detail::rebind_alloc_for<
       Allocator,
       typename detail::multi_index_node_type<
@@ -132,44 +132,38 @@ public:
 
   /* construct/copy/destroy */
 
-  multi_index_container():
-    bfm_allocator(allocator_type()),
-    super(ctor_args_list(),bfm_allocator::member),
-    node_count(0)
+  multi_index_container()
+    : bfm_allocator(allocator_type())
+    , super(ctor_args_list(), bfm_allocator::member)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
 
-  explicit multi_index_container(
-    const ctor_args_list& args_list,
-
-    const allocator_type& al=allocator_type()):
-
-    bfm_allocator(al),
-    super(args_list,bfm_allocator::member),
-    node_count(0)
+  explicit multi_index_container(const ctor_args_list& args_list,
+                                 const allocator_type& al=allocator_type())
+    : bfm_allocator(al)
+    , super(args_list, bfm_allocator::member)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
 
-  explicit multi_index_container(const allocator_type& al):
-    bfm_allocator(al),
-    super(ctor_args_list(),bfm_allocator::member),
-    node_count(0)
+  explicit multi_index_container(const allocator_type& al)
+    : bfm_allocator(al)
+    , super(ctor_args_list(), bfm_allocator::member)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
   
   template<typename InputIterator>
-  multi_index_container(
-    InputIterator first,InputIterator last,
-
-    const ctor_args_list& args_list=ctor_args_list(),
-    const allocator_type& al=allocator_type()):
-
-    bfm_allocator(al),
-    super(args_list,bfm_allocator::member),
-    node_count(0)
+  multi_index_container(InputIterator first, InputIterator last,
+                        const ctor_args_list& args_list=ctor_args_list(),
+                        const allocator_type& al=allocator_type())
+    : bfm_allocator(al)
+    , super(args_list, bfm_allocator::member)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     try{
@@ -186,13 +180,13 @@ public:
     }
   }
 
-  multi_index_container(
-    std::initializer_list<Value> list,
-    const ctor_args_list& args_list=ctor_args_list(),
-    const allocator_type& al=allocator_type()):
-    bfm_allocator(al),
-    super(args_list,bfm_allocator::member),
-    node_count(0)
+  explicit
+  multi_index_container(std::initializer_list<Value> list,
+                        const ctor_args_list& args_list=ctor_args_list(),
+                        const allocator_type& al=allocator_type())
+    : bfm_allocator(al)
+    , super(args_list, bfm_allocator::member)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     try{
@@ -211,46 +205,43 @@ public:
     }
   }
 
-  multi_index_container(
-    const multi_index_container<Value,IndexSpecifierList,Allocator>& x):
-    bfm_allocator(
-      node_alloc_traits::select_on_container_copy_construction(
-        x.bfm_allocator::member)),
-    bfm_header(),
-    super(x),
-    node_count(0)
+  multi_index_container(const multi_index_container& x)
+    : bfm_allocator(
+        node_alloc_traits::select_on_container_copy_construction(
+                                                      x.bfm_allocator::member))
+    , bfm_header()
+    , super(x)
+    , node_count(0)
   {
     copy_construct_from(x);
   }
 
-  multi_index_container(multi_index_container&& x):
-    bfm_allocator(std::move(x.bfm_allocator::member)),
-    bfm_header(),
-    super(x,detail::do_not_copy_elements_tag()),
-    node_count(0)
+  multi_index_container(multi_index_container&& x)
+    : bfm_allocator(std::move(x.bfm_allocator::member))
+    , bfm_header()
+    , super(x,detail::do_not_copy_elements_tag())
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     BOOST_MULTI_INDEX_CHECK_INVARIANT_OF(x);
     swap_elements_(x);
   }
 
-  multi_index_container(
-    const multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    const allocator_type& al):
-    bfm_allocator(al),
-    bfm_header(),
-    super(x),
-    node_count(0)
+  multi_index_container(const multi_index_container& x,
+                        const allocator_type& al)
+    : bfm_allocator(al)
+    , bfm_header()
+    , super(x)
+    , node_count(0)
   {
     copy_construct_from(x);
   }
 
-  multi_index_container(
-    multi_index_container&& x,const allocator_type& al):
-    bfm_allocator(al),
-    bfm_header(),
-    super(x,detail::do_not_copy_elements_tag()),
-    node_count(0)
+  multi_index_container(multi_index_container&& x, const allocator_type& al)
+    : bfm_allocator(al)
+    , bfm_header()
+    , super(x,detail::do_not_copy_elements_tag())
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     BOOST_MULTI_INDEX_CHECK_INVARIANT_OF(x);
@@ -259,7 +250,7 @@ public:
       swap_elements_(x);
     }
     else{
-      multi_index_container y(x,al,detail::unequal_alloc_move_ctor_tag());
+      multi_index_container y(x,  al, detail::unequal_alloc_move_ctor_tag());
       swap_elements_(y);
     }
   }
@@ -269,41 +260,38 @@ public:
     delete_all_nodes_();
   }
 
-  multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
-    const multi_index_container& x)
+  multi_index_container& operator=(const multi_index_container& x)
   {
     multi_index_container y(
       x,
-      node_alloc_traits::propagate_on_container_copy_assignment::value?
-        x.get_allocator():this->get_allocator());
-    swap_(y,std::true_type() /* swap_allocators */);
+      node_alloc_traits::propagate_on_container_copy_assignment::value
+        ?  x.get_allocator() : this->get_allocator());
+    swap_(y, std::true_type() /* swap_allocators */);
     return *this;
   }
 
-  multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
-    multi_index_container&& x)
+  multi_index_container& operator=(multi_index_container&& x)
   {
     if constexpr(
       node_alloc_traits::propagate_on_container_move_assignment::value){
-      swap_(x,std::true_type() /* swap_allocators */);
+      swap_(x, std::true_type() /* swap_allocators */);
     }
     else if(this->get_allocator()==x.get_allocator()){
-      swap_(x,std::false_type() /* swap_allocators */);
+      swap_(x, std::false_type() /* swap_allocators */);
     }
     else{
-      multi_index_container y(std::move(x),this->get_allocator());
-      swap_(y,std::false_type() /* swap_allocators */);
+      multi_index_container y(std::move(x), this->get_allocator());
+      swap_(y, std::false_type() /* swap_allocators */);
     }
     return *this;
   }
 
-  multi_index_container<Value,IndexSpecifierList,Allocator>& operator=(
-    std::initializer_list<Value> list)
+  multi_index_container& operator=(std::initializer_list<Value> list)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     typedef const Value* init_iterator;
 
-    multi_index_container x(*this,detail::do_not_copy_elements_tag());    
+    multi_index_container x(*this, detail::do_not_copy_elements_tag());    
     iterator hint=x.end();
     for(init_iterator first=list.begin(),last=list.end();
         first!=last;++first){
@@ -466,14 +454,13 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   typedef typename super::final_node_handle_type final_node_handle_type;
   typedef typename super::copy_map_type          copy_map_type;
 
-  multi_index_container(
-    multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    const allocator_type& al,
-    detail::unequal_alloc_move_ctor_tag):
-    bfm_allocator(al),
-    bfm_header(),
-    super(x),
-    node_count(0)
+  multi_index_container(multi_index_container& x,
+                        const allocator_type& al,
+                        detail::unequal_alloc_move_ctor_tag)
+    : bfm_allocator(al)
+    , bfm_header()
+    , super(x)
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT_OF(x);
     try{
@@ -498,19 +485,17 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
 
-  multi_index_container(
-    const multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    detail::do_not_copy_elements_tag):
-    bfm_allocator(x.bfm_allocator::member),
-    bfm_header(),
-    super(x,detail::do_not_copy_elements_tag()),
-    node_count(0)
+  multi_index_container(const multi_index_container& x,
+                        detail::do_not_copy_elements_tag)
+    : bfm_allocator(x.bfm_allocator::member)
+    , bfm_header()
+    , super(x,detail::do_not_copy_elements_tag())
+    , node_count(0)
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
 
-  void copy_construct_from(
-    const multi_index_container<Value,IndexSpecifierList,Allocator>& x)
+  void copy_construct_from(const multi_index_container& x)
   {
     copy_map_type map(bfm_allocator::member,x.size(),x.header(),header());
     for(const_iterator it=x.begin(),it_end=x.end();it!=it_end;++it){
@@ -837,7 +822,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     node_count=0;
   }
 
-  void swap_(multi_index_container<Value,IndexSpecifierList,Allocator>& x)
+  void swap_(multi_index_container& x)
   {
     swap_(
       x,
@@ -845,9 +830,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
         node_alloc_traits::propagate_on_container_swap::value>());
   }
 
-  void swap_(
-    multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    std::true_type swap_allocators)
+  void swap_(multi_index_container& x, std::true_type swap_allocators)
   {
     detail::adl_swap(bfm_allocator::member,x.bfm_allocator::member);
     std::swap(bfm_header::member,x.bfm_header::member);
@@ -855,17 +838,14 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
     std::swap(node_count,x.node_count);
   }
 
-  void swap_(
-    multi_index_container<Value,IndexSpecifierList,Allocator>& x,
-    std::false_type swap_allocators)
+  void swap_(multi_index_container& x, std::false_type swap_allocators)
   {
     std::swap(bfm_header::member,x.bfm_header::member);
     super::swap_(x,swap_allocators);
     std::swap(node_count,x.node_count);
   }
 
-  void swap_elements_(
-    multi_index_container<Value,IndexSpecifierList,Allocator>& x)
+  void swap_elements_(multi_index_container& x)
   {
     std::swap(bfm_header::member,x.bfm_header::member);
     super::swap_elements_(x);
@@ -1038,7 +1018,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
 
 private:
   template<typename... Args>
-  void construct_value_impl(final_node_type* x,Args&&... args)
+  void construct_value_impl(final_node_type* x, Args&&... args)
   {
     node_alloc_traits::construct(
       bfm_allocator::member,std::addressof(x->value()),
@@ -1046,7 +1026,7 @@ private:
   }
 
   size_type node_count;
-};
+}; // multi_index_container
 
 /* retrieval of indices by number */
 

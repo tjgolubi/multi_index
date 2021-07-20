@@ -22,9 +22,9 @@
 #include <boost/multi_index/detail/index_saver.hpp>
 #endif
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/mp11/list.hpp>
 
+#include <tuple>
 #include <utility>
 
 namespace boost::multi_index::detail{
@@ -50,7 +50,7 @@ protected:
     Value,IndexSpecifierList,Allocator>::type final_node_type;
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>       final_type;
-  typedef boost::tuples::null_type            ctor_args_list;
+  typedef std::tuple<>                        ctor_args_list;
   typedef typename rebind_alloc_for<
     Allocator,typename Allocator::value_type
   >::type                                     final_allocator_type;
@@ -79,16 +79,11 @@ private:
   typedef typename alloc_traits::size_type    size_type;
 
 protected:
-  explicit index_base(const ctor_args_list&,const Allocator&){}
+  index_base(const ctor_args_list&, const Allocator&) {}
 
-  index_base(
-    const index_base<Value,IndexSpecifierList,Allocator>&,
-    do_not_copy_elements_tag)
-  {}
+  index_base(const index_base&, do_not_copy_elements_tag) {}
 
-  void copy_(
-    const index_base<Value,IndexSpecifierList,Allocator>&,const copy_map_type&)
-  {}
+  void copy_(const index_base&, const copy_map_type&) {}
 
   final_node_type* insert_(const value_type& v,final_node_type*& x,lvalue_tag)
   {
@@ -144,12 +139,10 @@ protected:
   void clear_(){}
 
   template<typename BoolConstant>
-  void swap_(
-    index_base<Value,IndexSpecifierList,Allocator>&,
-    BoolConstant /* swap_allocators */)
+  void swap_(index_base&, BoolConstant /* swap_allocators */)
   {}
 
-  void swap_elements_(index_base<Value,IndexSpecifierList,Allocator>&){}
+  void swap_elements_(index_base&){}
 
   bool replace_(const value_type& v,index_node_type* x,lvalue_tag)
   {

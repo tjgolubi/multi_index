@@ -34,7 +34,8 @@ struct pod_value_holder
 };
 
 template<typename Value,typename Allocator>
-struct index_node_base:private pod_value_holder<Value>
+struct index_node_base
+  : private pod_value_holder<Value>
 {
   typedef index_node_base base_type; /* used for serialization purposes */
   typedef Value           value_type;

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <boost/mp11/function.hpp>
+#include <boost/type_traits/function_traits.hpp>
 #include <type_traits>
 
 namespace boost::multi_index::detail{
@@ -70,12 +71,14 @@ struct is_transparent_function<
   typename std::enable_if<
     mp11::mp_or<
       mp11::mp_not<mp11::mp_or<
-        std::is_same<typename function_traits<F>::arg1_type,const Arg1&>,
-        std::is_same<typename function_traits<F>::arg1_type,Arg1>
+        std::is_same<typename boost::function_traits<F>::arg1_type,
+                     const Arg1&>,
+        std::is_same<typename boost::function_traits<F>::arg1_type, Arg1>
       > >,
       mp11::mp_not<mp11::mp_or<
-        std::is_same<typename function_traits<F>::arg2_type,const Arg2&>,
-        std::is_same<typename function_traits<F>::arg2_type,Arg2>
+        std::is_same<typename boost::function_traits<F>::arg2_type,
+                     const Arg2&>,
+        std::is_same<typename boost::function_traits<F>::arg2_type, Arg2>
       > >
     >::value
   >::type

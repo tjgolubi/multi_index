@@ -20,29 +20,34 @@
 namespace boost::multi_index::detail{
 
 /* Mp11 machinery to construct a linear hierarchy of indices out of
- * a index list.
+ * an index list.
  */
 
-template<typename IndexSpecifierList,typename N,typename SuperMeta>
-using nth_layer_index=typename mp11::mp_at<IndexSpecifierList,N>::
-  template index_class<SuperMeta>::type;
+namespace {
 
-template<int N,typename Value,typename IndexSpecifierList,typename Allocator>
+template<typename IndexSpecifierList, typename N, typename SuperMeta>
+using nth_layer_index =
+  typename mp11::mp_at<IndexSpecifierList, N>::
+                                        template index_class<SuperMeta>::type;
+}
+
+template<int N, typename Value, typename IndexSpecifierList, typename Allocator>
 struct nth_layer
 {
   static const int length=mp11::mp_size<IndexSpecifierList>::value;
 
   typedef mp11::mp_eval_if_c<
-    N==length,
-    index_base<Value,IndexSpecifierList,Allocator>,
+    (N == length),
+    index_base<Value, IndexSpecifierList, Allocator>,
     nth_layer_index,
-    IndexSpecifierList,std::integral_constant<int,N>,
-    nth_layer<N+1,Value,IndexSpecifierList,Allocator>
+    IndexSpecifierList,mp11::mp_int<N>,
+    nth_layer<N+1, Value, IndexSpecifierList, Allocator>
   > type;
-};
+}; // nth_layer
 
 template<typename Value,typename IndexSpecifierList,typename Allocator>
-struct multi_index_base_type:nth_layer<0,Value,IndexSpecifierList,Allocator>
+struct multi_index_base_type
+  : nth_layer<0, Value, IndexSpecifierList, Allocator>
 {
   static_assert(detail::is_index_list<IndexSpecifierList>::value);
 };

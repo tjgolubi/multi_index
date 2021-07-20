@@ -59,12 +59,12 @@
 #include <boost/throw_exception.hpp> 
 #endif
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/foreach_fwd.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/utility.hpp>
 #include <algorithm>
+#include <tuple>
 #include <utility>
 #include <initializer_list>
 #include <iterator>
@@ -134,7 +134,7 @@ public:
   typedef Compare                                    key_compare;
   typedef value_comparison<
     value_type,KeyFromValue,Compare>                 value_compare;
-  typedef boost::tuple<key_from_value,key_compare>   ctor_args;
+  typedef std::tuple<key_from_value, key_compare>    ctor_args;
   typedef typename super::final_allocator_type       allocator_type;
   typedef value_type&                                reference;
   typedef const value_type&                          const_reference;
@@ -168,7 +168,7 @@ public:
 
 protected:
   typedef typename super::final_node_type            final_node_type;
-  typedef boost::tuples::cons<
+  typedef std::tuple<
     ctor_args, 
     typename super::ctor_args_list>                  ctor_args_list;
   typedef mp11::mp_push_front<
@@ -610,43 +610,38 @@ public:
   }
 
 protected:
-  ordered_index_impl(const ctor_args_list& args_list,const allocator_type& al):
-    super(args_list.get_tail(),al),
-    key(boost::tuples::get<0>(args_list.get_head())),
-    comp_(boost::tuples::get<1>(args_list.get_head()))
+  ordered_index_impl(const ctor_args_list& args_list, const allocator_type& al)
+    : super(get<1>(args_list),al)
+    , key(get<0>(get<0>(args_list)))
+    , comp_(get<1>(get<0>(args_list)))
   {
     empty_initialize();
   }
 
-  ordered_index_impl(
-    const ordered_index_impl<
-      KeyFromValue,Compare,SuperMeta,TagList,Category,AugmentPolicy>& x):
-    super(x),
+  ordered_index_impl(const ordered_index_impl& x)
+    : super(x),
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
-    safe_super(),
+      safe_super(),
 #endif
 
-    key(x.key),
-    comp_(x.comp_)
+      key(x.key),
+      comp_(x.comp_)
   {
     /* Copy ctor just takes the key and compare objects from x. The rest is
      * done in a subsequent call to copy_().
      */
   }
 
-  ordered_index_impl(
-     const ordered_index_impl<
-       KeyFromValue,Compare,SuperMeta,TagList,Category,AugmentPolicy>& x,
-     do_not_copy_elements_tag):
-    super(x,do_not_copy_elements_tag()),
+  ordered_index_impl(const ordered_index_impl& x, do_not_copy_elements_tag)
+    : super(x, do_not_copy_elements_tag()),
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
-    safe_super(),
+      safe_super(),
 #endif
 
-    key(x.key),
-    comp_(x.comp_)
+      key(x.key),
+      comp_(x.comp_)
   {
     empty_initialize();
   }
@@ -667,10 +662,7 @@ protected:
                    {return const_iterator(node);}
 #endif
 
-  void copy_(
-    const ordered_index_impl<
-      KeyFromValue,Compare,SuperMeta,TagList,Category,AugmentPolicy>& x,
-    const copy_map_type& map)
+  void copy_(const ordered_index_impl& x, const copy_map_type& map)
   {
     if(!x.root()){
       empty_initialize();
@@ -1365,9 +1357,8 @@ private:
     ordered_non_unique_tag)
   {
     using namespace std::placeholders;
-    lm.load(
-      std::bind(&ordered_index_impl::rearranger,this,_1,_2),
-      ar,version);
+    lm.load(std::bind(&ordered_index_impl::rearranger, this, _1, _2),
+            ar,version);
     super::load_(ar,version,lm);
   }
 
@@ -1440,14 +1431,14 @@ public:
   }
 
 protected:
-  ordered_index(
-    const ctor_args_list& args_list,const allocator_type& al):
-    super(args_list,al){}
+  ordered_index(const ctor_args_list& args_list, const allocator_type& al)
+    : super(args_list,al){}
 
-  ordered_index(const ordered_index& x):super(x){}
+  ordered_index(const ordered_index& x)
+    : super(x){}
 
-  ordered_index(const ordered_index& x,do_not_copy_elements_tag):
-    super(x,do_not_copy_elements_tag()){}
+  ordered_index(const ordered_index& x,do_not_copy_elements_tag)
+    : super(x,do_not_copy_elements_tag()){}
 };
 
 /* comparison */
