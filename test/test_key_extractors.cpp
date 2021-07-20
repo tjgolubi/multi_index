@@ -14,11 +14,11 @@
 #include <boost/multi_index/key_extractors.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
+#include <tuple>
 #include <list>
 #include <memory>
 
 using namespace boost::multi_index;
-using namespace boost::tuples;
 
 struct test_class
 {
@@ -222,90 +222,90 @@ void test_key_extractors()
   BOOST_TEST(cid(tr).int_member==0);
   BOOST_TEST(k_m(tr)==0);
   BOOST_TEST(ck_m(tr)==0);
-  BOOST_TEST(cmpk(tr)==make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(tr)==make_tuple(test_class(0,0),0));
+  BOOST_TEST(cmpk(tr)==std::make_tuple(test_class(0,0),0,0,true));
+  BOOST_TEST(ccmpk(tr)==std::make_tuple(test_class(0,0),0));
   BOOST_TEST(id(ctr).int_member==0);
   BOOST_TEST(cid(ctr).int_member==0);
   BOOST_TEST(k_m(ctr)==0);
   BOOST_TEST(ck_m(ctr)==0);
-  BOOST_TEST(cmpk(ctr)==make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(ctr)==make_tuple(test_class(0,0),0));
+  BOOST_TEST(cmpk(ctr)==std::make_tuple(test_class(0,0),0,0,true));
+  BOOST_TEST(ccmpk(ctr)==std::make_tuple(test_class(0,0),0));
 
   BOOST_TEST(id(td).int_member==0);
   BOOST_TEST(cid(td).int_member==0);
   BOOST_TEST(k_m(td)==0);
   BOOST_TEST(ck_m(td)==0);
-  BOOST_TEST(cmpk(td)==make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(td)==make_tuple(test_class(0,0),0));
+  BOOST_TEST(cmpk(td)==std::make_tuple(test_class(0,0),0,0,true));
+  BOOST_TEST(ccmpk(td)==std::make_tuple(test_class(0,0),0));
   BOOST_TEST(id(ctdr).int_member==0);
   BOOST_TEST(cid(ctdr).int_member==0);
   BOOST_TEST(k_m(ctdr)==0);
   BOOST_TEST(ck_m(ctdr)==0);
-  BOOST_TEST(cmpk(ctdr)==make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(ctdr)==make_tuple(test_class(0,0),0));
+  BOOST_TEST(cmpk(ctdr)==std::make_tuple(test_class(0,0),0,0,true));
+  BOOST_TEST(ccmpk(ctdr)==std::make_tuple(test_class(0,0),0));
 
   k_m(tr)=1;
   BOOST_TEST(id(tp).int_member==1);
   BOOST_TEST(cid(tp).int_member==1);
   BOOST_TEST(k_m(tp)==1);
   BOOST_TEST(ck_m(tp)==1);
-  BOOST_TEST(cmpk(tp)==make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(tp)==make_tuple(test_class(1,0),1));
+  BOOST_TEST(cmpk(tp)==std::make_tuple(test_class(1,0),1,0,true));
+  BOOST_TEST(ccmpk(tp)==std::make_tuple(test_class(1,0),1));
   BOOST_TEST(cid(ctp).int_member==1);
   BOOST_TEST(ck_m(ctp)==1);
-  BOOST_TEST(cmpk(ctp)==make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(ctp)==make_tuple(test_class(1,0),1));
+  BOOST_TEST(cmpk(ctp)==std::make_tuple(test_class(1,0),1,0,true));
+  BOOST_TEST(ccmpk(ctp)==std::make_tuple(test_class(1,0),1));
 
   BOOST_TEST(id(tdp).int_member==1);
   BOOST_TEST(cid(tdp).int_member==1);
   BOOST_TEST(k_m(tdp)==1);
   BOOST_TEST(ck_m(tdp)==1);
-  BOOST_TEST(cmpk(tdp)==make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(tdp)==make_tuple(test_class(1,0),1));
+  BOOST_TEST(cmpk(tdp)==std::make_tuple(test_class(1,0),1,0,true));
+  BOOST_TEST(ccmpk(tdp)==std::make_tuple(test_class(1,0),1));
   BOOST_TEST(cid(ctdp).int_member==1);
   BOOST_TEST(ck_m(ctdp)==1);
-  BOOST_TEST(cmpk(ctdp)==make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(ctdp)==make_tuple(test_class(1,0),1));
+  BOOST_TEST(cmpk(ctdp)==std::make_tuple(test_class(1,0),1,0,true));
+  BOOST_TEST(ccmpk(ctdp)==std::make_tuple(test_class(1,0),1));
 
   k_m(tp)=2;
   BOOST_TEST(id(tpp).int_member==2);
   BOOST_TEST(cid(tpp).int_member==2);
   BOOST_TEST(k_m(tpp)==2);
   BOOST_TEST(ck_m(tpp)==2);
-  BOOST_TEST(cmpk(tpp)==make_tuple(test_class(2,0),2,0,true));
-  BOOST_TEST(ccmpk(tpp)==make_tuple(test_class(2,0),2));
+  BOOST_TEST(cmpk(tpp)==std::make_tuple(test_class(2,0),2,0,true));
+  BOOST_TEST(ccmpk(tpp)==std::make_tuple(test_class(2,0),2));
   BOOST_TEST(cid(ctpp).int_member==2);
   BOOST_TEST(ck_m(ctpp)==2);
-  BOOST_TEST(cmpk(ctpp)==make_tuple(test_class(2,0),2,0,true));
-  BOOST_TEST(ccmpk(ctpp)==make_tuple(test_class(2,0),2));
+  BOOST_TEST(cmpk(ctpp)==std::make_tuple(test_class(2,0),2,0,true));
+  BOOST_TEST(ccmpk(ctpp)==std::make_tuple(test_class(2,0),2));
 
   k_m(tpp)=3;
   BOOST_TEST(id(tap).int_member==3);
   BOOST_TEST(cid(tap).int_member==3);
   BOOST_TEST(k_m(tap)==3);
   BOOST_TEST(ck_m(tap)==3);
-  BOOST_TEST(cmpk(tap)==make_tuple(test_class(3,0),3,0,true));
-  BOOST_TEST(ccmpk(tap)==make_tuple(test_class(3,0),3));
+  BOOST_TEST(cmpk(tap)==std::make_tuple(test_class(3,0),3,0,true));
+  BOOST_TEST(ccmpk(tap)==std::make_tuple(test_class(3,0),3));
   BOOST_TEST(cid(ctap).int_member==3);
   BOOST_TEST(ck_m(ctap)==3);
-  BOOST_TEST(cmpk(ctap)==make_tuple(test_class(3,0),3,0,true));
-  BOOST_TEST(ccmpk(ctap)==make_tuple(test_class(3,0),3));
+  BOOST_TEST(cmpk(ctap)==std::make_tuple(test_class(3,0),3,0,true));
+  BOOST_TEST(ccmpk(ctap)==std::make_tuple(test_class(3,0),3));
 
   k_m(tap)=4;
   BOOST_TEST(id(tw).int_member==4);
   BOOST_TEST(cid(tw).int_member==4);
   BOOST_TEST(k_m(tw)==4);
   BOOST_TEST(ck_m(tw)==4);
-  BOOST_TEST(cmpk(tw)==make_tuple(test_class(4,0),4,0,true));
-  BOOST_TEST(ccmpk(tw)==make_tuple(test_class(4,0),4));
+  BOOST_TEST(cmpk(tw)==std::make_tuple(test_class(4,0),4,0,true));
+  BOOST_TEST(ccmpk(tw)==std::make_tuple(test_class(4,0),4));
 
   k_m(tw)=5;
   BOOST_TEST(id(ctw).int_member==5);
   BOOST_TEST(cid(ctw).int_member==5);
   BOOST_TEST(k_m(ctw)==5);
   BOOST_TEST(ck_m(ctw)==5);
-  BOOST_TEST(cmpk(ctw)==make_tuple(test_class(5,0),5,0,true));
-  BOOST_TEST(ccmpk(ctw)==make_tuple(test_class(5,0),5));
+  BOOST_TEST(cmpk(ctw)==std::make_tuple(test_class(5,0),5,0,true));
+  BOOST_TEST(ccmpk(ctw)==std::make_tuple(test_class(5,0),5));
 
   BOOST_TEST(k_cm(tr)==0);
   BOOST_TEST(k_cm(ctr)==0);
@@ -485,7 +485,7 @@ void test_key_extractors()
   BOOST_TEST(k_grf(tap));
   BOOST_TEST(k_grf(tw));
 
-  BOOST_TEST(ccmpk_w(tw)==make_tuple(false));
+  BOOST_TEST(ccmpk_w(tw)==std::make_tuple(false));
 
 /* testcases for problems with non-copyable classes reported at
  * http://lists.boost.org/Archives/boost/2006/04/103065.php
@@ -518,7 +518,7 @@ void test_key_extractors()
   BOOST_TEST(nc_k_grf(nc_td));
 
   test_nc_class nc_t(1,0);
-  BOOST_TEST(nc_cmpk(nc_td)==make_tuple(std::cref(nc_t),1,1,true));
+  BOOST_TEST(nc_cmpk(nc_td)==std::make_tuple(std::cref(nc_t),1,1,true));
   
   std::list<test_class> tl;
   for(int i=0;i<20;++i)tl.push_back(test_class(i));
@@ -532,8 +532,8 @@ void test_key_extractors()
     BOOST_TEST(k_gf(it));
     BOOST_TEST(!k_gcrf(it));
     BOOST_TEST(k_grf(it));
-    BOOST_TEST(cmpk(it)==make_tuple(test_class(j),j,j,true));
-    BOOST_TEST(ccmpk(it)==make_tuple(test_class(j),j));
+    BOOST_TEST(cmpk(it)==std::make_tuple(test_class(j),j,j,true));
+    BOOST_TEST(ccmpk(it)==std::make_tuple(test_class(j),j));
     ++j;
   }
 }

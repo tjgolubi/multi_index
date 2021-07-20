@@ -26,7 +26,6 @@
 #include <boost/detail/lightweight_test.hpp>
 
 using namespace boost::multi_index;
-using namespace boost::tuples;
 
 struct is_composite_key_result_helper
 {
@@ -52,13 +51,13 @@ struct is_composite_key_result
 template<typename CompositeKeyResult>
 struct composite_key_result_length
 {
-  static const int value=boost::tuples::length<
+  static const int value=cons_size<
       typename 
       CompositeKeyResult::composite_key_type::key_extractor_tuple
     >::value;
 };
 
-struct is_boost_tuple_helper
+struct is_cons_tuple_helper
 {
   typedef char yes;
   struct no{char m[2];};
@@ -66,13 +65,13 @@ struct is_boost_tuple_helper
   static no test(void*);
 
   template<BOOST_PP_ENUM_PARAMS(10,typename T)>
-  static yes test(boost::tuple<BOOST_PP_ENUM_PARAMS(10,T)>*);
+  static yes test(cons_tuple<BOOST_PP_ENUM_PARAMS(10,T)>*);
 };
 
 template<typename T>
-struct is_boost_tuple
+struct is_cons_tuple
 {
-  typedef is_boost_tuple_helper helper;
+  typedef is_cons_tuple_helper helper;
 
   static const bool value=(
       sizeof(helper::test((T*)0))==
@@ -86,8 +85,8 @@ struct composite_object_length
     is_composite_key_result<T>::value,
     composite_key_result_length<T>,
     boost::mp11::mp_if_c<
-      is_boost_tuple<T>::value,
-      boost::tuples::length<T>,
+      is_cons_tuple<T>::value,
+      cons_size<T>,
       std::tuple_size<T>
     >
   > type;
@@ -333,7 +332,7 @@ struct name                                             \
   BOOST_PP_REPEAT_FROM_TO(1,5,TUPLE_MAKER_CREATE,tuple) \
 };
 
-DEFINE_TUPLE_MAKER(boost_tuple_maker,boost::tuple)
+DEFINE_TUPLE_MAKER(cons_tuple_maker,cons_tuple)
 
 DEFINE_TUPLE_MAKER(std_tuple_maker,std::tuple)
 
@@ -389,7 +388,7 @@ void test_composite_key_template()
   ckey_t1 ck1;
   ckey_t1 ck2(ck1);
   ckey_t1 ck3(
-    boost::make_tuple(
+    make_cons_tuple(
       BOOST_MULTI_INDEX_MEMBER(xyz,int,x)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,y)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,z)()));
@@ -466,7 +465,7 @@ void test_composite_key_template()
   > ckey_eq_t2;
 
   ckey_eq_t2 eq2(
-    boost::make_tuple(
+    make_cons_tuple(
       modulo_equal(2),
       modulo_equal(3),
       std::equal_to<int>(),
@@ -514,7 +513,7 @@ void test_composite_key_template()
   ckey_comp_t3 cp3;
   ckey_comp_t3 cp4(cp3);
   ckey_comp_t3 cp5(
-    boost::make_tuple(
+    make_cons_tuple(
       std::less<int>(),
       std::greater<int>(),
       std::less<int>()));
@@ -610,7 +609,7 @@ void test_composite_key_template()
   ckey_hash_t ch1;
   ckey_hash_t ch2(ch1);
   ckey_hash_t ch3(
-    boost::make_tuple(
+    make_cons_tuple(
       std::hash<std::string>(),
       std::hash<int>(),
       std::hash<int>()));
@@ -639,7 +638,7 @@ void test_composite_key_template()
 
 void test_composite_key()
 {
-  test_composite_key_template<boost_tuple_maker>();
+  test_composite_key_template<cons_tuple_maker>();
 
   test_composite_key_template<std_tuple_maker>();
 }

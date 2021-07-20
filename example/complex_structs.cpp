@@ -16,7 +16,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <iostream>
 #include <string>
 
@@ -246,7 +246,7 @@ int main()
     /* find all the cars for the manufacturer given */
 
     boost::multi_index::index<car_table,manufacturer>::type::iterator ic0,ic1;
-    boost::tuples::tie(ic0,ic1)=get<manufacturer>(ct).equal_range(cm);
+    std::tie(ic0,ic1)=get<manufacturer>(ct).equal_range(cm);
 
     /* construct a view (indexed by price) with these */
 
@@ -295,7 +295,7 @@ int main()
     /* select the cars with given manufacturer */
 
     car_table_manufacturer_view::iterator ictmv0,ictmv1;
-    boost::tuples::tie(ictmv0,ictmv1)=ctmv.equal_range(cm);
+    std::tie(ictmv0,ictmv1)=ctmv.equal_range(cm);
     if(ictmv0==ictmv1){
       std::cout<<"no cars in the range given"<<std::endl;
       return 0;

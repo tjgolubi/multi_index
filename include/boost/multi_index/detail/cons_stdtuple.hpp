@@ -10,69 +10,58 @@
 #define BOOST_MULTI_INDEX_DETAIL_CONS_STDTUPLE_HPP
 #pragma once
 
-#include <boost/tuple/tuple.hpp>
+#include <boost/multi_index/cons_tuple.hpp>
 #include <boost/mp11/utility.hpp>
 #include <tuple>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
-/* std::tuple wrapper providing the cons-based interface of boost::tuple for
+/* std::tuple wrapper providing the cons-based interface of cons_tuple for
  * composite_key interoperability.
  */
 
-template<typename StdTuple,std::size_t N>
+template<typename StdTuple, std::size_t N>
 struct cons_stdtuple;
 
-struct cons_stdtuple_ctor_terminal
-{
-  typedef boost::tuples::null_type result_type;
+struct cons_stdtuple_ctor_terminal {
+  typedef cons_null result_type;
 
   template<typename StdTuple>
-  static result_type create(const StdTuple&)
-  {
-    return boost::tuples::null_type();
-  }
-};
+  static result_type create(const StdTuple&) { return cons_null(); }
+}; // cons_stdtuple_ctor_terminal
 
-template<typename StdTuple,std::size_t N>
-struct cons_stdtuple_ctor_normal
-{
+template<typename StdTuple, std::size_t N>
+struct cons_stdtuple_ctor_normal {
   typedef cons_stdtuple<StdTuple,N> result_type;
+  static result_type create(const StdTuple& t) { return result_type(t); }
+}; // cons_stdtuple_ctor_normal
 
-  static result_type create(const StdTuple& t)
-  {
-    return result_type(t);
-  }
-};
+template<typename StdTuple, std::size_t N = 0>
+struct cons_stdtuple_ctor
+  : mp11::mp_if_c<
+      (N < std::tuple_size<StdTuple>::value),
+      cons_stdtuple_ctor_normal<StdTuple,N>,
+      cons_stdtuple_ctor_terminal
+    >
+{ }; // cons_stdtuple_ctor
 
-template<typename StdTuple,std::size_t N=0>
-struct cons_stdtuple_ctor:
-  boost::mp11::mp_if_c<
-    N<std::tuple_size<StdTuple>::value,
-    cons_stdtuple_ctor_normal<StdTuple,N>,
-    cons_stdtuple_ctor_terminal
-  >
-{};
-
-template<typename StdTuple,std::size_t N>
-struct cons_stdtuple
-{
+template<typename StdTuple, std::size_t N>
+struct cons_stdtuple {
   typedef typename std::tuple_element<N,StdTuple>::type head_type;
-  typedef cons_stdtuple_ctor<StdTuple,N+1>              tail_ctor;
+  typedef cons_stdtuple_ctor<StdTuple, N+1>             tail_ctor;
   typedef typename tail_ctor::result_type               tail_type;
   
-  cons_stdtuple(const StdTuple& t_):t(t_){}
+  cons_stdtuple(const StdTuple& t_) : t(t_) {}
 
-  const head_type& get_head()const{return std::get<N>(t);}
-  tail_type get_tail()const{return tail_ctor::create(t);}
+  const head_type& get_head() const { return std::get<N>(t); }
+  tail_type get_tail() const { return tail_ctor::create(t); }
     
   const StdTuple& t;
-};
+}; // cons_stdtuple
 
 template<typename StdTuple>
 typename cons_stdtuple_ctor<StdTuple>::result_type
-make_cons_stdtuple(const StdTuple& t)
-{
+make_cons_stdtuple(const StdTuple& t) {
   return cons_stdtuple_ctor<StdTuple>::create(t);
 }
 
