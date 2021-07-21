@@ -38,7 +38,10 @@ protected:
   typedef typename super::node_impl_pointer node_impl_pointer;
 
 public:
-  typedef typename super::ctor_args_list ctor_args_list;
+  typedef typename std::tuple<>          ctor_list;
+  typedef typename std::pair<
+      ctor_list,
+      typename super::ctor_args_list>    ctor_args_list;
   typedef typename super::allocator_type allocator_type;
   typedef typename super::iterator       iterator;
   typedef typename super::size_type      size_type;
@@ -148,9 +151,8 @@ protected:
   ranked_index(const ranked_index& x,do_not_copy_elements_tag):
     super(x,do_not_copy_elements_tag()){};
 
-  ranked_index(
-    const ctor_args_list& args_list,const allocator_type& al):
-    super(args_list,al){}
+  ranked_index(const ctor_args_list& args_list, const allocator_type& al)
+    : super(args_list.second, al) { }
 
 private:
   template<typename LowerBounder,typename UpperBounder>

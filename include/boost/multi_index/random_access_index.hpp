@@ -121,7 +121,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef std::tuple<
+  typedef std::pair<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<
@@ -711,12 +711,10 @@ public:
   }
     
 protected:
-  random_access_index(
-    const ctor_args_list& args_list,const allocator_type& al):
-    super(get<1>(args_list),al),
-    ptrs(al,header()->impl(),0)
-  {
-  }
+  random_access_index(const ctor_args_list& args_list, const allocator_type& al)
+    : super(args_list.second, al)
+    , ptrs(al, header()->impl(), 0)
+    { }
 
   random_access_index(const random_access_index<SuperMeta,TagList>& x):
     super(x),

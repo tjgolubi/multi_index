@@ -110,7 +110,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef std::tuple<
+  typedef std::pair<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<
@@ -613,8 +613,8 @@ public:
   }
 
 protected:
-  sequenced_index(const ctor_args_list& args_list,const allocator_type& al):
-    super(get<1>(args_list),al)
+  sequenced_index(const ctor_args_list& args_list, const allocator_type& al)
+    : super(args_list.second, al)
   {
     empty_initialize();
   }

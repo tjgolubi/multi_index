@@ -117,7 +117,7 @@ public:
   typedef typename alloc_traits::size_type       size_type;
   typedef typename alloc_traits::difference_type difference_type;
   typedef std::tuple<size_type,
-    key_from_value, hasher,key_equal>            ctor_args;
+    key_from_value, hasher, key_equal>           ctor_args;
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_SAFE_MODE)
   typedef safe_mode::safe_iterator<
@@ -146,7 +146,7 @@ public:
 
 protected:
   typedef typename super::final_node_type     final_node_type;
-  typedef std::tuple<
+  typedef std::pair<
     ctor_args, 
     typename super::ctor_args_list>           ctor_args_list;
   typedef mp11::mp_push_front<
@@ -638,13 +638,13 @@ public:
   }
 
 protected:
-  hashed_index(const ctor_args_list& args_list,const allocator_type& al):
-    super(get<1>(args_list),al),
-    key(get<1>(get<0>(args_list))),
-    hash_(get<2>(get<0>(args_list))),
-    eq_(get<3>(get<0>(args_list))),
-    buckets(al,header()->impl(),get<0>(get<0>(args_list))),
-    mlf(1.0f)
+  hashed_index(const ctor_args_list& args_list, const allocator_type& al)
+    : super(args_list.second, al)
+    , key(get<1>(args_list.first))
+    , hash_(get<2>(args_list.first))
+    , eq_(get<3>(args_list.first))
+    , buckets(al, header()->impl(), get<0>(args_list.first))
+    , mlf(1.0f)
   {
     calculate_max_load();
   }

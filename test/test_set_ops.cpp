@@ -118,7 +118,7 @@ void test_set_ops()
 
   /* check promotion detection does not break with functions */
 
-  auto arg = std::make_tuple(
+  auto arg = std::make_pair(
       std::make_tuple(identity<type1>(), &less_type1_f),
       std::make_tuple());
 
