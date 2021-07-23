@@ -1160,6 +1160,8 @@ public:
   }
 }; // composite_key_hash
 
+namespace detail {
+
 /* Instantiations of the former functors with "natural" basic components:
  * composite_key_result_equal_to uses std::equal_to of the values.
  * composite_key_result_less     uses std::less.
@@ -1266,6 +1268,8 @@ public:
   using super::operator();
 }; // composite_key_result_hash
 
+} // detail
+
 } // boost::multi_index
 
 /* Specializations of std::equal_to, std::less, std::greater and std::hash
@@ -1276,28 +1280,28 @@ namespace std {
 
 template<typename CompositeKey>
 struct equal_to<boost::multi_index::composite_key_result<CompositeKey>>
-  : boost::multi_index::composite_key_result_equal_to<
+  : boost::multi_index::detail::composite_key_result_equal_to<
       boost::multi_index::composite_key_result<CompositeKey>
     >
 { };
 
 template<typename CompositeKey>
 struct less<boost::multi_index::composite_key_result<CompositeKey>>
-  : boost::multi_index::composite_key_result_less<
+  : boost::multi_index::detail::composite_key_result_less<
       boost::multi_index::composite_key_result<CompositeKey>
     >
 { };
 
 template<typename CompositeKey>
 struct greater<boost::multi_index::composite_key_result<CompositeKey>>
-  : boost::multi_index::composite_key_result_greater<
+  : boost::multi_index::detail::composite_key_result_greater<
       boost::multi_index::composite_key_result<CompositeKey>
     >
 { };
 
 template<typename CompositeKey>
 struct hash<boost::multi_index::composite_key_result<CompositeKey>>
-  : boost::multi_index::composite_key_result_hash<
+  : boost::multi_index::detail::composite_key_result_hash<
       boost::multi_index::composite_key_result<CompositeKey>
     >
 { };

@@ -99,9 +99,9 @@ struct comparison_equal_length
 {
   static bool is_less(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_equal_to<CompositeKeyResult> eq;
-    composite_key_result_less<CompositeKeyResult>     lt;
-    composite_key_result_greater<CompositeKeyResult>  gt;
+    // composite_key_result_equal_to<CompositeKeyResult> eq;
+    // composite_key_result_less<CompositeKeyResult>     lt;
+    // composite_key_result_greater<CompositeKeyResult>  gt;
     std::equal_to<CompositeKeyResult>                 std_eq;
     std::less<CompositeKeyResult>                     std_lt;
     std::greater<CompositeKeyResult>                  std_gt;
@@ -112,9 +112,9 @@ struct comparison_equal_length
            !(x> y) &&  (y> x)&&
            !(x>=y) &&  (y>=x)&&
             (x<=y) && !(y<=x)&&
-          !eq(x,y) && !eq(y,x)&&
-           lt(x,y) && !lt(y,x)&&
-          !gt(x,y) &&  gt(y,x)&&
+//        !eq(x,y) && !eq(y,x)&&
+//         lt(x,y) && !lt(y,x)&&
+//        !gt(x,y) &&  gt(y,x)&&
       !std_eq(x,y) && !std_eq(y,x)&&
        std_lt(x,y) && !std_lt(y,x)&&
       !std_gt(x,y) &&  std_gt(y,x);
@@ -122,9 +122,9 @@ struct comparison_equal_length
 
   static bool is_greater(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_equal_to<CompositeKeyResult> eq;
-    composite_key_result_less<CompositeKeyResult>     lt;
-    composite_key_result_greater<CompositeKeyResult>  gt;
+    // composite_key_result_equal_to<CompositeKeyResult> eq;
+    // composite_key_result_less<CompositeKeyResult>     lt;
+    // composite_key_result_greater<CompositeKeyResult>  gt;
     std::equal_to<CompositeKeyResult>                 std_eq;
     std::less<CompositeKeyResult>                     std_lt;
     std::greater<CompositeKeyResult>                  std_gt;
@@ -135,9 +135,9 @@ struct comparison_equal_length
             (x> y) && !(y> x)&&
             (x>=y) && !(y>=x)&&
            !(x<=y) &&  (y<=x)&&
-          !eq(x,y) && !eq(y,x)&&
-          !lt(x,y) &&  lt(y,x)&&
-           gt(x,y) && !gt(y,x)&&
+//        !eq(x,y) && !eq(y,x)&&
+//        !lt(x,y) &&  lt(y,x)&&
+//         gt(x,y) && !gt(y,x)&&
       !std_eq(x,y) && !std_eq(y,x)&&
       !std_lt(x,y) &&  std_lt(y,x)&&
        std_gt(x,y) && !std_gt(y,x);
@@ -145,9 +145,9 @@ struct comparison_equal_length
 
   static bool is_equiv(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_equal_to<CompositeKeyResult> eq;
-    composite_key_result_less<CompositeKeyResult>     lt;
-    composite_key_result_greater<CompositeKeyResult>  gt;
+//  composite_key_result_equal_to<CompositeKeyResult> eq;
+//  composite_key_result_less<CompositeKeyResult>     lt;
+//  composite_key_result_greater<CompositeKeyResult>  gt;
     std::equal_to<CompositeKeyResult>                 std_eq;
     std::less<CompositeKeyResult>                     std_lt;
     std::greater<CompositeKeyResult>                  std_gt;
@@ -158,9 +158,9 @@ struct comparison_equal_length
            !(x> y) && !(y> x)&&
             (x>=y) &&  (y>=x)&&
             (x<=y) &&  (y<=x)&&
-           eq(x,y) &&  eq(y,x)&&
-          !lt(x,y) && !lt(y,x)&&
-          !gt(x,y) && !gt(y,x)&&
+//         eq(x,y) &&  eq(y,x)&&
+//        !lt(x,y) && !lt(y,x)&&
+//        !gt(x,y) && !gt(y,x)&&
        std_eq(x,y) &&  std_eq(y,x)&&
       !std_lt(x,y) && !std_lt(y,x)&&
       !std_gt(x,y) && !std_gt(y,x);
@@ -172,8 +172,8 @@ struct comparison_different_length
 {
   static bool is_less(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_less<CompositeKeyResult>    lt;
-    composite_key_result_greater<CompositeKeyResult> gt;
+//  composite_key_result_less<CompositeKeyResult>    lt;
+//  composite_key_result_greater<CompositeKeyResult> gt;
     std::less<CompositeKeyResult>                    std_lt;
     std::greater<CompositeKeyResult>                 std_gt;
 
@@ -181,16 +181,16 @@ struct comparison_different_length
            !(x> y) &&  (y> x)&&
            !(x>=y) &&  (y>=x)&&
             (x<=y) && !(y<=x)&&
-           lt(x,y) && !lt(y,x)&&
-          !gt(x,y) &&  gt(y,x)&&
+//         lt(x,y) && !lt(y,x)&&
+//        !gt(x,y) &&  gt(y,x)&&
        std_lt(x,y) && !std_lt(y,x)&&
       !std_gt(x,y) &&  std_gt(y,x);
   }
 
   static bool is_greater(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_less<CompositeKeyResult>    lt;
-    composite_key_result_greater<CompositeKeyResult> gt;
+//  composite_key_result_less<CompositeKeyResult>    lt;
+//  composite_key_result_greater<CompositeKeyResult> gt;
     std::less<CompositeKeyResult>                    std_lt;
     std::greater<CompositeKeyResult>                 std_gt;
 
@@ -198,16 +198,16 @@ struct comparison_different_length
             (x> y) && !(y> x)&&
             (x>=y) && !(y>=x)&&
            !(x<=y) &&  (y<=x)&&
-          !lt(x,y) &&  lt(y,x)&&
-           gt(x,y) && !gt(y,x)&&
+//        !lt(x,y) &&  lt(y,x)&&
+//         gt(x,y) && !gt(y,x)&&
       !std_lt(x,y) && std_lt(y,x)&&
        std_gt(x,y) && !std_gt(y,x);
   }
 
   static bool is_equiv(const CompositeKeyResult& x,const T2& y)
   {
-    composite_key_result_less<CompositeKeyResult>    lt;
-    composite_key_result_greater<CompositeKeyResult> gt;
+//  composite_key_result_less<CompositeKeyResult>    lt;
+//  composite_key_result_greater<CompositeKeyResult> gt;
     std::less<CompositeKeyResult>                    std_lt;
     std::greater<CompositeKeyResult>                 std_gt;
 
@@ -215,8 +215,8 @@ struct comparison_different_length
            !(x> y) && !(y> x)&&
             (x>=y) &&  (y>=x)&&
             (x<=y) &&  (y<=x)&&
-          !lt(x,y) && !lt(y,x)&&
-          !gt(x,y) && !gt(y,x)&&
+//        !lt(x,y) && !lt(y,x)&&
+//        !gt(x,y) && !gt(y,x)&&
       !std_lt(x,y) && !std_lt(y,x)&&
       !std_gt(x,y) && !std_gt(y,x);
   }
@@ -414,6 +414,7 @@ void test_composite_key_template()
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),TupleMaker::create(0,0,-1)));
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,0)),TupleMaker::create(0,0,0,1)));
 
+#if 0
   typedef composite_key_result_less<ckey_t1::result_type>     ckey_comp_t1;
   typedef composite_key_result_equal_to<ckey_t1::result_type> ckey_eq_t1;
 
@@ -456,6 +457,7 @@ void test_composite_key_template()
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,0)),TupleMaker::create(0,0,0),cp2));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),TupleMaker::create(0,0,1),cp2));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),TupleMaker::create(0,0,-1),cp2));
+#endif
 
   typedef composite_key_equal_to<
     modulo_equal,
@@ -549,6 +551,7 @@ void test_composite_key_template()
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),ck5(xyz(-1,1,0))));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),ck5(xyz(1,-1,0))));
 
+#if 0
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,1)),ck5(xyz(0,0,0)),cp1));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),ck5(xyz(-1,1,0)),cp1));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),ck5(xyz(1,-1,0)),cp1));
@@ -556,6 +559,7 @@ void test_composite_key_template()
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,1)),ck5(xyz(0,0,0)),cp2));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),ck5(xyz(-1,1,0)),cp2));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),ck5(xyz(1,-1,0)),cp2));
+#endif
 
   BOOST_TEST(is_equiv  (ck1(xyz(0,0,1)),ck5(xyz(0,0,0)),cp3));
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),ck5(xyz(-1,1,0)),cp3));
