@@ -346,23 +346,24 @@ struct cons<HT, cons_null> {
 
 template<class T>
 struct cons_size
-  : std::integral_constant<int, 1 + cons_size<typename T::tail_type>::value>
+  : std::integral_constant<std::size_t,
+         1 + cons_size<typename T::tail_type>::value>
 { };
 
 template<>
-struct cons_size<cons_tuple<> > : std::integral_constant<int, 0>
+struct cons_size<cons_tuple<>> : std::integral_constant<std::size_t, 0>
 { };
 
 template<>
-struct cons_size<cons_tuple<> const> : std::integral_constant<int, 0>
+struct cons_size<cons_tuple<> const> : std::integral_constant<std::size_t, 0>
 { };
 
 template<>
-struct cons_size<cons_null> : std::integral_constant<int, 0>
+struct cons_size<cons_null> : std::integral_constant<std::size_t, 0>
 { };
 
 template<>
-struct cons_size<cons_null const> : std::integral_constant<int, 0>
+struct cons_size<cons_null const> : std::integral_constant<std::size_t, 0>
 { };
 
 namespace detail {

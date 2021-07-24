@@ -617,7 +617,8 @@ void test_composite_key_template()
       std::hash<std::string>(),
       std::hash<int>(),
       std::hash<int>()));
-  ckey_hash_t ch4(get<0>(ch1.key_hash_functions()));
+  ckey_hash_t ch4(get<0>(ch1.key_hash_functions()),
+                  std::hash<int>(), std::hash<int>());
 
   ch2=ch3; /* prevent unused var */
   ch3=ch4; /* prevent unused var */

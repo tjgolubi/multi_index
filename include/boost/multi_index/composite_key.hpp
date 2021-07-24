@@ -91,7 +91,7 @@ namespace detail {
 
 /* n-th key extractor of a composite key */
 
-template<typename CompositeKey, int N>
+template<typename CompositeKey, std::size_t N>
 struct nth_key_from_value {
   typedef typename CompositeKey::key_extractor_tuple key_extractor_tuple;
   typedef typename mp11::mp_if_c <
@@ -119,7 +119,7 @@ struct BOOST_PP_CAT(key_,name)<cons_null>                                    \
   typedef cons_null type;                                                    \
 };                                                                           \
                                                                              \
-template<typename CompositeKey,int  N>                                       \
+template<typename CompositeKey,std::size_t  N>                               \
 struct BOOST_PP_CAT(nth_composite_key_,name)                                 \
 {                                                                            \
   typedef typename nth_key_from_value<CompositeKey,N>::type key_from_value;  \
@@ -602,7 +602,7 @@ inline bool operator==(const composite_key_result<CompositeKey>& x,
   typedef typename detail::cons_stdtuple_ctor < key_tuple >::result_type
                                                      cons_key_tuple;
 
-  static_assert(static_cast<std::size_t>(cons_size<key_extractor_tuple>::value)
+  static_assert(cons_size<key_extractor_tuple>::value
                 == std::tuple_size<key_tuple>::value);
 
   return detail::equal_ckey_cval <
@@ -624,7 +624,7 @@ inline bool operator==(const std::tuple<Values...>& x,
   typedef typename detail::cons_stdtuple_ctor <key_tuple >::result_type
                                                      cons_key_tuple;
 
-  static_assert(static_cast<std::size_t>(cons_size<key_extractor_tuple>::value)
+  static_assert(cons_size<key_extractor_tuple>::value
                 == std::tuple_size<key_tuple>::value);
 
   return detail::equal_ckey_cval <
@@ -869,11 +869,10 @@ public:
     typedef typename CompositeKey::value_type              value_type;
     typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
 
-    static_assert(
-      cons_size<key_tuple>::value <=
-      cons_size<key_eq_tuple>::value &&
-      cons_size<key_tuple>::value ==
-      cons_size<key_extractor_tuple>::value);
+    static_assert(     cons_size<key_tuple>::value
+                    <= cons_size<key_eq_tuple>::value
+                  && cons_size<key_tuple>::value
+                    == cons_size<key_extractor_tuple>::value);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -894,7 +893,7 @@ public:
 
     static_assert(cons_size<key_extractor_tuple>::value
                 <= cons_size<key_eq_tuple>::value
-              && static_cast<std::size_t>(cons_size<key_extractor_tuple>::value)
+              && cons_size<key_extractor_tuple>::value
                 == std::tuple_size<key_tuple>::value);
 
     return detail::equal_ckey_cval <
@@ -917,9 +916,9 @@ public:
                                                        cons_key_tuple;
 
     static_assert(std::tuple_size<key_tuple>::value
-            <= static_cast<std::size_t>(cons_size<key_eq_tuple>::value)
+            <= cons_size<key_eq_tuple>::value
           && std::tuple_size<key_tuple>::value
-            == static_cast<std::size_t>(cons_size<key_extractor_tuple>::value));
+            == cons_size<key_extractor_tuple>::value);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -1054,7 +1053,7 @@ public:
     static_assert( cons_size<key_extractor_tuple>::value
                 <= cons_size<key_comp_tuple>::value
               || std::tuple_size<key_tuple>::value
-                <= static_cast<std::size_t>(cons_size<key_comp_tuple>::value));
+                <= cons_size<key_comp_tuple>::value);
 
     return detail::compare_ckey_cval <
               key_extractor_tuple, value_type,
@@ -1075,8 +1074,8 @@ public:
     typedef typename detail::cons_stdtuple_ctor<key_tuple >::result_type
                                                        cons_key_tuple;
 
-    static_assert(std::tuple_size<key_tuple>::value
-                  <= static_cast<std::size_t>(cons_size<key_comp_tuple>::value)
+    static_assert(   std::tuple_size<key_tuple>::value
+                  <= cons_size<key_comp_tuple>::value
                 ||   cons_size<key_extractor_tuple>::value
                   <= cons_size<key_comp_tuple>::value);
 
@@ -1093,22 +1092,19 @@ public:
 
 /* composite_key_hash */
 
-template <
-  BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_TEMPLATE_PARM, Hash)
->
+template <typename... HashList>
 struct composite_key_hash
-  : private cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Hash)>
+  : private cons_tuple<HashList...>
 {
 private:
-  typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Hash)> super;
+  typedef cons_tuple<HashList...> super;
 
 public:
   typedef super key_hasher_tuple;
 
-  composite_key_hash(
-      BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_CTOR_ARG, Hash))
-    : super(BOOST_MULTI_INDEX_CK_ENUM_PARAMS(k))
-  {}
+  composite_key_hash() : super() { }
+
+  explicit composite_key_hash(const HashList&... args...) : super(args...) {}
 
   composite_key_hash(const key_hasher_tuple& x) : super(x) {}
 
@@ -1131,12 +1127,9 @@ public:
                    key_hash_functions());
   }
 
-  template<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value)>
-  std::size_t operator()(
-    const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& x
-  ) const
-  {
-    typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+  template<typename... Values>
+  std::size_t operator()(const cons_tuple<Values...>& x) const {
+    typedef cons_tuple<Values...> key_tuple;
 
     static_assert(   cons_size<key_tuple>::value
                   == cons_size<key_hasher_tuple>::value);
@@ -1154,7 +1147,7 @@ public:
                                                  cons_key_tuple;
 
     static_assert(std::tuple_size<key_tuple>::value
-              == static_cast<std::size_t>(cons_size<key_hasher_tuple>::value));
+              == cons_size<key_hasher_tuple>::value);
 
     return detail::hash_cval <
               cons_key_tuple,
