@@ -475,7 +475,9 @@ void test_composite_key_template()
   ckey_eq_t2 eq3(eq2);
   ckey_eq_t2 eq4(
     get<0>(eq3.key_eqs()),
-    get<1>(eq3.key_eqs()));
+    get<1>(eq3.key_eqs()),
+    std::equal_to<int>(),
+    std::equal_to<int>());
 
   eq3=eq4; /* prevent unused var */
   eq4=eq3; /* prevent unused var */
@@ -519,7 +521,9 @@ void test_composite_key_template()
       std::less<int>(),
       std::greater<int>(),
       std::less<int>()));
-  ckey_comp_t3 cp6(get<0>(cp3.key_comps()));
+  ckey_comp_t3 cp6(get<0>(cp3.key_comps()),
+                   std::greater<int>(),
+                   std::less<int>());
 
   cp4=cp5; /* prevent unused var */
   cp5=cp6; /* prevent unused var */

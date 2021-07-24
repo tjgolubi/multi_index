@@ -789,22 +789,19 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
 
 /* composite_key_equal_to */
 
-template <
-  BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_TEMPLATE_PARM, Pred)
->
+template <typename... PredList>
 struct composite_key_equal_to
-  : private cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Pred)>
+  : private cons_tuple<PredList...>
 {
 private:
-  typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Pred)> super;
+  typedef cons_tuple<PredList...> super;
 
 public:
   typedef super key_eq_tuple;
 
-  composite_key_equal_to(
-    BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_CTOR_ARG, Pred))
-      : super(BOOST_MULTI_INDEX_CK_ENUM_PARAMS(k))
-  {}
+  composite_key_equal_to() : super() { }
+
+  explicit composite_key_equal_to(const PredList&... args) : super(args...) {}
 
   composite_key_equal_to(const key_eq_tuple& x) : super(x) {}
 
@@ -933,22 +930,19 @@ public:
 
 /* composite_key_compare */
 
-template <
-  BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_TEMPLATE_PARM, Compare)
->
+template <typename... CompareList>
 struct composite_key_compare
-  : private cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Compare)>
+  : private cons_tuple<CompareList...>
 {
 private:
-  typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Compare)> super;
+  typedef cons_tuple<CompareList...> super;
 
 public:
   typedef super key_comp_tuple;
 
-  composite_key_compare(
-    BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_CTOR_ARG, Compare))
-    : super(BOOST_MULTI_INDEX_CK_ENUM_PARAMS(k))
-  {}
+  composite_key_compare() : super() {}
+
+  explicit composite_key_compare(const CompareList&... args) : super(args...) {}
 
   composite_key_compare(const key_comp_tuple& x) : super(x) {}
 
