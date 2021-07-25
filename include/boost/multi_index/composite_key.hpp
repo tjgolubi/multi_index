@@ -68,18 +68,10 @@
  * otherwise -> textn=cons_null
  */
 
-#define BOOST_MULTI_INDEX_CK_TEMPLATE_PARM(z,n,text)                         \
-  typename BOOST_PP_CAT(text,n) BOOST_PP_EXPR_IF(n,=cons_null)
-
-/* const textn& kn=textn() */
-
-#define BOOST_MULTI_INDEX_CK_CTOR_ARG(z,n,text)                              \
-  const BOOST_PP_CAT(text,n)& BOOST_PP_CAT(k,n) = BOOST_PP_CAT(text,n)()
-
 /* typename list(0)<list(1),n>::type */
 
 #define BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N(z,n,list)                  \
-  typename BOOST_PP_LIST_AT(list,0)<                           \
+  typename BOOST_PP_LIST_AT(list,0)<                                         \
     BOOST_PP_LIST_AT(list,1),n                                               \
   >::type
 
@@ -101,45 +93,65 @@ struct nth_key_from_value {
   >::type                                            type;
 }; // nth_key_from_value
 
-/* nth_composite_key_##name<CompositeKey,N>::type yields
- * functor<nth_key_from_value<CompositeKey,N> >, or cons_null
- * if N exceeds the length of the composite key.
- */
-
-#define BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(name,functor)         \
-template<typename KeyFromValue>                                              \
-struct BOOST_PP_CAT(key_,name)                                               \
-{                                                                            \
-  typedef functor<typename KeyFromValue::result_type> type;                  \
-};                                                                           \
-                                                                             \
-template<>                                                                   \
-struct BOOST_PP_CAT(key_,name)<cons_null>                                    \
-{                                                                            \
-  typedef cons_null type;                                                    \
-};                                                                           \
-                                                                             \
-template<typename CompositeKey,std::size_t  N>                               \
-struct BOOST_PP_CAT(nth_composite_key_,name)                                 \
-{                                                                            \
-  typedef typename nth_key_from_value<CompositeKey,N>::type key_from_value;  \
-  typedef typename BOOST_PP_CAT(key_,name)<key_from_value>::type type;       \
+template<typename KeyFromValue>
+struct key_equal_to {
+  using type = std::equal_to<typename KeyFromValue::result_type>;
 };
 
-/* nth_composite_key_equal_to
- * nth_composite_key_less
- * nth_composite_key_greater
- * nth_composite_key_hash
- */
+template<> struct key_equal_to<cons_null> {
+  using type = cons_null;
+};
 
-BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(equal_to, std::equal_to)
-BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(less, std::less)
-BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(greater, std::greater)
-BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR(hash, std::hash)
+template<typename CompositeKey, std::size_t N>
+struct nth_composite_key_equal_to {
+  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
+  using type =  typename key_equal_to<key_from_value>::type;
+};
 
+template<typename KeyFromValue>
+struct key_less {
+  using type = std::less<typename KeyFromValue::result_type>;
+};
+
+template<> struct key_less<cons_null> {
+  using type = cons_null;
+};
+
+template<typename CompositeKey, std::size_t N> struct nth_composite_key_less {
+  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
+  using type = typename key_less<key_from_value>::type;
+};
+
+template<typename KeyFromValue>
+struct key_greater {
+  using type = std::greater<typename KeyFromValue::result_type>;
+};
+
+template<> struct key_greater<cons_null> {
+  using type = cons_null;
+};
+
+template<typename CompositeKey, std::size_t N>
+struct nth_composite_key_greater {
+  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
+  using type = typename key_greater<key_from_value>::type;
+};
+
+template<typename KeyFromValue>
+struct key_hash {
+  using type = std::hash<typename KeyFromValue::result_type>;
+};
+
+template<> struct key_hash<cons_null> {
+  using type = cons_null;
+};
+
+template<typename CompositeKey, std::size_t N>
+struct nth_composite_key_hash {
+  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
+  using type = typename key_hash<key_from_value>::type;
+};
 /* used for defining equality and comparison ops of composite_key_result */
-
-#define BOOST_MULTI_INDEX_CK_IDENTITY_ENUM_MACRO(z,n,text) text
 
 struct generic_operator_equal {
   template<typename T, typename Q>
@@ -1287,11 +1299,7 @@ struct hash<boost::multi_index::composite_key_result<CompositeKey>>
 #undef BOOST_MULTI_INDEX_CK_RESULT_LESS_SUPER
 #undef BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER
 #undef BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS
-#undef BOOST_MULTI_INDEX_CK_IDENTITY_ENUM_MACRO
-#undef BOOST_MULTI_INDEX_CK_NTH_COMPOSITE_KEY_FUNCTOR
 #undef BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N
-#undef BOOST_MULTI_INDEX_CK_CTOR_ARG
-#undef BOOST_MULTI_INDEX_CK_TEMPLATE_PARM
 #undef BOOST_MULTI_INDEX_CK_ENUM_PARAMS
 #undef BOOST_MULTI_INDEX_CK_ENUM
 #undef BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE
