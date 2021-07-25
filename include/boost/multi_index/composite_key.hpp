@@ -478,25 +478,21 @@ struct composite_key_result {
 
 /* composite_key */
 
-template <
-  typename Value,
-  BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_TEMPLATE_PARM, KeyFromValue)
->
+template <typename Value, typename... KeyFromValueList>
 struct composite_key
-  : private cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(KeyFromValue)>
+  : private cons_tuple<KeyFromValueList...>
 {
 private:
-  typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(KeyFromValue)> super;
+  typedef cons_tuple<KeyFromValueList...> super;
 
 public:
   typedef super                               key_extractor_tuple;
   typedef Value                               value_type;
   typedef composite_key_result<composite_key> result_type;
 
-  explicit composite_key(
-    BOOST_MULTI_INDEX_CK_ENUM(BOOST_MULTI_INDEX_CK_CTOR_ARG, KeyFromValue))
-    : super(BOOST_MULTI_INDEX_CK_ENUM_PARAMS(k))
-  {}
+  composite_key() : super() { }
+
+  explicit composite_key(const KeyFromValueList&... keys) : super(keys...) {}
 
   composite_key(const key_extractor_tuple& x) : super(x) {}
 

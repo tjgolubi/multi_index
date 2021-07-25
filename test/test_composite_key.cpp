@@ -392,7 +392,9 @@ void test_composite_key_template()
       BOOST_MULTI_INDEX_MEMBER(xyz,int,x)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,y)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,z)()));
-  ckey_t1 ck4(get<0>(ck1.key_extractors()));
+  ckey_t1 ck4(get<0>(ck1.key_extractors()),
+              BOOST_MULTI_INDEX_MEMBER(xyz,int,y)(),
+              BOOST_MULTI_INDEX_MEMBER(xyz,int,z)());
 
   (void)ck3; /* prevent unused var */
 
