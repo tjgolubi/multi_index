@@ -15,11 +15,6 @@
 #include <boost/mp11/algorithm.hpp>
 #include <boost/mp11/function.hpp>
 #include <boost/mp11/utility.hpp>
-#include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor/control/expr_if.hpp>
-#include <boost/preprocessor/list/at.hpp>
-#include <boost/preprocessor/repetition/enum.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
 #include <tuple>
 #include <functional>
 #include <type_traits>
@@ -34,45 +29,7 @@
  * of T.
  */
 
-/* This user_definable macro limits the number of elements of a composite
- * key; useful for shortening resulting symbol names (MSVC++ 6.0, for
- * instance has problems coping with very long symbol names.)
- * NB: This cannot exceed the maximum number of arguments of
- * cons_tuple, cons_tuple_size.
- */
-
-#if !defined(BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE)
-#define BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE 10
-#endif
-
-/* maximum number of key extractors in a composite key */
-
-#if BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE<10 /* max length of a cons_tuple */
-#define BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE \
-  BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE
-#else
-#define BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE 10
-#endif
-
-/* BOOST_PP_ENUM of BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE elements */
-
-#define BOOST_MULTI_INDEX_CK_ENUM(macro,data)                                \
-  BOOST_PP_ENUM(BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE,macro,data)
-
-/* if n==0 ->   text0
- * otherwise -> textn=cons_null
- */
-
-/* typename list(0)<list(1),n>::type */
-
-#define BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N(z,n,list)                  \
-  typename BOOST_PP_LIST_AT(list,0)<                                         \
-    BOOST_PP_LIST_AT(list,1),n                                               \
-  >::type
-
 namespace boost::multi_index {
-
-static_assert(BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE == cons_tuple_size);
 
 namespace detail {
 
@@ -774,6 +731,8 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
   composite_key_result<CompositeKey>
 )
 
+#undef BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS
+
 /* composite_key_equal_to */
 
 template <typename... PredList>
@@ -1124,108 +1083,229 @@ public:
 
 namespace detail {
 
-/* Instantiations of the former functors with "natural" basic components:
- * composite_key_result_equal_to uses std::equal_to of the values.
- * composite_key_result_less     uses std::less.
- * composite_key_result_greater  uses std::greater.
- * composite_key_result_hash     uses std::hash.
- */
-
-#define BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER                           \
-composite_key_equal_to<                                                      \
-    BOOST_MULTI_INDEX_CK_ENUM(                                               \
-      BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N,                             \
-      /* the argument is a PP list */                                        \
-      (detail::nth_composite_key_equal_to,                                   \
-        (typename CompositeKeyResult::composite_key_type,                    \
-          BOOST_PP_NIL)))                                                    \
-  >
-
 template<typename CompositeKeyResult>
 struct composite_key_result_equal_to
-  : private BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER
+  : private composite_key_equal_to<
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 0>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 1>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 2>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 3>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 4>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 5>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 6>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 7>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 8>::type,
+              typename detail::nth_composite_key_equal_to<
+                typename CompositeKeyResult::composite_key_type, 9>::type
+            >
 {
-private:
-  typedef BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER super;
+ private:
+  using super = composite_key_equal_to<
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 0>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 1>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 2>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 3>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 4>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 5>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 6>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 7>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 8>::type,
+                  typename detail::nth_composite_key_equal_to<
+                    typename CompositeKeyResult::composite_key_type, 9>::type
+              >;
 
-public:
-  typedef CompositeKeyResult  first_argument_type;
-  typedef first_argument_type second_argument_type;
-  typedef bool                result_type;
+ public:
+  using first_argument_type  = CompositeKeyResult;
+  using second_argument_type = first_argument_type;
+  using result_type = bool;
 
   using super::operator();
 }; // composite_key_result_equal_to
 
-#define BOOST_MULTI_INDEX_CK_RESULT_LESS_SUPER                               \
-composite_key_compare<                                                       \
-    BOOST_MULTI_INDEX_CK_ENUM(                                               \
-      BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N,                             \
-      /* the argument is a PP list */                                        \
-      (detail::nth_composite_key_less,                                       \
-        (typename CompositeKeyResult::composite_key_type,                    \
-          BOOST_PP_NIL)))                                                    \
-  >
-
 template<typename CompositeKeyResult>
 struct composite_key_result_less
-  : private BOOST_MULTI_INDEX_CK_RESULT_LESS_SUPER
+  : private composite_key_compare<
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 0>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 1>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 2>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 3>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 4>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 5>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 6>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 7>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 8>::type,
+              typename detail::nth_composite_key_less<
+                typename CompositeKeyResult::composite_key_type, 9>::type
+              >
 {
-private:
-  typedef BOOST_MULTI_INDEX_CK_RESULT_LESS_SUPER super;
+ private:
+  using super = composite_key_compare<
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 0>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 1>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 2>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 3>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 4>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 5>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 6>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 7>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 8>::type,
+                  typename detail::nth_composite_key_less<
+                    typename CompositeKeyResult::composite_key_type, 9>::type
+      >;
 
-public:
-  typedef CompositeKeyResult  first_argument_type;
-  typedef first_argument_type second_argument_type;
-  typedef bool                result_type;
+ public:
+  using first_argument_type  = CompositeKeyResult;
+  using second_argument_type = first_argument_type;
+  using result_type = bool;
 
   using super::operator();
 }; // composite_key_result_less
 
-#define BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER                            \
-composite_key_compare<                                                       \
-    BOOST_MULTI_INDEX_CK_ENUM(                                               \
-      BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N,                             \
-      /* the argument is a PP list */                                        \
-      (detail::nth_composite_key_greater,                                    \
-        (typename CompositeKeyResult::composite_key_type,                    \
-          BOOST_PP_NIL)))                                                    \
-  >
-
 template<typename CompositeKeyResult>
 struct composite_key_result_greater
-  : private BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER
+  : private composite_key_compare<
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 0>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 1>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 2>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 3>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 4>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 5>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 6>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 7>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 8>::type,
+              typename detail::nth_composite_key_greater<
+                typename CompositeKeyResult::composite_key_type, 9>::type
+            >
 {
-private:
-  typedef BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER super;
+ private:
+  using super = composite_key_compare<
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 0>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 1>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 2>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 3>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 4>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 5>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 6>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 7>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 8>::type,
+                  typename detail::nth_composite_key_greater<
+                    typename CompositeKeyResult::composite_key_type, 9>::type
+                >;
 
-public:
-  typedef CompositeKeyResult  first_argument_type;
-  typedef first_argument_type second_argument_type;
-  typedef bool                result_type;
+ public:
+  using first_argument_type  = CompositeKeyResult;
+  using second_argument_type = first_argument_type;
+  using result_type = bool;
 
   using super::operator();
 }; // composite_key_result_greater
 
-#define BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER                               \
-composite_key_hash<                                                          \
-    BOOST_MULTI_INDEX_CK_ENUM(                                               \
-      BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N,                             \
-      /* the argument is a PP list */                                        \
-      (detail::nth_composite_key_hash,                                       \
-        (typename CompositeKeyResult::composite_key_type,                    \
-          BOOST_PP_NIL)))                                                    \
-  >
-
 template<typename CompositeKeyResult>
 struct composite_key_result_hash
-  : private BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER
+  : private composite_key_hash<
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 0>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 1>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 2>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 3>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 4>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 5>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 6>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 7>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 8>::type,
+              typename detail::nth_composite_key_hash<
+                typename CompositeKeyResult::composite_key_type, 9>::type
+            >
 {
-private:
-  typedef BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER super;
+ private:
+  using super = composite_key_hash<
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 0>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 1>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 2>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 3>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 4>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 5>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 6>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 7>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 8>::type,
+                  typename detail::nth_composite_key_hash<
+                    typename CompositeKeyResult::composite_key_type, 9>::type
+                >;
 
-public:
-  typedef CompositeKeyResult argument_type;
-  typedef std::size_t        result_type;
+ public:
+  using argument_type = CompositeKeyResult;
+  using result_type = std::size_t;
 
   using super::operator();
 }; // composite_key_result_hash
@@ -1269,14 +1349,5 @@ struct hash<boost::multi_index::composite_key_result<CompositeKey>>
 { };
 
 } // std
-
-#undef BOOST_MULTI_INDEX_CK_RESULT_HASH_SUPER
-#undef BOOST_MULTI_INDEX_CK_RESULT_GREATER_SUPER
-#undef BOOST_MULTI_INDEX_CK_RESULT_LESS_SUPER
-#undef BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER
-#undef BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS
-#undef BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N
-#undef BOOST_MULTI_INDEX_CK_ENUM
-#undef BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE
 
 #endif
