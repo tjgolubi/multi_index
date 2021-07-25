@@ -59,11 +59,6 @@
 #define BOOST_MULTI_INDEX_CK_ENUM(macro,data)                                \
   BOOST_PP_ENUM(BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE,macro,data)
 
-/* BOOST_PP_ENUM_PARAMS of BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE elements */
-
-#define BOOST_MULTI_INDEX_CK_ENUM_PARAMS(param)                              \
-  BOOST_PP_ENUM_PARAMS(BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE,param)
-
 /* if n==0 ->   text0
  * otherwise -> textn=cons_null
  */
@@ -657,17 +652,13 @@ inline bool operator<(const composite_key_result<CompositeKey1>& x,
                     detail::generic_operator_less_tuple());
 }
 
-template <
-  typename CompositeKey,
-  BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value)
->
-inline bool operator<(
-  const composite_key_result<CompositeKey>& x,
-  const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& y)
+template <typename CompositeKey, typename... Values>
+inline bool operator<(const composite_key_result<CompositeKey>& x,
+                      const cons_tuple<Values...>& y)
 {
   typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
   typedef typename CompositeKey::value_type              value_type;
-  typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+  typedef cons_tuple<Values...>                          key_tuple;
 
   return detail::compare_ckey_cval <
             key_extractor_tuple, value_type,
@@ -757,15 +748,15 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
 
 BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
   typename CompositeKey,
-  BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value),
+  typename... Values,
   composite_key_result<CompositeKey>,
-  cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>
+  cons_tuple<Values...>
 )
 
 BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
-  BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value),
+  typename... Values,
   typename CompositeKey,
-  cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>,
+  cons_tuple<Values...>,
   composite_key_result<CompositeKey>
 )
 
@@ -827,17 +818,13 @@ public:
                       key_eqs());
   }
 
-  template <
-    typename CompositeKey,
-    BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value)
-  >
-  bool operator()(
-    const composite_key_result<CompositeKey>& x,
-    const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& y) const
+  template <typename CompositeKey, typename... Values>
+  bool operator()(const composite_key_result<CompositeKey>& x,
+                  const cons_tuple<Values...>& y) const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+    typedef cons_tuple<Values...>                          key_tuple;
 
     static_assert(     cons_size<key_extractor_tuple>::value
                     <= cons_size<key_eq_tuple>::value
@@ -851,16 +838,13 @@ public:
            >::compare(x.composite_key.key_extractors(), x.value, y, key_eqs());
   }
 
-  template <
-    BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value),
-    typename CompositeKey
-  >
-  bool operator()(
-    const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& x,
-    const composite_key_result<CompositeKey>& y) const {
+  template <typename CompositeKey, typename... Values>
+  bool operator()(const cons_tuple<Values...>& x,
+                  const composite_key_result<CompositeKey>& y) const
+  {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+    typedef cons_tuple<Values...>                          key_tuple;
 
     static_assert(     cons_size<key_tuple>::value
                     <= cons_size<key_eq_tuple>::value
@@ -973,17 +957,13 @@ public:
     const
   { return operator()(x, make_cons_tuple(std::cref(y))); }
 
-  template <
-    typename CompositeKey,
-    BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value)
-  >
-  bool operator()(
-    const composite_key_result<CompositeKey>& x,
-    const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& y) const
+  template <typename CompositeKey, typename... Values>
+  bool operator()(const composite_key_result<CompositeKey>& x,
+                  const cons_tuple<Values...>& y) const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+    typedef cons_tuple<Values...>                          key_tuple;
 
     static_assert(     cons_size<key_extractor_tuple>::value
                     <= cons_size<key_comp_tuple>::value
@@ -1004,17 +984,13 @@ public:
     const
   { return operator()(make_cons_tuple(std::cref(x)), y); }
 
-  template <
-    typename CompositeKey,
-    BOOST_MULTI_INDEX_CK_ENUM_PARAMS(typename Value)
-  >
-  bool operator()(
-    const cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)>& x,
-    const composite_key_result<CompositeKey>& y) const
+  template <typename CompositeKey, typename... Values>
+  bool operator()(const cons_tuple<Values...>& x,
+                  const composite_key_result<CompositeKey>& y) const
   {
     typedef typename CompositeKey::key_extractor_tuple     key_extractor_tuple;
     typedef typename CompositeKey::value_type              value_type;
-    typedef cons_tuple<BOOST_MULTI_INDEX_CK_ENUM_PARAMS(Value)> key_tuple;
+    typedef cons_tuple<Values...>                          key_tuple;
 
     static_assert(     cons_size<key_tuple>::value
                     <= cons_size<key_comp_tuple>::value
@@ -1300,7 +1276,6 @@ struct hash<boost::multi_index::composite_key_result<CompositeKey>>
 #undef BOOST_MULTI_INDEX_CK_RESULT_EQUAL_TO_SUPER
 #undef BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS
 #undef BOOST_MULTI_INDEX_CK_APPLY_METAFUNCTION_N
-#undef BOOST_MULTI_INDEX_CK_ENUM_PARAMS
 #undef BOOST_MULTI_INDEX_CK_ENUM
 #undef BOOST_MULTI_INDEX_COMPOSITE_KEY_SIZE
 
