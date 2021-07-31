@@ -63,8 +63,11 @@ struct nth_composite_key_equal_to {
 template<typename KeyFromValue>
 using result_type_of = typename KeyFromValue::result_type;
 
+template<typename T>
+using tjg_equal_to = mp11::mp_identity_t<std::equal_to<T>>;
+
 template<typename CompositeKeyResult>
-struct key_equal_to_list {
+struct key_equal_to_list_helper {
   using composite_key_type = typename CompositeKeyResult::composite_key_type;
   using key_extractor_tuple = typename composite_key_type::key_extractor_tuple;
   using key_extractor_list =
@@ -73,8 +76,12 @@ struct key_equal_to_list {
       result_type_of,
       mp11::mp_remove<key_extractor_list, cons_null>
   >;
-  typedef mp11::mp_transform<key_equal_to, key_result_type> type;
-}; // key_equal_to_list
+  using type = mp11::mp_transform<tjg_equal_to, key_result_type>;
+}; // key_equal_to_list_helper
+
+template<typename CompositeKeyResult>
+using key_equal_to_list =
+                    typename key_equal_to_list_helper<CompositeKeyResult>::type;
 
 template<typename KeyFromValue>
 struct key_less {
@@ -1130,19 +1137,14 @@ public:
 
 namespace detail {
 
-template<typename T> struct print_type;
-
 template<typename CompositeKeyResult>
 struct composite_key_result_equal_to
   : private mp11::mp_apply<composite_key_equal_to,
-                           typename key_equal_to_list<CompositeKeyResult>::type>
+                           key_equal_to_list<CompositeKeyResult>>
 {
  private:
   using super = mp11::mp_apply<composite_key_equal_to,
-                          typename key_equal_to_list<CompositeKeyResult>::type>;
-
-private:
-  static const print_type<super> asdf;
+                               key_equal_to_list<CompositeKeyResult>>;
 
  public:
   using first_argument_type  = CompositeKeyResult;
