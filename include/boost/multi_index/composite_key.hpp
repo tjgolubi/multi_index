@@ -46,25 +46,13 @@ struct nth_key_from_value {
 }; // nth_key_from_value
 
 template<typename KeyFromValue>
-struct key_equal_to {
-  using type = std::equal_to<typename KeyFromValue::result_type>;
-};
-
-template<> struct key_equal_to<cons_null> {
-  using type = cons_null;
-};
-
-template<typename CompositeKey, std::size_t N>
-struct nth_composite_key_equal_to {
-  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
-  using type = typename key_equal_to<key_from_value>::type;
-};
-
-template<typename KeyFromValue>
 using result_type_of = typename KeyFromValue::result_type;
 
-template<typename CompositeKeyResult>
-struct key_equal_to_list {
+template<typename T>
+using key_equal_to = mp11::mp_identity_t<std::equal_to<T>>;
+
+template<typename CompositeKeyResult, template<typename> typename Compare>
+struct key_list_helper {
   using composite_key_type = typename CompositeKeyResult::composite_key_type;
   using key_extractor_tuple = typename composite_key_type::key_extractor_tuple;
   using key_extractor_list =
@@ -73,8 +61,12 @@ struct key_equal_to_list {
       result_type_of,
       mp11::mp_remove<key_extractor_list, cons_null>
   >;
-  typedef mp11::mp_transform<key_equal_to, key_result_type> type;
-}; // key_equal_to_list
+  using type = mp11::mp_transform<Compare, key_result_type>;
+}; // key_list_helper
+
+template<typename CompositeKeyResult, template<typename> typename Compare>
+using key_list =
+          typename key_list_helper<CompositeKeyResult, Compare>::type;
 
 template<typename KeyFromValue>
 struct key_less {
@@ -1130,19 +1122,14 @@ public:
 
 namespace detail {
 
-template<typename T> struct print_type;
-
 template<typename CompositeKeyResult>
 struct composite_key_result_equal_to
   : private mp11::mp_apply<composite_key_equal_to,
-                           typename key_equal_to_list<CompositeKeyResult>::type>
+                           key_list<CompositeKeyResult, key_equal_to>>
 {
  private:
   using super = mp11::mp_apply<composite_key_equal_to,
-                          typename key_equal_to_list<CompositeKeyResult>::type>;
-
-private:
-  static const print_type<super> asdf;
+                               key_list<CompositeKeyResult, key_equal_to>>;
 
  public:
   using first_argument_type  = CompositeKeyResult;
