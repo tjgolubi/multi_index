@@ -213,29 +213,23 @@ struct cons {
        const tail_type& t)
     : head(h), tail(t) {}
 
-  template <class T1, class T2, class T3, class T4, class T5,
-            class T6, class T7, class T8, class T9, class T10>
-  cons(T1& t1, T2& t2, T3& t3, T4& t4, T5& t5,
-       T6& t6, T7& t7, T8& t8, T9& t9, T10& t10)
-    : head(t1)
-    , tail(t2, t3, t4, t5, t6, t7, t8, t9, t10, detail::cnull())
+  template <typename T1, typename... Types>
+  cons(T1& t1, Types&... args)
+    : head(t1), tail(args..., detail::cnull())
     {}
 
-  template <class T2, class T3, class T4, class T5,
-            class T6, class T7, class T8, class T9, class T10>
-  cons(const cons_null& /*t1*/, T2& t2, T3& t3, T4& t4, T5& t5,
-        T6& t6, T7& t7, T8& t8, T9& t9, T10& t10)
-    : head()
-    , tail(t2, t3, t4, t5, t6, t7, t8, t9, t10, detail::cnull())
+  template <typename... Types>
+  cons(const cons_null& /*t1*/, Types&... args)
+    : head(), tail(args..., detail::cnull())
     {}
 
-  cons( const cons& u ) : head(u.head), tail(u.tail) {}
+  cons(const cons& u) : head(u.head), tail(u.tail) {}
 
   template <class HT2, class TT2>
-  cons( const cons<HT2, TT2>& u ) : head(u.head), tail(u.tail) {}
+  cons(const cons<HT2, TT2>& u) : head(u.head), tail(u.tail) {}
 
   template <class HT2, class TT2>
-  cons& operator=( const cons<HT2, TT2>& u ) {
+  cons& operator=(const cons<HT2, TT2>& u) {
     head = u.head;
     tail = u.tail;
     return *this;
@@ -250,7 +244,7 @@ struct cons {
   }
 
   template <class T1, class T2>
-  cons& operator=( const std::pair<T1, T2>& u ) {
+  cons& operator=(const std::pair<T1, T2>& u) {
     static_assert(cons_size<cons>::value == 2); // check length = 2
     head = u.first;
     tail.head = u.second;
@@ -300,21 +294,12 @@ struct cons<HT, cons_null> {
   //  cons() : head(detail::default_arg<HT>::f()) {}
   cons() : head() {}
 
-  cons(typename access_traits<stored_head_type>::parameter_type h,
-       const cons_null& = cons_null())
-    : head (h) {}
+  cons(typename access_traits<stored_head_type>::parameter_type h) : head(h) {}
 
   template<class T1>
-  cons(T1& t1, const cons_null&, const cons_null&, const cons_null&,
-       const cons_null&, const cons_null&, const cons_null&,
-       const cons_null&, const cons_null&, const cons_null&)
-  : head (t1) {}
+  cons(T1& t1, ...) : head(t1) {}
 
-  cons(const cons_null&,
-       const cons_null&, const cons_null&, const cons_null&,
-       const cons_null&, const cons_null&, const cons_null&,
-       const cons_null&, const cons_null&, const cons_null&)
-  : head () {}
+  cons(const cons_null&, ...) : head() {}
 
   cons(const cons& u) : head(u.head) {}
 
