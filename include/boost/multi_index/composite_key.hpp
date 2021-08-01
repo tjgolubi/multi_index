@@ -33,18 +33,6 @@ namespace boost::multi_index {
 
 namespace detail {
 
-/* n-th key extractor of a composite key */
-
-template<typename CompositeKey, std::size_t N>
-struct nth_key_from_value {
-  using key_extractor_tuple = typename CompositeKey::key_extractor_tuple;
-  using type = typename mp11::mp_if_c <
-    (N < cons_size<key_extractor_tuple>::value),
-    cons_element<N, key_extractor_tuple>,
-    mp11::mp_identity<cons_null>
-  >::type;
-}; // nth_key_from_value
-
 template<typename KeyFromValue>
 using result_type_of = typename KeyFromValue::result_type;
 
@@ -62,8 +50,7 @@ struct key_list_helper {
 }; // key_list_helper
 
 template<typename CompositeKeyResult, template<typename> typename Compare>
-using key_list =
-          typename key_list_helper<CompositeKeyResult, Compare>::type;
+using key_list = typename key_list_helper<CompositeKeyResult, Compare>::type;
 
 template<typename T>
 using key_equal_to = mp11::mp_identity_t<std::equal_to<T>>;
@@ -74,20 +61,9 @@ using key_less = mp11::mp_identity_t<std::less<T>>;
 template<typename T>
 using key_greater = mp11::mp_identity_t<std::greater<T>>;
 
-template<typename KeyFromValue>
-struct key_hash {
-  using type = std::hash<typename KeyFromValue::result_type>;
-};
+template<typename T>
+using key_hash = mp11::mp_identity_t<std::hash<T>>;
 
-template<> struct key_hash<cons_null> {
-  using type = cons_null;
-};
-
-template<typename CompositeKey, std::size_t N>
-struct nth_composite_key_hash {
-  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
-  using type = typename key_hash<key_from_value>::type;
-};
 /* used for defining equality and comparison ops of composite_key_result */
 
 struct generic_operator_equal {
@@ -1152,52 +1128,12 @@ struct composite_key_result_greater
 
 template<typename CompositeKeyResult>
 struct composite_key_result_hash
-  : private composite_key_hash<
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 0>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 1>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 2>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 3>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 4>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 5>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 6>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 7>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 8>::type,
-              typename detail::nth_composite_key_hash<
-                typename CompositeKeyResult::composite_key_type, 9>::type
-            >
+  : private mp11::mp_apply<composite_key_hash,
+                           key_list<CompositeKeyResult, key_hash>>
 {
  private:
-  using super = composite_key_hash<
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 0>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 1>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 2>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 3>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 4>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 5>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 6>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 7>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 8>::type,
-                  typename detail::nth_composite_key_hash<
-                    typename CompositeKeyResult::composite_key_type, 9>::type
-                >;
+  using super = mp11::mp_apply<composite_key_hash,
+                               key_list<CompositeKeyResult, key_hash>>;
 
  public:
   using argument_type = CompositeKeyResult;
