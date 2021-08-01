@@ -152,18 +152,10 @@ struct key_impl<Key0, Keys...> {
                              typename key_impl<Keys>::type...>;
 }; // key_impl
 
-template<auto... Keys>
-struct limited_size_key_impl {
-  static_assert((sizeof...(Keys) <= cons_tuple_size), /// @todo
-                "specified number of keys must meet the limits of "
-                "boost::multi_index::composite_key");
-  using type = typename key_impl<Keys...>::type;
-}; // limited_size_key_impl
-
 } // detail
 
 template<auto... Keys>
-using key = typename detail::limited_size_key_impl<Keys...>::type;
+using key = typename detail::key_impl<Keys...>::type;
 
 } // boost::multi_index
 

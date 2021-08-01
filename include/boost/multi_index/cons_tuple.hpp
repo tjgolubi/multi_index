@@ -21,27 +21,16 @@
 
 namespace boost::multi_index {
 
-constexpr std::size_t cons_tuple_size = 10;
-
 struct cons_null { };
-
-namespace detail {
-
-// a helper function to provide a const cons_null type temporary
-inline const cons_null cnull() { return cons_null(); }
-
-} // detail
 
 template <class HT, class TT> struct cons;
 
-template <
-  class T0 = cons_null, class T1 = cons_null, class T2 = cons_null,
-  class T3 = cons_null, class T4 = cons_null, class T5 = cons_null,
-  class T6 = cons_null, class T7 = cons_null, class T8 = cons_null,
-  class T9 = cons_null>
-class cons_tuple;
+template <typename... Types> class cons_tuple;
 
 template<class T> struct cons_size;
+
+template<class T>
+constexpr std::size_t cons_size_v = cons_size<T>::value;
 
 namespace detail {
 
@@ -77,7 +66,7 @@ struct drop_front<0> {
 
 // -cons type accessors ----------------------------------------
 // typename cons_element<N,T>::type gets the type of the
-// Nth element ot T, first element is at index 0
+// Nth element of T, first element is at index 0
 // -------------------------------------------------------
 
 template<int N, class T>
@@ -187,7 +176,7 @@ struct cons {
       detail::wrap_non_storeable_type<head_type>::type;
 
   stored_head_type head;
-  tail_type tail;
+  tail_type        tail;
 
   typename access_traits<stored_head_type>::non_const_type
   get_head() { return head; }
@@ -215,12 +204,12 @@ struct cons {
 
   template <typename T1, typename... Types>
   cons(T1& t1, Types&... args)
-    : head(t1), tail(args..., detail::cnull())
+    : head(t1), tail(args...)
     {}
 
   template <typename... Types>
   cons(const cons_null& /*t1*/, Types&... args)
-    : head(), tail(args..., detail::cnull())
+    : head(), tail(args...)
     {}
 
   cons(const cons& u) : head(u.head), tail(u.tail) {}
@@ -245,7 +234,7 @@ struct cons {
 
   template <class T1, class T2>
   cons& operator=(const std::pair<T1, T2>& u) {
-    static_assert(cons_size<cons>::value == 2); // check length = 2
+    static_assert(cons_size_v<cons> == 2); // check length = 2
     head = u.first;
     tail.head = u.second;
     return *this;
@@ -294,12 +283,12 @@ struct cons<HT, cons_null> {
   //  cons() : head(detail::default_arg<HT>::f()) {}
   cons() : head() {}
 
+  cons(const cons_null&, ...) : head() {}
+
   cons(typename access_traits<stored_head_type>::parameter_type h) : head(h) {}
 
   template<class T1>
   cons(T1& t1, ...) : head(t1) {}
-
-  cons(const cons_null&, ...) : head() {}
 
   cons(const cons& u) : head(u.head) {}
 
@@ -339,7 +328,7 @@ struct cons<HT, cons_null> {
 template<class T>
 struct cons_size
   : std::integral_constant<std::size_t,
-         1 + cons_size<typename T::tail_type>::value>
+         1 + cons_size_v<typename T::tail_type>>
 { };
 
 template<>
@@ -355,26 +344,22 @@ struct cons_size<cons_null> : std::integral_constant<std::size_t, 0>
 { };
 
 template<>
-struct cons_size<cons_null const> : std::integral_constant<std::size_t, 0>
+struct cons_size<const cons_null> : std::integral_constant<std::size_t, 0>
 { };
 
 namespace detail {
 
 // Tuple to cons mapper --------------------------------------------------
-template <class T0, class T1, class T2, class T3, class T4,
-          class T5, class T6, class T7, class T8, class T9>
-struct map_tuple_to_cons {
-  using type = cons<T0,
-               typename map_tuple_to_cons<T1, T2, T3, T4, T5,
-                                          T6, T7, T8, T9, cons_null>::type
-              >;
+template <typename...> struct map_tuple_to_cons;
+
+template <typename T0, typename... Types>
+struct map_tuple_to_cons<T0, Types...> {
+  using type = cons<T0, typename map_tuple_to_cons<Types...>::type>;
 };
 
 // The empty cons_tuple is a cons_null
 template <>
-struct map_tuple_to_cons<cons_null, cons_null, cons_null, cons_null, cons_null,
-                         cons_null, cons_null, cons_null, cons_null, cons_null>
-{
+struct map_tuple_to_cons<> {
   using type = cons_null;
 };
 
@@ -382,15 +367,12 @@ struct map_tuple_to_cons<cons_null, cons_null, cons_null, cons_null, cons_null,
 
 // -------------------------------------------------------------------
 // -- cons_tuple ------------------------------------------------------
-template <class T0, class T1, class T2, class T3, class T4,
-          class T5, class T6, class T7, class T8, class T9>
-
-class cons_tuple :
-  public detail::map_tuple_to_cons<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type
+template <typename... Types>
+class cons_tuple
+  : public detail::map_tuple_to_cons<Types...>::type
 {
 public:
-  using inherited = typename
-    detail::map_tuple_to_cons<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type;
+  using inherited = typename detail::map_tuple_to_cons<Types...>::type;
   using head_type = typename inherited::head_type;
   using tail_type = typename inherited::tail_type;
 
@@ -398,18 +380,8 @@ public:
   cons_tuple() : inherited() {}
 
   explicit
-  cons_tuple(typename access_traits<T0>::parameter_type t0,
-             typename access_traits<T1>::parameter_type t1 = cons_null(),
-             typename access_traits<T2>::parameter_type t2 = cons_null(),
-             typename access_traits<T3>::parameter_type t3 = cons_null(),
-             typename access_traits<T4>::parameter_type t4 = cons_null(),
-             typename access_traits<T5>::parameter_type t5 = cons_null(),
-             typename access_traits<T6>::parameter_type t6 = cons_null(),
-             typename access_traits<T7>::parameter_type t7 = cons_null(),
-             typename access_traits<T8>::parameter_type t8 = cons_null(),
-             typename access_traits<T9>::parameter_type t9 = cons_null())
-    : inherited(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9) {}
-
+  cons_tuple(typename access_traits<Types>::parameter_type... args)
+    : inherited(args...) {}
 
   template<class U1, class U2>
   cons_tuple(const cons<U1, U2>& p) : inherited(p) {}
@@ -422,7 +394,7 @@ public:
 
   template <class U1, class U2>
   cons_tuple& operator=(const std::pair<U1, U2>& k) {
-    static_assert(cons_size<cons_tuple>::value == 2);// check_length = 2
+    static_assert(cons_size_v<cons_tuple> == 2);// check_length = 2
     this->head = k.first;
     this->tail.head = k.second;
     return *this;
@@ -432,13 +404,19 @@ public:
 
 // The empty cons_tuple
 template <>
-class cons_tuple<cons_null, cons_null, cons_null, cons_null, cons_null,
-                 cons_null, cons_null, cons_null, cons_null, cons_null>
-  : public cons_null
-{
+class cons_tuple<> : public cons_null {
 public:
   using inherited = cons_null;
 }; // cons_tuple<>
+
+template<typename>
+struct is_cons_tuple : std::false_type { };
+
+template<typename... Types>
+struct is_cons_tuple<cons_tuple<Types...>> : std::true_type { };
+
+template <typename T>
+constexpr bool is_cons_tuple_v = is_cons_tuple<T>::value;
 
 // Swallows any assignment   (by Doug Gregor)
 namespace detail {
@@ -450,7 +428,7 @@ using ignore_t = void (detail::swallow_assign::*)();
 struct swallow_assign {
   swallow_assign(ignore_t(*)(ignore_t)) {}
   template<typename T>
-  swallow_assign const& operator=(const T&) const { return *this; }
+  const swallow_assign& operator=(const T&) const { return *this; }
 }; // swallow_assign
 
 } // detail
@@ -508,7 +486,8 @@ struct make_tuple_traits<T&> {
 // All arrays are converted to const. This is because make_cons_tuple takes its
 // parameters as const T& and thus the knowledge of the potential
 // non-constness of actual argument is lost.
-template<class T, int n>  struct make_tuple_traits <T[n]> {
+template<class T, int n>
+struct make_tuple_traits <T[n]> {
   using type = const T (&)[n];
 };
 
@@ -517,7 +496,8 @@ struct make_tuple_traits<const T[n]> {
   using type = const T (&)[n];
 };
 
-template<class T, int n>  struct make_tuple_traits<volatile T[n]> {
+template<class T, int n>
+struct make_tuple_traits<volatile T[n]> {
   using type = const volatile T (&)[n];
 };
 
@@ -545,24 +525,9 @@ namespace detail {
 
 // A helper traits to make the make_cons_tuple functions shorter
 // (Vesa Karvonen's suggestion)
-template <
-  class T0 = cons_null, class T1 = cons_null, class T2 = cons_null,
-  class T3 = cons_null, class T4 = cons_null, class T5 = cons_null,
-  class T6 = cons_null, class T7 = cons_null, class T8 = cons_null,
-  class T9 = cons_null
->
+template <typename... Types>
 struct make_tuple_mapper {
-  using type =
-    cons_tuple<typename make_tuple_traits<T0>::type,
-               typename make_tuple_traits<T1>::type,
-               typename make_tuple_traits<T2>::type,
-               typename make_tuple_traits<T3>::type,
-               typename make_tuple_traits<T4>::type,
-               typename make_tuple_traits<T5>::type,
-               typename make_tuple_traits<T6>::type,
-               typename make_tuple_traits<T7>::type,
-               typename make_tuple_traits<T8>::type,
-               typename make_tuple_traits<T9>::type>;
+  using type = cons_tuple<typename make_tuple_traits<Types>::type...>;
 }; // make_tuple_mapper
 
 } // detail
@@ -572,91 +537,11 @@ inline cons_tuple<> make_cons_tuple() {
   return cons_tuple<>();
 }
 
-template<class T0>
-inline typename detail::make_tuple_mapper<T0>::type
-make_cons_tuple(const T0& t0) {
-  using t = typename detail::make_tuple_mapper<T0>::type;
-  return t(t0);
-}
-
-template<class T0, class T1>
-inline typename detail::make_tuple_mapper<T0, T1>::type
-make_cons_tuple(const T0& t0, const T1& t1) {
-  using t = typename detail::make_tuple_mapper<T0, T1>::type;
-  return t(t0, t1);
-}
-
-template<class T0, class T1, class T2>
-inline typename detail::make_tuple_mapper<T0, T1, T2>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2) {
-  using t = typename detail::make_tuple_mapper<T0, T1, T2>::type;
-  return t(t0, t1, t2);
-}
-
-template<class T0, class T1, class T2, class T3>
-inline typename detail::make_tuple_mapper<T0, T1, T2, T3>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3) {
-  using t = typename detail::make_tuple_mapper<T0, T1, T2, T3>::type;
-  return t(t0, t1, t2, t3);
-}
-
-template<class T0, class T1, class T2, class T3, class T4>
-inline typename detail::make_tuple_mapper<T0, T1, T2, T3, T4>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4) {
-  using t = typename detail::make_tuple_mapper<T0, T1, T2, T3, T4>::type;
-  return t(t0, t1, t2, t3, t4);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5>
-inline typename detail::make_tuple_mapper<T0, T1, T2, T3, T4, T5>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4, const T5& t5) {
-  using t = typename detail::make_tuple_mapper<T0, T1, T2, T3, T4, T5>::type;
-  return t(t0, t1, t2, t3, t4, t5);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6>
-inline typename detail::make_tuple_mapper<T0, T1, T2, T3, T4, T5, T6>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4, const T5& t5, const T6& t6) {
-  using t = typename detail::make_tuple_mapper
-           <T0, T1, T2, T3, T4, T5, T6>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7>
-inline typename detail::make_tuple_mapper<T0, T1, T2, T3, T4, T5, T6, T7>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4, const T5& t5, const T6& t6, const T7& t7) {
-  using t = typename detail::make_tuple_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7, class T8>
-inline typename detail::make_tuple_mapper
-  <T0, T1, T2, T3, T4, T5, T6, T7, T8>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4, const T5& t5, const T6& t6, const T7& t7,
-                  const T8& t8) {
-  using t = typename detail::make_tuple_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7, T8>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7, t8);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7, class T8, class T9>
-inline typename detail::make_tuple_mapper
-  <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type
-make_cons_tuple(const T0& t0, const T1& t1, const T2& t2, const T3& t3,
-                  const T4& t4, const T5& t5, const T6& t6, const T7& t7,
-                  const T8& t8, const T9& t9) {
-  using t = typename detail::make_tuple_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9);
+template<typename... Types>
+inline typename detail::make_tuple_mapper<Types...>::type
+make_cons_tuple(const Types&... args) {
+  using t = typename detail::make_tuple_mapper<Types...>::type;
+  return t(args...);
 }
 
 namespace detail {
@@ -676,114 +561,23 @@ struct tie_traits<void> {
   using type = cons_null;
 };
 
-template <
-  class T0 = void, class T1 = void, class T2 = void,
-  class T3 = void, class T4 = void, class T5 = void,
-  class T6 = void, class T7 = void, class T8 = void,
-  class T9 = void
->
+template <typename... Types>
 struct tie_mapper {
-  using type =
-    cons_tuple<typename tie_traits<T0>::type,
-               typename tie_traits<T1>::type,
-               typename tie_traits<T2>::type,
-               typename tie_traits<T3>::type,
-               typename tie_traits<T4>::type,
-               typename tie_traits<T5>::type,
-               typename tie_traits<T6>::type,
-               typename tie_traits<T7>::type,
-               typename tie_traits<T8>::type,
-               typename tie_traits<T9>::type>;
+  using type = cons_tuple<typename tie_traits<Types>::type...>;
 }; // tie_mapper
 
 } // detail
 
 // Tie function templates -------------------------------------------------
-template<class T0>
-inline typename detail::tie_mapper<T0>::type
-tie(T0& t0) {
-  using t = typename detail::tie_mapper<T0>::type;
-  return t(t0);
+template<typename... Types>
+inline typename detail::tie_mapper<Types...>::type
+tie(Types&... args) {
+  using t = typename detail::tie_mapper<Types...>::type;
+  return t(args...);
 }
 
-template<class T0, class T1>
-inline typename detail::tie_mapper<T0, T1>::type
-tie(T0& t0, T1& t1) {
-  using t = typename detail::tie_mapper<T0, T1>::type;
-  return t(t0, t1);
-}
-
-template<class T0, class T1, class T2>
-inline typename detail::tie_mapper<T0, T1, T2>::type
-tie(T0& t0, T1& t1, T2& t2) {
-  using t = typename detail::tie_mapper<T0, T1, T2>::type;
-  return t(t0, t1, t2);
-}
-
-template<class T0, class T1, class T2, class T3>
-inline typename detail::tie_mapper<T0, T1, T2, T3>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3) {
-  using t = typename detail::tie_mapper<T0, T1, T2, T3>::type;
-  return t(t0, t1, t2, t3);
-}
-
-template<class T0, class T1, class T2, class T3, class T4>
-inline typename detail::tie_mapper<T0, T1, T2, T3, T4>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4) {
-  using t = typename detail::tie_mapper<T0, T1, T2, T3, T4>::type;
-  return t(t0, t1, t2, t3, t4);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5>
-inline typename detail::tie_mapper<T0, T1, T2, T3, T4, T5>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4, T5& t5) {
-  using t = typename detail::tie_mapper<T0, T1, T2, T3, T4, T5>::type;
-  return t(t0, t1, t2, t3, t4, t5);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6>
-inline typename detail::tie_mapper<T0, T1, T2, T3, T4, T5, T6>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6) {
-  using t = typename detail::tie_mapper
-           <T0, T1, T2, T3, T4, T5, T6>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7>
-inline typename detail::tie_mapper<T0, T1, T2, T3, T4, T5, T6, T7>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6, T7& t7) {
-  using t = typename detail::tie_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7, class T8>
-inline typename detail::tie_mapper
-  <T0, T1, T2, T3, T4, T5, T6, T7, T8>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6, T7& t7, T8& t8) {
-  using t = typename detail::tie_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7, T8>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7, t8);
-}
-
-template<class T0, class T1, class T2, class T3, class T4, class T5, class T6,
-         class T7, class T8, class T9>
-inline typename detail::tie_mapper
-  <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type
-tie(T0& t0, T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6, T7& t7, T8& t8,
-    T9& t9)
-{
-  using t = typename detail::tie_mapper
-           <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type;
-  return t(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9);
-}
-
-template <class T0, class T1, class T2, class T3, class T4,
-          class T5, class T6, class T7, class T8, class T9>
-void swap(cons_tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& lhs,
-          cons_tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& rhs);
+template <typename... Types>
+void swap(cons_tuple<Types...>& lhs, cons_tuple<Types...>& rhs);
 
 inline void swap(cons_null&, cons_null&) {}
 
@@ -798,11 +592,9 @@ inline void swap(cons<HH, TT>& lhs, cons<HH, TT>& rhs) {
   boost::multi_index::swap(lhs.tail, rhs.tail);
 }
 
-template <class T0, class T1, class T2, class T3, class T4,
-          class T5, class T6, class T7, class T8, class T9>
-inline void swap(cons_tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& lhs,
-          cons_tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& rhs) {
-  using tuple_type = cons_tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>;
+template <typename... Types>
+inline void swap(cons_tuple<Types...>& lhs, cons_tuple<Types...>& rhs) {
+  using tuple_type = cons_tuple<Types...>;
   using base = typename tuple_type::inherited;
   boost::multi_index::swap(static_cast<base&>(lhs), static_cast<base&>(rhs));
 }

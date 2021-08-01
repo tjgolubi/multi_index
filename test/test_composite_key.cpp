@@ -57,6 +57,7 @@ struct composite_key_result_length
     >::value;
 };
 
+#if 0
 struct is_cons_tuple_helper
 {
   typedef char yes;
@@ -64,8 +65,8 @@ struct is_cons_tuple_helper
 
   static no test(void*);
 
-  template<BOOST_PP_ENUM_PARAMS(10,typename T)>
-  static yes test(cons_tuple<BOOST_PP_ENUM_PARAMS(10,T)>*);
+  template<typename... Types>
+  static yes test(cons_tuple<Types...>*);
 };
 
 template<typename T>
@@ -74,9 +75,10 @@ struct is_cons_tuple
   typedef is_cons_tuple_helper helper;
 
   static const bool value=(
-      sizeof(helper::test((T*)0))==
+      sizeof(helper::test((T*)nullptr))==
       sizeof(typename helper::yes));
 };
+#endif
 
 template<typename T>
 struct composite_object_length
@@ -85,7 +87,7 @@ struct composite_object_length
     is_composite_key_result<T>::value,
     composite_key_result_length<T>,
     boost::mp11::mp_if_c<
-      is_cons_tuple<T>::value,
+      is_cons_tuple_v<T>,
       cons_size<T>,
       std::tuple_size<T>
     >
