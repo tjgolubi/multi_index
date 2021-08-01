@@ -48,9 +48,6 @@ struct nth_key_from_value {
 template<typename KeyFromValue>
 using result_type_of = typename KeyFromValue::result_type;
 
-template<typename T>
-using key_equal_to = mp11::mp_identity_t<std::equal_to<T>>;
-
 template<typename CompositeKeyResult, template<typename> typename Compare>
 struct key_list_helper {
   using composite_key_type = typename CompositeKeyResult::composite_key_type;
@@ -68,34 +65,14 @@ template<typename CompositeKeyResult, template<typename> typename Compare>
 using key_list =
           typename key_list_helper<CompositeKeyResult, Compare>::type;
 
-template<typename KeyFromValue>
-struct key_less {
-  using type = std::less<typename KeyFromValue::result_type>;
-};
+template<typename T>
+using key_equal_to = mp11::mp_identity_t<std::equal_to<T>>;
 
-template<> struct key_less<cons_null> {
-  using type = cons_null;
-};
+template<typename T>
+using key_less = mp11::mp_identity_t<std::less<T>>;
 
-template<typename CompositeKey, std::size_t N> struct nth_composite_key_less {
-  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
-  using type = typename key_less<key_from_value>::type;
-};
-
-template<typename KeyFromValue>
-struct key_greater {
-  using type = std::greater<typename KeyFromValue::result_type>;
-};
-
-template<> struct key_greater<cons_null> {
-  using type = cons_null;
-};
-
-template<typename CompositeKey, std::size_t N>
-struct nth_composite_key_greater {
-  using key_from_value = typename nth_key_from_value<CompositeKey, N>::type;
-  using type = typename key_greater<key_from_value>::type;
-};
+template<typename T>
+using key_greater = mp11::mp_identity_t<std::greater<T>>;
 
 template<typename KeyFromValue>
 struct key_hash {
@@ -1141,52 +1118,12 @@ struct composite_key_result_equal_to
 
 template<typename CompositeKeyResult>
 struct composite_key_result_less
-  : private composite_key_compare<
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 0>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 1>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 2>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 3>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 4>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 5>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 6>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 7>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 8>::type,
-              typename detail::nth_composite_key_less<
-                typename CompositeKeyResult::composite_key_type, 9>::type
-              >
+  : private mp11::mp_apply<composite_key_compare,
+                           key_list<CompositeKeyResult, key_less>>
 {
  private:
-  using super = composite_key_compare<
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 0>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 1>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 2>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 3>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 4>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 5>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 6>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 7>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 8>::type,
-                  typename detail::nth_composite_key_less<
-                    typename CompositeKeyResult::composite_key_type, 9>::type
-      >;
+  using super = mp11::mp_apply<composite_key_compare,
+                               key_list<CompositeKeyResult, key_less>>;
 
  public:
   using first_argument_type  = CompositeKeyResult;
@@ -1198,52 +1135,12 @@ struct composite_key_result_less
 
 template<typename CompositeKeyResult>
 struct composite_key_result_greater
-  : private composite_key_compare<
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 0>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 1>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 2>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 3>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 4>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 5>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 6>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 7>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 8>::type,
-              typename detail::nth_composite_key_greater<
-                typename CompositeKeyResult::composite_key_type, 9>::type
-            >
+  : private mp11::mp_apply<composite_key_compare,
+                           key_list<CompositeKeyResult, key_greater>>
 {
  private:
-  using super = composite_key_compare<
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 0>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 1>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 2>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 3>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 4>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 5>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 6>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 7>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 8>::type,
-                  typename detail::nth_composite_key_greater<
-                    typename CompositeKeyResult::composite_key_type, 9>::type
-                >;
+  using super = mp11::mp_apply<composite_key_compare,
+                               key_list<CompositeKeyResult, key_greater>>;
 
  public:
   using first_argument_type  = CompositeKeyResult;
