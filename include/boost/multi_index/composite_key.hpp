@@ -455,8 +455,8 @@ inline bool operator==(const composite_key_result<CompositeKey1>& x,
   using key_extractor_tuple2 = typename CompositeKey2::key_extractor_tuple;
   using value_type2 = typename CompositeKey2::value_type;
 
-  static_assert(   cons_size<key_extractor_tuple1>::value
-                == cons_size<key_extractor_tuple2>::value);
+  static_assert(   std::tuple_size_v<key_extractor_tuple1>
+                == std::tuple_size_v<key_extractor_tuple2>);
 
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple1>;
@@ -478,8 +478,8 @@ inline bool operator==(const composite_key_result<CompositeKey>& x,
   using value_type = typename CompositeKey::value_type;
   using key_tuple = cons_tuple<Values...>;
 
-  static_assert(   cons_size<key_extractor_tuple>::value
-                == cons_size<key_tuple>::value);
+  static_assert(   std::tuple_size_v<key_extractor_tuple>
+                == std::tuple_size_v<key_tuple>);
 
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
@@ -500,8 +500,8 @@ inline bool operator==(const cons_tuple<Values...>& x,
   using value_type = typename CompositeKey::value_type;
   using key_tuple = cons_tuple<Values...>;
 
-  static_assert(   cons_size<key_extractor_tuple>::value
-                == cons_size<key_tuple>::value);
+  static_assert(   std::tuple_size_v<key_extractor_tuple>
+                == std::tuple_size_v<key_tuple>);
 
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
@@ -524,8 +524,8 @@ inline bool operator==(const composite_key_result<CompositeKey>& x,
   using cons_key_tuple =
       typename detail::cons_stdtuple_ctor < key_tuple >::result_type;
 
-  static_assert(cons_size<key_extractor_tuple>::value
-                == std::tuple_size<key_tuple>::value);
+  static_assert(std::tuple_size_v<key_extractor_tuple>
+                == std::tuple_size_v<key_tuple>);
 
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
@@ -549,8 +549,8 @@ inline bool operator==(const std::tuple<Values...>& x,
   using cons_key_tuple =
       typename detail::cons_stdtuple_ctor <key_tuple >::result_type;
 
-  static_assert(cons_size<key_extractor_tuple>::value
-                == std::tuple_size<key_tuple>::value);
+  static_assert(std::tuple_size_v<key_extractor_tuple>
+                == std::tuple_size_v<key_tuple>);
 
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
@@ -755,10 +755,10 @@ public:
     using key_extractor_tuple2 = typename CompositeKey2::key_extractor_tuple;
     using value_type2 = typename CompositeKey2::value_type;
 
-    static_assert(     cons_size<key_extractor_tuple1>::value
-                    <= cons_size<key_eq_tuple>::value
-                  &&   cons_size<key_extractor_tuple1>::value
-                    == cons_size<key_extractor_tuple2>::value);
+    static_assert(     std::tuple_size_v<key_extractor_tuple1>
+                    <= std::tuple_size_v<key_eq_tuple>
+                  &&   std::tuple_size_v<key_extractor_tuple1>
+                    == std::tuple_size_v<key_extractor_tuple2>);
 
     return detail::equal_ckey_ckey <
               key_extractor_tuple1, value_type1,
@@ -777,10 +777,10 @@ public:
     using value_type = typename CompositeKey::value_type;
     using key_tuple = cons_tuple<Values...>;
 
-    static_assert(     cons_size<key_extractor_tuple>::value
-                    <= cons_size<key_eq_tuple>::value
-                  &&   cons_size<key_extractor_tuple>::value
-                    == cons_size<key_tuple>::value);
+    static_assert(     std::tuple_size_v<key_extractor_tuple>
+                    <= std::tuple_size_v<key_eq_tuple>
+                  &&   std::tuple_size_v<key_extractor_tuple>
+                    == std::tuple_size_v<key_tuple>);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -797,10 +797,10 @@ public:
     using value_type = typename CompositeKey::value_type;
     using key_tuple = cons_tuple<Values...>;
 
-    static_assert(     cons_size<key_tuple>::value
-                    <= cons_size<key_eq_tuple>::value
-                  && cons_size<key_tuple>::value
-                    == cons_size<key_extractor_tuple>::value);
+    static_assert(     std::tuple_size_v<key_tuple>
+                    <= std::tuple_size_v<key_eq_tuple>
+                  && std::tuple_size_v<key_tuple>
+                    == std::tuple_size_v<key_extractor_tuple>);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -819,10 +819,10 @@ public:
     using cons_key_tuple =
         typename detail::cons_stdtuple_ctor<key_tuple >::result_type;
 
-    static_assert(cons_size<key_extractor_tuple>::value
-                <= cons_size<key_eq_tuple>::value
-              && cons_size<key_extractor_tuple>::value
-                == std::tuple_size<key_tuple>::value);
+    static_assert(std::tuple_size_v<key_extractor_tuple>
+                <= std::tuple_size_v<key_eq_tuple>
+              && std::tuple_size_v<key_extractor_tuple>
+                == std::tuple_size_v<key_tuple>);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -843,10 +843,10 @@ public:
     using cons_key_tuple =
         typename detail::cons_stdtuple_ctor<key_tuple>::result_type;
 
-    static_assert(std::tuple_size<key_tuple>::value
-            <= cons_size<key_eq_tuple>::value
-          && std::tuple_size<key_tuple>::value
-            == cons_size<key_extractor_tuple>::value);
+    static_assert(std::tuple_size_v<key_tuple>
+            <= std::tuple_size_v<key_eq_tuple>
+          && std::tuple_size_v<key_tuple>
+            == std::tuple_size_v<key_extractor_tuple>);
 
     return detail::equal_ckey_cval <
               key_extractor_tuple, value_type,
@@ -889,10 +889,10 @@ public:
     using key_extractor_tuple2 = typename CompositeKey2::key_extractor_tuple;
     using value_type2 = typename CompositeKey2::value_type;
 
-    static_assert(     cons_size<key_extractor_tuple1>::value
-                    <= cons_size<key_comp_tuple>::value
-                  ||   cons_size<key_extractor_tuple2>::value
-                    <= cons_size<key_comp_tuple>::value);
+    static_assert(     std::tuple_size_v<key_extractor_tuple1>
+                    <= std::tuple_size_v<key_comp_tuple>
+                  ||   std::tuple_size_v<key_extractor_tuple2>
+                    <= std::tuple_size_v<key_comp_tuple>);
 
     return detail::compare_ckey_ckey <
               key_extractor_tuple1, value_type1,
@@ -916,10 +916,10 @@ public:
     using value_type = typename CompositeKey::value_type;
     using key_tuple = cons_tuple<Values...>;
 
-    static_assert(     cons_size<key_extractor_tuple>::value
-                    <= cons_size<key_comp_tuple>::value
-                  ||   cons_size<key_tuple>::value
-                    <= cons_size<key_comp_tuple>::value);
+    static_assert(     std::tuple_size_v<key_extractor_tuple>
+                    <= std::tuple_size_v<key_comp_tuple>
+                  ||   std::tuple_size_v<key_tuple>
+                    <= std::tuple_size_v<key_comp_tuple>);
 
     return detail::compare_ckey_cval <
               key_extractor_tuple, value_type,
@@ -943,10 +943,10 @@ public:
     using value_type = typename CompositeKey::value_type;
     using key_tuple = cons_tuple<Values...>;
 
-    static_assert(     cons_size<key_tuple>::value
-                    <= cons_size<key_comp_tuple>::value
-                  ||   cons_size<key_extractor_tuple>::value
-                    <= cons_size<key_comp_tuple>::value);
+    static_assert(     std::tuple_size_v<key_tuple>
+                    <= std::tuple_size_v<key_comp_tuple>
+                  ||   std::tuple_size_v<key_extractor_tuple>
+                    <= std::tuple_size_v<key_comp_tuple>);
 
     return detail::compare_ckey_cval <
               key_extractor_tuple, value_type,
@@ -967,10 +967,10 @@ public:
     using cons_key_tuple =
         typename detail::cons_stdtuple_ctor<key_tuple >::result_type;
 
-    static_assert( cons_size<key_extractor_tuple>::value
-                <= cons_size<key_comp_tuple>::value
-              || std::tuple_size<key_tuple>::value
-                <= cons_size<key_comp_tuple>::value);
+    static_assert( std::tuple_size_v<key_extractor_tuple>
+                <= std::tuple_size_v<key_comp_tuple>
+              || std::tuple_size_v<key_tuple>
+                <= std::tuple_size_v<key_comp_tuple>);
 
     return detail::compare_ckey_cval <
               key_extractor_tuple, value_type,
@@ -991,10 +991,10 @@ public:
     using cons_key_tuple =
         typename detail::cons_stdtuple_ctor<key_tuple >::result_type;
 
-    static_assert(   std::tuple_size<key_tuple>::value
-                  <= cons_size<key_comp_tuple>::value
-                ||   cons_size<key_extractor_tuple>::value
-                  <= cons_size<key_comp_tuple>::value);
+    static_assert(   std::tuple_size_v<key_tuple>
+                  <= std::tuple_size_v<key_comp_tuple>
+                ||   std::tuple_size_v<key_extractor_tuple>
+                  <= std::tuple_size_v<key_comp_tuple>);
 
     return detail::compare_ckey_cval <
               key_extractor_tuple, value_type,
@@ -1034,8 +1034,8 @@ public:
     using key_extractor_tuple = typename CompositeKey::key_extractor_tuple;
     using value_type = typename CompositeKey::value_type;
 
-    static_assert(   cons_size<key_extractor_tuple>::value
-                  == cons_size<key_hasher_tuple>::value);
+    static_assert(   std::tuple_size_v<key_extractor_tuple>
+                  == std::tuple_size_v<key_hasher_tuple>);
 
     return detail::hash_ckey <
               key_extractor_tuple, value_type,
@@ -1048,8 +1048,8 @@ public:
   std::size_t operator()(const cons_tuple<Values...>& x) const {
     using key_tuple = cons_tuple<Values...>;
 
-    static_assert(   cons_size<key_tuple>::value
-                  == cons_size<key_hasher_tuple>::value);
+    static_assert(   std::tuple_size_v<key_tuple>
+                  == std::tuple_size_v<key_hasher_tuple>);
 
     return detail::hash_cval <
               key_tuple,
@@ -1063,8 +1063,8 @@ public:
     using cons_key_tuple =
         typename detail::cons_stdtuple_ctor<key_tuple>::result_type;
 
-    static_assert(std::tuple_size<key_tuple>::value
-              == cons_size<key_hasher_tuple>::value);
+    static_assert(std::tuple_size_v<key_tuple>
+              == std::tuple_size_v<key_hasher_tuple>);
 
     return detail::hash_cval <
               cons_key_tuple,

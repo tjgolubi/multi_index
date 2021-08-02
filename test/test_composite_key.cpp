@@ -50,35 +50,8 @@ struct is_composite_key_result
 
 template<typename CompositeKeyResult>
 struct composite_key_result_length
-{
-  static const int value=cons_size<
-      typename 
-      CompositeKeyResult::composite_key_type::key_extractor_tuple
-    >::value;
-};
-
-#if 0
-struct is_cons_tuple_helper
-{
-  typedef char yes;
-  struct no{char m[2];};
-
-  static no test(void*);
-
-  template<typename... Types>
-  static yes test(cons_tuple<Types...>*);
-};
-
-template<typename T>
-struct is_cons_tuple
-{
-  typedef is_cons_tuple_helper helper;
-
-  static const bool value=(
-      sizeof(helper::test((T*)nullptr))==
-      sizeof(typename helper::yes));
-};
-#endif
+  : std::tuple_size<typename CompositeKeyResult::composite_key_type::key_extractor_tuple>
+{ };
 
 template<typename T>
 struct composite_object_length
@@ -86,11 +59,7 @@ struct composite_object_length
   typedef boost::mp11::mp_if_c<
     is_composite_key_result<T>::value,
     composite_key_result_length<T>,
-    boost::mp11::mp_if_c<
-      is_cons_tuple_v<T>,
-      cons_size<T>,
-      std::tuple_size<T>
-    >
+    std::tuple_size<T>
   > type;
 
   static const int value=type::value;

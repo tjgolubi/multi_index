@@ -30,7 +30,7 @@ template <typename... Types> class cons_tuple;
 template<class T> struct cons_size;
 
 template<class T>
-constexpr std::size_t cons_size_v = cons_size<T>::value;
+inline constexpr std::size_t cons_size_v = cons_size<T>::value;
 
 namespace detail {
 
@@ -38,7 +38,7 @@ namespace detail {
 // template is used to produce compilation errors intentionally
 template<class T> class generate_error;
 
-template<int N>
+template<std::size_t N>
 struct drop_front {
   template<class Tuple>
   struct apply {
@@ -69,13 +69,13 @@ struct drop_front<0> {
 // Nth element of T, first element is at index 0
 // -------------------------------------------------------
 
-template<int N, class T>
+template<std::size_t N, class T>
 struct cons_element {
   using type = typename detail::drop_front<N>::template
                   apply<T>::type::head_type;
 }; // cons_element<N, T>
 
-template<int N, class T>
+template<std::size_t N, class T>
 struct cons_element<N, const T> {
 private:
   using unqualified_type = typename detail::drop_front<N>::template
@@ -115,7 +115,7 @@ struct access_traits<T&> {
 
 // get function for non-const cons-lists, returns a reference to the element
 
-template<int N, class HT, class TT>
+template<std::size_t N, class HT, class TT>
 inline typename access_traits<
                   typename cons_element<N, cons<HT, TT>>::type
                 >::non_const_type
@@ -129,7 +129,7 @@ get(cons<HT, TT>& c) {
 // get function for const cons-lists, returns a const reference to
 // the element. If the element is a reference, returns the reference
 // as such (that is, can return a non-const reference).
-template<int N, class HT, class TT>
+template<std::size_t N, class HT, class TT>
 inline typename access_traits<
                   typename cons_element<N, cons<HT, TT>>::type
                 >::const_type
@@ -241,7 +241,7 @@ struct cons {
   }
 
   // get member functions (non-const and const)
-  template <int N>
+  template <std::size_t N>
   typename access_traits<
              typename cons_element<N, cons<HT, TT>>::type
            >::non_const_type
@@ -249,7 +249,7 @@ struct cons {
     return boost::multi_index::get<N>(*this); // delegate to non-member get
   }
 
-  template <int N>
+  template <std::size_t N>
   typename access_traits<
              typename cons_element<N, cons<HT, TT>>::type
            >::const_type
@@ -305,7 +305,7 @@ struct cons<HT, cons_null> {
   // is illformed if HT is a reference.
   cons& operator=(const cons& u) { head = u.head; return *this; }
 
-  template <int N>
+  template <std::size_t N>
   typename access_traits<
              typename cons_element<N, self_type>::type
             >::non_const_type
@@ -313,7 +313,7 @@ struct cons<HT, cons_null> {
     return boost::multi_index::get<N>(*this);
   }
 
-  template <int N>
+  template <std::size_t N>
   typename access_traits<
              typename cons_element<N, self_type>::type
            >::const_type
@@ -416,7 +416,7 @@ template<typename... Types>
 struct is_cons_tuple<cons_tuple<Types...>> : std::true_type { };
 
 template <typename T>
-constexpr bool is_cons_tuple_v = is_cons_tuple<T>::value;
+inline constexpr bool is_cons_tuple_v = is_cons_tuple<T>::value;
 
 // Swallows any assignment   (by Doug Gregor)
 namespace detail {
@@ -600,5 +600,20 @@ inline void swap(cons_tuple<Types...>& lhs, cons_tuple<Types...>& rhs) {
 }
 
 } // boost::multi_index
+
+namespace std {
+
+template<typename... Types>
+struct tuple_size<boost::multi_index::cons_tuple<Types...>>
+  : boost::multi_index::cons_size<boost::multi_index::cons_tuple<Types...>>
+{ };
+
+template<size_t I, typename... Types>
+struct tuple_element<I, boost::multi_index::cons_tuple<Types...>>
+  : boost::multi_index::cons_element<I,
+                                     boost::multi_index::cons_tuple<Types...>>
+  { };
+
+} // std
 
 #endif
