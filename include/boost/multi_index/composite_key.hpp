@@ -100,9 +100,9 @@ template <typename KeyCons1, typename Value1,
           typename EqualCons>
 struct equal_ckey_ckey; /* fwd decl. */
 
-template < typename KeyCons1, typename Value1,
-           typename KeyCons2, typename Value2,
-           typename EqualCons>
+template <typename KeyCons1, typename Value1,
+          typename KeyCons2, typename Value2,
+          typename EqualCons>
 struct equal_ckey_ckey_terminal {
   static bool compare(const KeyCons1&, const Value1&,
                       const KeyCons2&, const Value2&,
@@ -132,11 +132,9 @@ template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
           typename EqualCons>
 struct equal_ckey_ckey
-  : mp11::mp_if <
-      mp11::mp_or <
-        std::is_same<KeyCons1, cons_null>,
-        std::is_same<KeyCons2, cons_null>
-      >,
+  : std::conditional_t<
+      (    std::is_same_v<KeyCons1, cons_null>
+        || std::is_same_v<KeyCons2, cons_null>),
       equal_ckey_ckey_terminal<KeyCons1, Value1, KeyCons2, Value2, EqualCons>,
       equal_ckey_ckey_normal  <KeyCons1, Value1, KeyCons2, Value2, EqualCons>
     >
@@ -191,11 +189,9 @@ struct equal_ckey_cval_normal {
 template <typename KeyCons, typename Value,
           typename ValCons, typename EqualCons>
 struct equal_ckey_cval
-  : mp11::mp_if <
-      mp11::mp_or <
-        std::is_same<KeyCons, cons_null>,
-        std::is_same<ValCons, cons_null>
-      >,
+  : std::conditional_t<
+      (    std::is_same_v<KeyCons, cons_null>
+        || std::is_same_v<ValCons, cons_null>),
       equal_ckey_cval_terminal<KeyCons, Value, ValCons, EqualCons>,
       equal_ckey_cval_normal<KeyCons, Value, ValCons, EqualCons>
     >
@@ -241,11 +237,9 @@ template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
           typename CompareCons >
 struct compare_ckey_ckey
-  : mp11::mp_if <
-      mp11::mp_or <
-        std::is_same<KeyCons1, cons_null>,
-        std::is_same<KeyCons2, cons_null>
-      >,
+  : std::conditional_t<
+      (    std::is_same_v<KeyCons1, cons_null>
+        || std::is_same_v<KeyCons2, cons_null>),
       compare_ckey_ckey_terminal<KeyCons1, Value1,
                                  KeyCons2, Value2,
                                  CompareCons>,
@@ -306,11 +300,9 @@ struct compare_ckey_cval_normal {
 template <typename KeyCons, typename Value,
           typename ValCons, typename CompareCons>
 struct compare_ckey_cval
-  : mp11::mp_if <
-      mp11::mp_or <
-        std::is_same<KeyCons, cons_null>,
-        std::is_same<ValCons, cons_null>
-      >,
+  : std::conditional_t<
+      (    std::is_same_v<KeyCons, cons_null>
+        || std::is_same_v<ValCons, cons_null>),
       compare_ckey_cval_terminal<KeyCons, Value, ValCons, CompareCons>,
       compare_ckey_cval_normal<KeyCons, Value, ValCons, CompareCons>
     >
@@ -344,8 +336,8 @@ struct hash_ckey_normal {
 
 template<typename KeyCons, typename Value, typename HashCons>
 struct hash_ckey
-  : mp11::mp_if <
-      std::is_same<KeyCons, cons_null>,
+  : std::conditional_t<
+      std::is_same_v<KeyCons, cons_null>,
       hash_ckey_terminal<KeyCons, Value, HashCons>,
       hash_ckey_normal<KeyCons, Value, HashCons>
     >
@@ -376,8 +368,8 @@ struct hash_cval_normal {
 
 template<typename ValCons, typename HashCons>
 struct hash_cval
-  : mp11::mp_if <
-      std::is_same<ValCons, cons_null>,
+  : std::conditional_t<
+      std::is_same_v<ValCons, cons_null>,
       hash_cval_terminal<ValCons, HashCons>,
       hash_cval_normal<ValCons, HashCons>
     >
