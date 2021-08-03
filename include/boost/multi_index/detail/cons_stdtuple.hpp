@@ -11,7 +11,6 @@
 #pragma once
 
 #include <boost/multi_index/cons_tuple.hpp>
-#include <boost/mp11/utility.hpp>
 #include <tuple>
 
 namespace boost::multi_index::detail {
@@ -24,7 +23,7 @@ template<typename StdTuple, std::size_t N>
 struct cons_stdtuple;
 
 struct cons_stdtuple_ctor_terminal {
-  typedef cons_null result_type;
+  using result_type = cons_null;
 
   template<typename StdTuple>
   static result_type create(const StdTuple&) { return cons_null(); }
@@ -32,24 +31,25 @@ struct cons_stdtuple_ctor_terminal {
 
 template<typename StdTuple, std::size_t N>
 struct cons_stdtuple_ctor_normal {
-  typedef cons_stdtuple<StdTuple,N> result_type;
+  using result_type = cons_stdtuple<StdTuple, N>;
+
   static result_type create(const StdTuple& t) { return result_type(t); }
 }; // cons_stdtuple_ctor_normal
 
 template<typename StdTuple, std::size_t N = 0>
 struct cons_stdtuple_ctor
-  : mp11::mp_if_c<
-      (N < std::tuple_size<StdTuple>::value),
-      cons_stdtuple_ctor_normal<StdTuple,N>,
+  : std::conditional_t<
+      (N < std::tuple_size_v<StdTuple>),
+      cons_stdtuple_ctor_normal<StdTuple, N>,
       cons_stdtuple_ctor_terminal
     >
 { }; // cons_stdtuple_ctor
 
 template<typename StdTuple, std::size_t N>
 struct cons_stdtuple {
-  typedef typename std::tuple_element<N,StdTuple>::type head_type;
-  typedef cons_stdtuple_ctor<StdTuple, N+1>             tail_ctor;
-  typedef typename tail_ctor::result_type               tail_type;
+  using head_type = typename std::tuple_element_t<N, StdTuple>;
+  using tail_ctor = cons_stdtuple_ctor<StdTuple, N+1>;
+  using tail_type = typename tail_ctor::result_type;
   
   cons_stdtuple(const StdTuple& t_) : t(t_) {}
 
@@ -60,11 +60,24 @@ struct cons_stdtuple {
 }; // cons_stdtuple
 
 template<typename StdTuple>
-typename cons_stdtuple_ctor<StdTuple>::result_type
-make_cons_stdtuple(const StdTuple& t) {
+auto make_cons_stdtuple(const StdTuple& t) {
   return cons_stdtuple_ctor<StdTuple>::create(t);
 }
 
 } // boost::multi_index::detail
+
+namespace std {
+
+template<typename StdTuple, std::size_t N>
+struct tuple_size<boost::multi_index::detail::cons_stdtuple<StdTuple, N>>
+  : tuple_size<StdTuple>
+{ };
+
+template<std::size_t I, typename StdTuple, std::size_t N>
+struct tuple_element<I, boost::multi_index::detail::cons_stdtuple<StdTuple, N>>
+  : tuple_element<I, StdTuple>
+{ };
+
+} // std
 
 #endif
