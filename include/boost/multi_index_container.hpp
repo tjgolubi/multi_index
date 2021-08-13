@@ -74,7 +74,7 @@ class multi_index_container
         Value,IndexSpecifierList,Allocator>::type
     >::type
   >,
-  BOOST_MULTI_INDEX_PRIVATE_IF_MEMBER_TEMPLATE_FRIENDS detail::header_holder<
+  private detail::header_holder<
     typename detail::allocator_traits<
       typename detail::rebind_alloc_for<
         Allocator,

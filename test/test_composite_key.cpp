@@ -288,46 +288,33 @@ struct xystr
   std::string str;
 };
 
-#define TUPLE_MAKER_CREATE(z,n,tuple)                   \
-template<BOOST_PP_ENUM_PARAMS(n,typename T)>            \
-static tuple<BOOST_PP_ENUM_PARAMS(n,T)>                 \
-create(BOOST_PP_ENUM_BINARY_PARAMS(n,const T,& t)){     \
-  return tuple<BOOST_PP_ENUM_PARAMS(n,T)>(              \
-   BOOST_PP_ENUM_PARAMS(n,t));                          \
-}
+struct std_tuple_maker {
 
-#define DEFINE_TUPLE_MAKER(name,tuple)                  \
-struct name                                             \
-{                                                       \
-  static tuple<> create(){return tuple<>();}            \
-  BOOST_PP_REPEAT_FROM_TO(1,5,TUPLE_MAKER_CREATE,tuple) \
-};
+template<typename... Types>
+static auto create(const Types&... args)
+{ return std::make_tuple(args...); }
 
-DEFINE_TUPLE_MAKER(cons_tuple_maker,cons_tuple)
-
-DEFINE_TUPLE_MAKER(std_tuple_maker,std::tuple)
-
-#undef DEFINE_TUPLE_MAKER
-#undef TUPLE_MAKER_CREATE
+}; // std_tuple_maker
 
 template<typename TupleMaker>
 void test_composite_key_template()
 {
-  typedef composite_key<
+  using ckey_t1 = composite_key<
     xyz,
-    BOOST_MULTI_INDEX_MEMBER(xyz,int,x),
-    BOOST_MULTI_INDEX_MEMBER(xyz,int,y),
-    BOOST_MULTI_INDEX_MEMBER(xyz,int,z)
-  > ckey_t1;
+    member<xyz, int, &xyz::x>,
+    member<xyz, int, &xyz::y>,
+    member<xyz, int, &xyz::z>
+  >;
 
-  typedef multi_index_container<
+  using indexed_t1 = multi_index_container<
     xyz,
     indexed_by<
       ordered_unique<ckey_t1>
     >
-  > indexed_t1;
+  >;
 
-  indexed_t1 mc1;
+  indexed_t1 mc1 [[maybe_unused]];
+#if 0 && defined(tjg)
   mc1.insert(xyz(0,0,0));
   mc1.insert(xyz(0,0,1));
   mc1.insert(xyz(0,1,0));
@@ -355,11 +342,12 @@ void test_composite_key_template()
     std::distance(
       mc1.lower_bound(1),
       mc1.upper_bound(1))==4);
+#endif
 
   ckey_t1 ck1;
   ckey_t1 ck2(ck1);
   ckey_t1 ck3(
-    make_cons_tuple(
+    std::make_tuple(
       BOOST_MULTI_INDEX_MEMBER(xyz,int,x)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,y)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,z)()));
@@ -440,7 +428,7 @@ void test_composite_key_template()
   > ckey_eq_t2;
 
   ckey_eq_t2 eq2(
-    make_cons_tuple(
+    std::make_tuple(
       modulo_equal(2),
       modulo_equal(3),
       std::equal_to<int>(),
@@ -490,7 +478,7 @@ void test_composite_key_template()
   ckey_comp_t3 cp3;
   ckey_comp_t3 cp4(cp3);
   ckey_comp_t3 cp5(
-    make_cons_tuple(
+    std::make_tuple(
       std::less<int>(),
       std::greater<int>(),
       std::less<int>()));
@@ -542,6 +530,7 @@ void test_composite_key_template()
   BOOST_TEST(is_less   (ck1(xyz(0,0,0)),ck5(xyz(-1,1,0)),cp3));
   BOOST_TEST(is_greater(ck1(xyz(0,0,0)),ck5(xyz(1,-1,0)),cp3));
 
+#if 0 && defined(tjg)
   typedef multi_index_container<
     xyz,
     indexed_by<
@@ -571,6 +560,7 @@ void test_composite_key_template()
   BOOST_TEST(mc2.find(TupleMaker::create(0,0,1))->z==1);
   BOOST_TEST(ck1(*(mc2.find(TupleMaker::create(1,0,1))))==
              TupleMaker::create(1,0,1));
+#endif
 
   typedef composite_key<
     xystr,
@@ -590,7 +580,7 @@ void test_composite_key_template()
   ckey_hash_t ch1;
   ckey_hash_t ch2(ch1);
   ckey_hash_t ch3(
-    make_cons_tuple(
+    std::make_tuple(
       std::hash<std::string>(),
       std::hash<int>(),
       std::hash<int>()));
@@ -616,11 +606,9 @@ void test_composite_key_template()
     ch1(ck6(xystr(0,0,"hello")))==crh(ck6(xystr(0,0,"hello"))));
   BOOST_TEST(
     ch1(ck6(xystr(4,5,"world")))==crh(ck6(xystr(4,5,"world"))));
-}
+} // test_composite_key_template
 
 void test_composite_key()
 {
-  test_composite_key_template<cons_tuple_maker>();
-
   test_composite_key_template<std_tuple_maker>();
 }
