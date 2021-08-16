@@ -97,7 +97,7 @@ using generic_operator_less_tuple =
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename EqualCons>
+          typename EqualCons, std::size_t I=0>
 struct equal_ckey_ckey; /* fwd decl. */
 
 template <typename KeyCons1, typename Value1,
@@ -112,31 +112,29 @@ struct equal_ckey_ckey_terminal {
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename EqualCons>
+          typename EqualCons, std::size_t I>
 struct equal_ckey_ckey_normal {
   static bool compare(const KeyCons1& c0, const Value1& v0,
                       const KeyCons2& c1, const Value2& v1,
                       const EqualCons& eq)
   {
-    if (!eq.get_head()(c0.get_head()(v0), c1.get_head()(v1)))
+    if (!(multi_index::get<I>(eq)(multi_index::get<I>(c0)(v0), multi_index::get<I>(c1)(v1))))
       return false;
-    return equal_ckey_ckey<
-              typename KeyCons1::tail_type, Value1,
-              typename KeyCons2::tail_type, Value2,
-              typename EqualCons::tail_type
-           >::compare(c0.get_tail(), v0, c1.get_tail(), v1, eq.get_tail());
+    return equal_ckey_ckey<KeyCons1, Value1,
+                           KeyCons2, Value2,
+                           EqualCons, (I+1)
+           >::compare(c0, v0, c1, v1, eq);
   }
 }; // equal_ckey_ckey_normal
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename EqualCons>
+          typename EqualCons, std::size_t I>
 struct equal_ckey_ckey
   : std::conditional_t<
-      (    std::is_same_v<KeyCons1, cons_null>
-        || std::is_same_v<KeyCons2, cons_null>),
-      equal_ckey_ckey_terminal<KeyCons1, Value1, KeyCons2, Value2, EqualCons>,
-      equal_ckey_ckey_normal  <KeyCons1, Value1, KeyCons2, Value2, EqualCons>
+    (I < std::tuple_size_v<KeyCons1> && I < std::tuple_size_v<KeyCons2>),
+    equal_ckey_ckey_normal  <KeyCons1, Value1, KeyCons2, Value2, EqualCons, I>,
+    equal_ckey_ckey_terminal<KeyCons1, Value1, KeyCons2, Value2, EqualCons>
     >
 { };
 
