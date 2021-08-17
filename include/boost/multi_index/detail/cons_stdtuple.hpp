@@ -81,12 +81,27 @@ struct tuple_element<I, boost::multi_index::detail::cons_stdtuple<
 { };
 
 template<std::size_t I, typename... Types>
-auto get(
-    const boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+constexpr const std::tuple_element_t<I, tuple<Types...>>&
+get(const boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+    noexcept
 { return get<I>(t.t); }
 
 template<std::size_t I, typename... Types>
-auto get(boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+constexpr std::tuple_element_t<I, tuple<Types...>>&
+get(boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+    noexcept
+{ return get<I>(t.t); }
+
+template<std::size_t I, typename... Types>
+constexpr const std::tuple_element_t<I, tuple<Types...>>&&
+get(const boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>&& t)
+    noexcept
+{ return get<I>(t.t); }
+
+template<std::size_t I, typename... Types>
+constexpr std::tuple_element_t<I, tuple<Types...>>&&
+get(boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>&& t)
+    noexcept
 { return get<I>(t.t); }
 
 } // std

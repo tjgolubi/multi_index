@@ -118,7 +118,7 @@ struct equal_ckey_ckey_normal {
                       const KeyCons2& c1, const Value2& v1,
                       const EqualCons& eq)
   {
-    if (!(std::get<I>(eq)(std::get<I>(c0)(v0), std::get<I>(c1)(v1))))
+    if (!std::get<I>(eq)(std::get<I>(c0)(v0), std::get<I>(c1)(v1)))
       return false;
     return equal_ckey_ckey<KeyCons1, Value1,
                            KeyCons2, Value2,
@@ -139,7 +139,7 @@ struct equal_ckey_ckey
 { };
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons>
+          typename ValCons, typename EqualCons, std::size_t I=0>
 struct equal_ckey_cval; /* fwd decl. */
 
 template <
@@ -157,41 +157,38 @@ struct equal_ckey_cval_terminal {
 }; // equal_ckey_cval_terminal
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons>
+          typename ValCons, typename EqualCons, std::size_t I>
 struct equal_ckey_cval_normal {
   static bool compare(const KeyCons& c, const Value& v, const ValCons& vc,
                       const EqualCons& eq)
   {
-    if (!eq.get_head()(c.get_head()(v), vc.get_head()))
+    if (!std::get<I>(eq)(std::get<I>(c)(v), std::get<I>(vc)))
       return false;
-    return equal_ckey_cval<
-              typename KeyCons::tail_type, Value,
-              typename ValCons::tail_type,
-              typename EqualCons::tail_type
-           >::compare(c.get_tail(), v, vc.get_tail(), eq.get_tail());
+    return equal_ckey_cval<KeyCons, Value,
+                           ValCons,
+                           EqualCons, (I+1)
+           >::compare(c, v, vc, eq);
   } // compare
 
   static bool compare(const ValCons& vc, const KeyCons& c, const Value& v,
                       const EqualCons& eq)
   {
-    if (!eq.get_head()(vc.get_head(), c.get_head()(v)))
+    if (!std::get<I>(eq)(std::get<I>(vc), std::get<I>(c)(v)))
       return false;
-    return equal_ckey_cval<
-              typename KeyCons::tail_type, Value,
-              typename ValCons::tail_type,
-              typename EqualCons::tail_type
-           >::compare(vc.get_tail(), c.get_tail(), v, eq.get_tail());
+    return equal_ckey_cval<KeyCons, Value,
+                           ValCons,
+                           EqualCons, (I+1)
+           >::compare(vc, c, v, eq);
   } // compare
 }; // equal_ckey_cval_normal
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons>
+          typename ValCons, typename EqualCons, std::size_t I>
 struct equal_ckey_cval
   : std::conditional_t<
-      (    std::is_same_v<KeyCons, cons_null>
-        || std::is_same_v<ValCons, cons_null>),
-      equal_ckey_cval_terminal<KeyCons, Value, ValCons, EqualCons>,
-      equal_ckey_cval_normal<KeyCons, Value, ValCons, EqualCons>
+      (I < std::tuple_size_v<KeyCons> && I < std::tuple_size_v<ValCons>),
+      equal_ckey_cval_normal  <KeyCons, Value, ValCons, EqualCons, I>,
+      equal_ckey_cval_terminal<KeyCons, Value, ValCons, EqualCons>
     >
 { };
 
