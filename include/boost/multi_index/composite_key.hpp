@@ -393,26 +393,25 @@ struct composite_key_result {
 /* composite_key */
 
 template <typename Value, typename... KeyFromValueList>
-struct composite_key
-  : private cons_tuple<KeyFromValueList...>
-{
-private:
-  using super = cons_tuple<KeyFromValueList...>;
-
+struct composite_key {
 public:
-  using key_extractor_tuple = super;
+  using key_extractor_tuple = std::tuple<KeyFromValueList...>;
   using value_type = Value;
   using result_type = composite_key_result<composite_key>;
 
-  composite_key() : super() { }
+private:
+  key_extractor_tuple key_ex;
 
-  explicit composite_key(const KeyFromValueList&... keys) : super(keys...) {}
+public:
+  composite_key() : key_ex() { }
 
-  composite_key(const key_extractor_tuple& x) : super(x) {}
+  explicit composite_key(const KeyFromValueList&... keys) : key_ex(keys...) {}
 
-  const key_extractor_tuple& key_extractors() const { return *this; }
+  composite_key(const key_extractor_tuple& x) : key_ex(x) {}
 
-  key_extractor_tuple&       key_extractors()       { return *this; }
+  const key_extractor_tuple& key_extractors() const { return key_ex; }
+
+  key_extractor_tuple&       key_extractors()       { return key_ex; }
 
   template<typename ChainedPtr>
   typename std::enable_if_t <

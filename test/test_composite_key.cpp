@@ -349,7 +349,7 @@ void test_composite_key_template()
   ckey_t1 ck1;
   ckey_t1 ck2(ck1);
   ckey_t1 ck3(
-    make_cons_tuple(
+    std::make_tuple(
       BOOST_MULTI_INDEX_MEMBER(xyz,int,x)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,y)(),
       BOOST_MULTI_INDEX_MEMBER(xyz,int,z)()));
