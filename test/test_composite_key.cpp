@@ -288,27 +288,17 @@ struct xystr
   std::string str;
 };
 
-#define TUPLE_MAKER_CREATE(z,n,tuple)                   \
-template<BOOST_PP_ENUM_PARAMS(n,typename T)>            \
-static tuple<BOOST_PP_ENUM_PARAMS(n,T)>                 \
-create(BOOST_PP_ENUM_BINARY_PARAMS(n,const T,& t)){     \
-  return tuple<BOOST_PP_ENUM_PARAMS(n,T)>(              \
-   BOOST_PP_ENUM_PARAMS(n,t));                          \
-}
+struct cons_tuple_maker {
+  template<typename... Types>
+  static cons_tuple<Types...> create(const Types&... args)
+  { return make_cons_tuple(args...); }
+}; // cons_tuple_maker
 
-#define DEFINE_TUPLE_MAKER(name,tuple)                  \
-struct name                                             \
-{                                                       \
-  static tuple<> create(){return tuple<>();}            \
-  BOOST_PP_REPEAT_FROM_TO(1,5,TUPLE_MAKER_CREATE,tuple) \
-};
-
-DEFINE_TUPLE_MAKER(cons_tuple_maker,cons_tuple)
-
-DEFINE_TUPLE_MAKER(std_tuple_maker,std::tuple)
-
-#undef DEFINE_TUPLE_MAKER
-#undef TUPLE_MAKER_CREATE
+struct std_tuple_maker {
+  template<typename... Types>
+  static std::tuple<Types...> create(const Types&... args)
+  { return std::make_tuple(args...); }
+}; // std_tuple_maker
 
 template<typename TupleMaker>
 void test_composite_key_template()
