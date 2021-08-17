@@ -288,12 +288,6 @@ struct xystr
   std::string str;
 };
 
-struct cons_tuple_maker {
-  template<typename... Types>
-  static cons_tuple<Types...> create(const Types&... args)
-  { return make_cons_tuple(args...); }
-}; // cons_tuple_maker
-
 struct std_tuple_maker {
   template<typename... Types>
   static std::tuple<Types...> create(const Types&... args)
@@ -610,7 +604,5 @@ void test_composite_key_template()
 
 void test_composite_key()
 {
-  test_composite_key_template<cons_tuple_maker>();
-
   test_composite_key_template<std_tuple_maker>();
 }
