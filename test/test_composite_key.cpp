@@ -430,7 +430,7 @@ void test_composite_key_template()
   > ckey_eq_t2;
 
   ckey_eq_t2 eq2(
-    make_cons_tuple(
+    std::make_tuple(
       modulo_equal(2),
       modulo_equal(3),
       std::equal_to<int>(),
@@ -480,7 +480,7 @@ void test_composite_key_template()
   ckey_comp_t3 cp3;
   ckey_comp_t3 cp4(cp3);
   ckey_comp_t3 cp5(
-    make_cons_tuple(
+    std::make_tuple(
       std::less<int>(),
       std::greater<int>(),
       std::less<int>()));
@@ -580,7 +580,7 @@ void test_composite_key_template()
   ckey_hash_t ch1;
   ckey_hash_t ch2(ch1);
   ckey_hash_t ch3(
-    make_cons_tuple(
+    std::make_tuple(
       std::hash<std::string>(),
       std::hash<int>(),
       std::hash<int>()));

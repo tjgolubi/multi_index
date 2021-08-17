@@ -710,7 +710,7 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
 template <typename... PredList>
 struct composite_key_equal_to {
 public:
-  using key_eq_tuple = cons_tuple<PredList...>;
+  using key_eq_tuple = std::tuple<PredList...>;
 
 private:
   key_eq_tuple _key_eqs;
@@ -840,7 +840,7 @@ public:
 template <typename... CompareList>
 struct composite_key_compare {
 public:
-  using key_comp_tuple = cons_tuple<CompareList...>;
+  using key_comp_tuple = std::tuple<CompareList...>;
 
 private:
   key_comp_tuple _key_comps;
@@ -984,7 +984,7 @@ public:
 template <typename... HashList>
 struct composite_key_hash {
 public:
-  using key_hasher_tuple = cons_tuple<HashList...>;
+  using key_hasher_tuple = std::tuple<HashList...>;
 
 private:
   key_hasher_tuple _key_hash_fns;
