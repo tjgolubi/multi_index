@@ -216,12 +216,12 @@ struct compare_ckey_ckey_normal {
                       const KeyCons2& c1, const Value2& v1,
                       const CompareCons& comp)
   {
-    auto& comp_i = std::get<I>(comp);
-    auto& c0_i   = std::get<I>(c0);
-    auto& c1_i   = std::get<I>(c1);
-    if (comp_i(c0_i(v0), c1_i(v1)))
+    const auto& comp_i = std::get<I>(comp);
+    const auto& c0_i   = std::get<I>(c0)(v0);
+    const auto& c1_i   = std::get<I>(c1)(v1);
+    if (comp_i(c0_i, c1_i))
       return true;
-    if (comp_i(c1_i(v1), c0_i(v0)))
+    if (comp_i(c1_i, c0_i))
       return false;
     return compare_ckey_ckey<KeyCons1, Value1,
                              KeyCons2, Value2,
@@ -246,7 +246,7 @@ struct compare_ckey_ckey
 { };
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons>
+          typename ValCons, typename CompareCons, std::size_t I=0>
 struct compare_ckey_cval; /* fwd decl. */
 
 template <typename KeyCons, typename Value,
@@ -262,45 +262,48 @@ struct compare_ckey_cval_terminal {
 }; // compare_ckey_cval_terminal
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons>
+          typename ValCons, typename CompareCons, std::size_t I>
 struct compare_ckey_cval_normal {
   static bool compare(const KeyCons& c, const Value& v, const ValCons& vc,
                       const CompareCons& comp)
   {
-    if (comp.get_head()(c.get_head()(v), vc.get_head()))
+    const auto& comp_i = std::get<I>(comp);
+    const auto& c_i    = std::get<I>(c)(v);
+    const auto& vc_i   = std::get<I>(vc);
+    if (comp_i(c_i, vc_i))
       return true;
-    if (comp.get_head()(vc.get_head(), c.get_head()(v)))
+    if (comp_i(vc_i, c_i))
       return false;
-    return compare_ckey_cval <
-              typename KeyCons::tail_type, Value,
-              typename ValCons::tail_type,
-              typename CompareCons::tail_type
-           >::compare(c.get_tail(), v, vc.get_tail(), comp.get_tail());
+    return compare_ckey_cval<KeyCons, Value,
+                             ValCons,
+                             CompareCons, (I+1)
+           >::compare(c, v, vc, comp);
   } // compare
 
   static bool compare(const ValCons& vc, const KeyCons& c, const Value& v,
                       const CompareCons& comp)
   {
-    if (comp.get_head()(vc.get_head(), c.get_head()(v)))
+    const auto& comp_i = std::get<I>(comp);
+    const auto& vc_i   = std::get<I>(vc);
+    const auto& c_i    = std::get<I>(c)(v);
+    if (comp_i(vc_i, c_i))
       return true;
-    if (comp.get_head()(c.get_head()(v), vc.get_head()))
+    if (comp_i(c_i, vc_i))
       return false;
-    return compare_ckey_cval <
-              typename KeyCons::tail_type, Value,
-              typename ValCons::tail_type,
-              typename CompareCons::tail_type
-           >::compare(vc.get_tail(), c.get_tail(), v, comp.get_tail());
+    return compare_ckey_cval<KeyCons, Value,
+                             ValCons,
+                             CompareCons, (I+1)
+           >::compare(vc, c, v, comp);
   } // compare
 }; // compare_ckey_cval_normal
 
 template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons>
+          typename ValCons, typename CompareCons, std::size_t I>
 struct compare_ckey_cval
   : std::conditional_t<
-      (    std::is_same_v<KeyCons, cons_null>
-        || std::is_same_v<ValCons, cons_null>),
-      compare_ckey_cval_terminal<KeyCons, Value, ValCons, CompareCons>,
-      compare_ckey_cval_normal<KeyCons, Value, ValCons, CompareCons>
+      (I < std::tuple_size_v<KeyCons> && I < std::tuple_size_v<ValCons>),
+      compare_ckey_cval_normal  <KeyCons, Value, ValCons, CompareCons, I>,
+      compare_ckey_cval_terminal<KeyCons, Value, ValCons, CompareCons>
     >
 { };
 
