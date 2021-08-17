@@ -307,7 +307,7 @@ struct compare_ckey_cval
     >
 { };
 
-template<typename KeyCons, typename Value, typename HashCons>
+template<typename KeyCons, typename Value, typename HashCons, std::size_t I=0>
 struct hash_ckey; /* fwd decl. */
 
 template<typename KeyCons, typename Value, typename HashCons>
@@ -317,32 +317,35 @@ struct hash_ckey_terminal {
   { return carry; }
 }; // hash_ckey_terminal
 
-template<typename KeyCons, typename Value, typename HashCons>
+namespace {
+
+/* same hashing formula as boost::hash_combine */
+
+inline void hash_combine(std::size_t& seed, std::size_t value) noexcept
+{ seed ^= value + 0x9e3779b9 + (seed << 6) + (seed >> 2); }
+
+}
+
+template<typename KeyCons, typename Value, typename HashCons, std::size_t I>
 struct hash_ckey_normal {
   static std::size_t hash(const KeyCons& c, const Value& v, const HashCons& h,
                           std::size_t carry = 0)
   {
-    /* same hashing formula as boost::hash_combine */
-
-    carry ^= h.get_head()(c.get_head()(v)) + 0x9e3779b9 + (carry << 6) +
-             (carry >> 2);
-    return hash_ckey <
-              typename KeyCons::tail_type, Value,
-              typename HashCons::tail_type
-           >::hash(c.get_tail(), v, h.get_tail(), carry);
+    hash_combine(carry, std::get<I>(h)(std::get<I>(c)(v)));
+    return hash_ckey<KeyCons, Value, HashCons, (I+1)>::hash(c, v, h, carry);
   }
 }; // hash_ckey_normal
 
-template<typename KeyCons, typename Value, typename HashCons>
+template<typename KeyCons, typename Value, typename HashCons, std::size_t I>
 struct hash_ckey
   : std::conditional_t<
-      std::is_same_v<KeyCons, cons_null>,
-      hash_ckey_terminal<KeyCons, Value, HashCons>,
-      hash_ckey_normal<KeyCons, Value, HashCons>
+      (I < std::tuple_size_v<KeyCons>),
+      hash_ckey_normal  <KeyCons, Value, HashCons, I>,
+      hash_ckey_terminal<KeyCons, Value, HashCons>
     >
 { };
 
-template<typename ValCons, typename HashCons>
+template<typename ValCons, typename HashCons, std::size_t I=0>
 struct hash_cval; /* fwd decl. */
 
 template<typename ValCons, typename HashCons>
@@ -351,26 +354,22 @@ struct hash_cval_terminal {
   { return carry; }
 }; // hash_cval_terminal
 
-template<typename ValCons, typename HashCons>
+template<typename ValCons, typename HashCons, std::size_t I>
 struct hash_cval_normal {
   static std::size_t hash(const ValCons& vc, const HashCons& h,
                           std::size_t carry = 0)
   {
-    carry ^= h.get_head()(vc.get_head()) + 0x9e3779b9
-             + (carry << 6) + (carry >> 2);
-    return hash_cval <
-              typename ValCons::tail_type,
-              typename HashCons::tail_type
-           >::hash(vc.get_tail(), h.get_tail(), carry);
+    hash_combine(carry, std::get<I>(h)(std::get<I>(vc)));
+    return hash_cval<ValCons, HashCons, (I+1)>::hash(vc, h, carry);
   }
 }; // hash_cval_normal
 
-template<typename ValCons, typename HashCons>
+template<typename ValCons, typename HashCons, std::size_t I>
 struct hash_cval
   : std::conditional_t<
-      std::is_same_v<ValCons, cons_null>,
-      hash_cval_terminal<ValCons, HashCons>,
-      hash_cval_normal<ValCons, HashCons>
+      (I < std::tuple_size_v<ValCons>),
+      hash_cval_normal  <ValCons, HashCons, I>,
+      hash_cval_terminal<ValCons, HashCons>
     >
 { };
 
