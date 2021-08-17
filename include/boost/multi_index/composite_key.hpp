@@ -74,7 +74,7 @@ struct generic_operator_equal {
 
 template<typename T>
 using generic_operator_equal_tuple =
-  mp11::mp_fill<mp11::mp_rename<T, cons_tuple>, generic_operator_equal>;
+  mp11::mp_fill<mp11::mp_rename<T, std::tuple>, generic_operator_equal>;
 
 struct generic_operator_less {
   template<typename T, typename Q>
@@ -84,13 +84,13 @@ struct generic_operator_less {
 
 template<typename T>
 using generic_operator_less_tuple =
-    mp11::mp_fill<mp11::mp_rename<T, cons_tuple>, generic_operator_less>;
+    mp11::mp_fill<mp11::mp_rename<T, std::tuple>, generic_operator_less>;
 
 /* Metaprogramming machinery for implementing equality, comparison and
  * hashing operations of composite_key_result.
  *
  * equal_* checks for equality between composite_key_results and
- * between those and tuples, accepting a cons_tuple of basic equality functors.
+ * between those and tuples, accepting a std::tuple of basic equality functors.
  * compare_* does lexicographical comparison.
  * hash_* computes a combination of elementwise hash values.
  */
