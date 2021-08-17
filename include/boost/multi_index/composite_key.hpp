@@ -882,7 +882,7 @@ public:
   template<typename CompositeKey, typename Value>
   bool operator()(const composite_key_result<CompositeKey>& x, const Value& y)
     const
-  { return operator()(x, make_cons_tuple(std::cref(y))); }
+  { return operator()(x, std::make_tuple(std::cref(y))); }
 
   template <typename CompositeKey, typename... Values>
   bool operator()(const composite_key_result<CompositeKey>& x,
@@ -909,7 +909,7 @@ public:
   template<typename Value, typename CompositeKey>
   bool operator()(const Value& x, const composite_key_result<CompositeKey>& y)
     const
-  { return operator()(make_cons_tuple(std::cref(x)), y); }
+  { return operator()(std::make_tuple(std::cref(x)), y); }
 
   template <typename CompositeKey, typename... Values>
   bool operator()(const cons_tuple<Values...>& x,
