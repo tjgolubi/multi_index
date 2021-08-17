@@ -708,23 +708,23 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
 /* composite_key_equal_to */
 
 template <typename... PredList>
-struct composite_key_equal_to
-  : private cons_tuple<PredList...>
-{
+struct composite_key_equal_to {
+public:
+  using key_eq_tuple = cons_tuple<PredList...>;
+
 private:
-  using super = cons_tuple<PredList...>;
+  key_eq_tuple _key_eqs;
 
 public:
-  using key_eq_tuple = super;
+  composite_key_equal_to() : _key_eqs() { }
 
-  composite_key_equal_to() : super() { }
+  explicit composite_key_equal_to(const PredList&... args)
+      : _key_eqs(args...) {}
 
-  explicit composite_key_equal_to(const PredList&... args) : super(args...) {}
+  composite_key_equal_to(const key_eq_tuple& x) : _key_eqs(x) {}
 
-  composite_key_equal_to(const key_eq_tuple& x) : super(x) {}
-
-  const key_eq_tuple& key_eqs() const { return *this; }
-  key_eq_tuple&       key_eqs()       { return *this; }
+  const key_eq_tuple& key_eqs() const { return _key_eqs; }
+  key_eq_tuple&       key_eqs()       { return _key_eqs; }
 
   template<typename CompositeKey1, typename CompositeKey2>
   bool operator()(const composite_key_result<CompositeKey1>& x,
@@ -838,23 +838,23 @@ public:
 /* composite_key_compare */
 
 template <typename... CompareList>
-struct composite_key_compare
-  : private cons_tuple<CompareList...>
-{
+struct composite_key_compare {
+public:
+  using key_comp_tuple = cons_tuple<CompareList...>;
+
 private:
-  using super = cons_tuple<CompareList...>;
+  key_comp_tuple _key_comps;
 
 public:
-  using key_comp_tuple = super;
+  composite_key_compare() : _key_comps() {}
 
-  composite_key_compare() : super() {}
+  explicit composite_key_compare(const CompareList&... args)
+      : _key_comps(args...) {}
 
-  explicit composite_key_compare(const CompareList&... args) : super(args...) {}
+  composite_key_compare(const key_comp_tuple& x) : _key_comps(x) {}
 
-  composite_key_compare(const key_comp_tuple& x) : super(x) {}
-
-  const key_comp_tuple& key_comps() const { return *this; }
-  key_comp_tuple&       key_comps()       { return *this; }
+  const key_comp_tuple& key_comps() const { return _key_comps; }
+  key_comp_tuple&       key_comps()       { return _key_comps; }
 
   template<typename CompositeKey1, typename CompositeKey2>
   bool operator()(const composite_key_result<CompositeKey1>& x,
@@ -982,24 +982,24 @@ public:
 /* composite_key_hash */
 
 template <typename... HashList>
-struct composite_key_hash
-  : private cons_tuple<HashList...>
-{
+struct composite_key_hash {
+public:
+  using key_hasher_tuple = cons_tuple<HashList...>;
+
 private:
-  using super = cons_tuple<HashList...>;
+  key_hasher_tuple _key_hash_fns;
 
 public:
-  using key_hasher_tuple = super;
+  composite_key_hash() : _key_hash_fns() { }
 
-  composite_key_hash() : super() { }
+  explicit composite_key_hash(const HashList&... args...)
+      : _key_hash_fns(args...) {}
 
-  explicit composite_key_hash(const HashList&... args...) : super(args...) {}
+  composite_key_hash(const key_hasher_tuple& x) : _key_hash_fns(x) {}
 
-  composite_key_hash(const key_hasher_tuple& x) : super(x) {}
+  const key_hasher_tuple& key_hash_functions() const { return _key_hash_fns; }
 
-  const key_hasher_tuple& key_hash_functions() const { return *this; }
-
-  key_hasher_tuple&       key_hash_functions()       { return *this; }
+  key_hasher_tuple&       key_hash_functions()       { return _key_hash_fns; }
 
   template<typename CompositeKey>
   std::size_t operator()(const composite_key_result<CompositeKey>& x) const {
