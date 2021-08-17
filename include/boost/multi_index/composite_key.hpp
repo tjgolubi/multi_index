@@ -194,7 +194,7 @@ struct equal_ckey_cval
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename CompareCons>
+          typename CompareCons, std::size_t I=0>
 struct compare_ckey_ckey; /* fwd decl. */
 
 template <typename KeyCons1, typename Value1,
@@ -210,37 +210,38 @@ struct compare_ckey_ckey_terminal {
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename CompareCons>
+          typename CompareCons, std::size_t I>
 struct compare_ckey_ckey_normal {
   static bool compare(const KeyCons1& c0, const Value1& v0,
                       const KeyCons2& c1, const Value2& v1,
                       const CompareCons& comp)
   {
-    if (comp.get_head()(c0.get_head()(v0), c1.get_head()(v1)))
+    auto& comp_i = std::get<I>(comp);
+    auto& c0_i   = std::get<I>(c0);
+    auto& c1_i   = std::get<I>(c1);
+    if (comp_i(c0_i(v0), c1_i(v1)))
       return true;
-    if (comp.get_head()(c1.get_head()(v1), c0.get_head()(v0)))
+    if (comp_i(c1_i(v1), c0_i(v0)))
       return false;
-    return compare_ckey_ckey <
-              typename KeyCons1::tail_type, Value1,
-              typename KeyCons2::tail_type, Value2,
-              typename CompareCons::tail_type
-           >::compare(c0.get_tail(), v0, c1.get_tail(), v1, comp.get_tail());
+    return compare_ckey_ckey<KeyCons1, Value1,
+                             KeyCons2, Value2,
+                             CompareCons, (I+1)
+           >::compare(c0, v0, c1, v1, comp);
   }
 }; // compare_ckey_ckey_normal
 
 template <typename KeyCons1, typename Value1,
           typename KeyCons2, typename Value2,
-          typename CompareCons >
+          typename CompareCons, std::size_t I>
 struct compare_ckey_ckey
   : std::conditional_t<
-      (    std::is_same_v<KeyCons1, cons_null>
-        || std::is_same_v<KeyCons2, cons_null>),
+      (I < std::tuple_size_v<KeyCons1> && I < std::tuple_size_v<KeyCons2>),
+      compare_ckey_ckey_normal  <KeyCons1, Value1,
+                                 KeyCons2, Value2,
+                                 CompareCons, I>,
       compare_ckey_ckey_terminal<KeyCons1, Value1,
                                  KeyCons2, Value2,
-                                 CompareCons>,
-      compare_ckey_ckey_normal<KeyCons1, Value1,
-                               KeyCons2, Value2,
-                               CompareCons>
+                                 CompareCons>
     >
 { };
 
