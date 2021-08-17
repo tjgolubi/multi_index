@@ -118,7 +118,7 @@ struct equal_ckey_ckey_normal {
                       const KeyCons2& c1, const Value2& v1,
                       const EqualCons& eq)
   {
-    if (!(multi_index::get<I>(eq)(multi_index::get<I>(c0)(v0), multi_index::get<I>(c1)(v1))))
+    if (!(std::get<I>(eq)(std::get<I>(c0)(v0), std::get<I>(c1)(v1))))
       return false;
     return equal_ckey_ckey<KeyCons1, Value1,
                            KeyCons2, Value2,

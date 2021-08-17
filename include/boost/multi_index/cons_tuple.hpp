@@ -614,6 +614,8 @@ struct tuple_element<I, boost::multi_index::cons_tuple<Types...>>
                                      boost::multi_index::cons_tuple<Types...>>
   { };
 
+using boost::multi_index::get;
+
 } // std
 
 #endif

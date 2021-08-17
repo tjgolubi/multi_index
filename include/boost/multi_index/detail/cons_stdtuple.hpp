@@ -19,7 +19,7 @@ namespace boost::multi_index::detail {
  * composite_key interoperability.
  */
 
-template<typename StdTuple, std::size_t N>
+template<typename StdTuple, std::size_t I=0>
 struct cons_stdtuple;
 
 struct cons_stdtuple_ctor_terminal {
@@ -29,31 +29,31 @@ struct cons_stdtuple_ctor_terminal {
   static result_type create(const StdTuple&) { return cons_null(); }
 }; // cons_stdtuple_ctor_terminal
 
-template<typename StdTuple, std::size_t N>
+template<typename StdTuple, std::size_t I>
 struct cons_stdtuple_ctor_normal {
-  using result_type = cons_stdtuple<StdTuple, N>;
+  using result_type = cons_stdtuple<StdTuple, I>;
 
   static result_type create(const StdTuple& t) { return result_type(t); }
 }; // cons_stdtuple_ctor_normal
 
-template<typename StdTuple, std::size_t N = 0>
+template<typename StdTuple, std::size_t I=0>
 struct cons_stdtuple_ctor
   : std::conditional_t<
-      (N < std::tuple_size_v<StdTuple>),
-      cons_stdtuple_ctor_normal<StdTuple, N>,
+      (I < std::tuple_size_v<StdTuple>),
+      cons_stdtuple_ctor_normal<StdTuple, I>,
       cons_stdtuple_ctor_terminal
     >
 { }; // cons_stdtuple_ctor
 
-template<typename StdTuple, std::size_t N>
+template<typename StdTuple, std::size_t I>
 struct cons_stdtuple {
-  using head_type = typename std::tuple_element_t<N, StdTuple>;
-  using tail_ctor = cons_stdtuple_ctor<StdTuple, N+1>;
+  using head_type = typename std::tuple_element_t<I, StdTuple>;
+  using tail_ctor = cons_stdtuple_ctor<StdTuple, I+1>;
   using tail_type = typename tail_ctor::result_type;
   
   cons_stdtuple(const StdTuple& t_) : t(t_) {}
 
-  const head_type& get_head() const { return std::get<N>(t); }
+  const head_type& get_head() const { return std::get<I>(t); }
   tail_type get_tail() const { return tail_ctor::create(t); }
     
   const StdTuple& t;
@@ -68,15 +68,26 @@ auto make_cons_stdtuple(const StdTuple& t) {
 
 namespace std {
 
-template<typename StdTuple, std::size_t N>
-struct tuple_size<boost::multi_index::detail::cons_stdtuple<StdTuple, N>>
-  : tuple_size<StdTuple>
+template<typename... Types>
+struct tuple_size<boost::multi_index::detail::cons_stdtuple<
+    std::tuple<Types...>>>
+  : tuple_size<std::tuple<Types...>>
 { };
 
-template<std::size_t I, typename StdTuple, std::size_t N>
-struct tuple_element<I, boost::multi_index::detail::cons_stdtuple<StdTuple, N>>
-  : tuple_element<I, StdTuple>
+template<std::size_t I, typename... Types>
+struct tuple_element<I, boost::multi_index::detail::cons_stdtuple<
+    std::tuple<Types...>>>
+  : tuple_element<I, std::tuple<Types...>>
 { };
+
+template<std::size_t I, typename... Types>
+auto get(
+    const boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+{ return get<I>(t.t); }
+
+template<std::size_t I, typename... Types>
+auto get(boost::multi_index::detail::cons_stdtuple<std::tuple<Types...>>& t)
+{ return get<I>(t.t); }
 
 } // std
 
