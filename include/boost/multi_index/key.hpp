@@ -25,15 +25,15 @@ namespace boost::multi_index {
 
 namespace detail {
 
-template<typename T, T, typename = void>
+template<typename T, T, typename=void>
 struct typed_key_impl;
 
 template<typename Class, typename Type, Type Class::*PtrToMember>
-struct typed_key_impl <
-    Type Class::*,
-    PtrToMember,
-    typename std::enable_if_t< !std::is_function_v<Type> >
-  >
+struct typed_key_impl<
+  Type Class::*,
+  PtrToMember,
+  std::enable_if_t<!std::is_function_v<Type>>
+>
 {
   using value_type = Class;
   using type = member<Class, Type, PtrToMember>;
@@ -43,25 +43,24 @@ struct typed_key_impl <
 template<                                                                      \
   typename Class, typename Type, Type (Class::*PtrToMemberFunction)()qualifier \
 >                                                                              \
-struct typed_key_impl<Type (Class::*)()qualifier, PtrToMemberFunction>         \
-{                                                                              \
+struct typed_key_impl<Type (Class::*)() qualifier, PtrToMemberFunction> {      \
   using value_type = Class;                                                    \
   using type = extractor<Class, Type, PtrToMemberFunction>;                    \
 }; // typed_key_impl
 
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(, mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const, const_mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(volatile, volatile_mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const volatile, cv_mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(&, ref_mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const&, cref_mem_fun)
-BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(volatile&, vref_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(,                mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const,           const_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(volatile,        volatile_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const volatile,  cv_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(&,               ref_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const&,          cref_mem_fun)
+BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(volatile&,       vref_mem_fun)
 BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL(const volatile&, cvref_mem_fun)
 
 #undef BOOST_MULTI_INDEX_KEY_TYPED_KEY_IMPL
 
 template<class Value, typename Type, Type(*PtrToFunction)(Value)>
-struct typed_key_impl<Type(*)(Value), PtrToFunction> {
+struct typed_key_impl<Type (*)(Value), PtrToFunction> {
   using value_type = Value;
   using type = global_fun<Value, Type, PtrToFunction>;
 }; // typed_key_impl
@@ -99,6 +98,8 @@ BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT(const volatile&&)
 #undef BOOST_MULTI_INDEX_KEY_REMOVE_MEMFUN_NOEXCEPT
 #undef BOOST_MULTI_INDEX_EMPTY
 
+// @TODO Can/should noexcept be preserved?
+
 template<typename R, typename... Args>
 struct remove_noexcept<R(*)(Args...) noexcept> {
   using type = R(*)(Args...);
@@ -115,8 +116,8 @@ using remove_noexcept_t = typename remove_noexcept<T>::type;
 template<auto... Keys> struct key_impl;
 
 template<auto Key>
-struct key_impl<Key>
-  : typed_key_impl<remove_noexcept_t<decltype(Key)>, Key> {};
+struct key_impl<Key> : typed_key_impl<remove_noexcept_t<decltype(Key)>, Key>
+{ };
 
 template<typename... Ts> struct least_generic;
 
@@ -133,7 +134,8 @@ struct least_generic<T0, T1, Ts...> {
 
   using type = typename least_generic<
                   typename std::conditional_t<
-                    std::is_convertible_v<const T0&, const T1&>, T0, T1
+                    std::is_convertible_v<const T0&, const T1&>,
+                    T0, T1
                   >,
                   Ts...
                >::type;
@@ -141,11 +143,10 @@ struct least_generic<T0, T1, Ts...> {
 
 template<auto Key0, auto... Keys>
 struct key_impl<Key0, Keys...> {
-  using value_type =
-      typename least_generic<
-        typename std::decay_t<typename key_impl<Key0>::value_type>,
-        typename std::decay_t<typename key_impl<Keys>::value_type>...
-      >::type;
+  using value_type = typename least_generic<
+                        std::decay_t<typename key_impl<Key0>::value_type>,
+                        std::decay_t<typename key_impl<Keys>::value_type>...
+                     >::type;
 
   using type = composite_key<value_type,
                              typename key_impl<Key0>::type,
