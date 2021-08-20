@@ -12,7 +12,7 @@
 
 #include <type_traits>
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
 /* mem_fun implements a read-only key extractor based on a given non-const
  * member function of a class.
@@ -33,125 +33,106 @@ namespace boost::multi_index{
  * arbitrary combinations of these (vg. T** or unique_ptr<T*>.)
  */
 
-namespace detail{
+namespace detail {
 
 template<
-  class Class,typename Type,
-  typename PtrToMemberFunctionType,PtrToMemberFunctionType PtrToMemberFunction
+    class Class,
+    typename Type,
+    typename PtrToMemberFunctionType,
+    PtrToMemberFunctionType PtrToMemberFunction
 >
-struct const_mem_fun_impl
-{
-  typedef typename std::remove_reference_t<Type> result_type;
+struct const_mem_fun_impl {
+  using result_type = typename std::remove_reference_t<Type>;
 
   template<typename ChainedPtr>
   typename std::enable_if_t<
-    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type>
-  operator()(const ChainedPtr& x)const
-  {
-    return operator()(*x);
-  }
+    !std::is_convertible_v<const ChainedPtr&, const Class&>,
+  Type> operator()(const ChainedPtr& x) const
+  { return operator()(*x); }
 
-  Type operator()(const Class& x)const
-  {
-    return (x.*PtrToMemberFunction)();
-  }
+  Type operator()(const Class& x) const
+  { return (x.*PtrToMemberFunction)(); }
 
-  Type operator()(const std::reference_wrapper<const Class>& x)const
-  { 
-    return operator()(x.get());
-  }
+  Type operator()(const std::reference_wrapper<const Class>& x) const
+  { return operator()(x.get()); }
 
-  Type operator()(const std::reference_wrapper<Class>& x)const
-  { 
-    return operator()(x.get());
-  }
-};
+  Type operator()(const std::reference_wrapper<Class>& x) const
+  { return operator()(x.get()); }
+}; // const_mem_fun_impl
 
-template<
-  class Class,typename Type,
-  typename PtrToMemberFunctionType,PtrToMemberFunctionType PtrToMemberFunction
->
-struct mem_fun_impl
-{
-  typedef typename std::remove_reference_t<Type> result_type;
+template<class Class, typename Type,
+         typename PtrToMemberFunctionType,
+         PtrToMemberFunctionType PtrToMemberFunction>
+struct mem_fun_impl {
+  using result_type = std::remove_reference_t<Type>;
 
   template<typename ChainedPtr>
   typename std::enable_if_t<
-    !std::is_convertible_v<ChainedPtr&,Class&>,Type>
-  operator()(const ChainedPtr& x)const
-  {
-    return operator()(*x);
-  }
+    !std::is_convertible_v<ChainedPtr&, Class&>,
+  Type> operator()(const ChainedPtr& x) const
+  { return operator()(*x); }
 
-  Type operator()(Class& x)const
-  {
-    return (x.*PtrToMemberFunction)();
-  }
+  Type operator()(Class& x) const
+  { return (x.*PtrToMemberFunction)(); }
 
-  Type operator()(const std::reference_wrapper<Class>& x)const
-  { 
-    return operator()(x.get());
-  }
-};
+  Type operator()(const std::reference_wrapper<Class>& x) const
+  { return operator()(x.get()); }
+}; // mem_fun_impl
 
 } // detail
 
-template<class Class,typename Type,Type (Class::*PtrToMemberFunction)()const>
-struct const_mem_fun:detail::const_mem_fun_impl<
-  Class,Type,Type (Class::*)()const,PtrToMemberFunction
->{};
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() const>
+using const_mem_fun = detail::const_mem_fun_impl<Class, Type,
+                                                 Type(Class::*)() const,
+                                                 PtrToMemberFunction>;
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() const volatile>
+using cv_mem_fun = detail::const_mem_fun_impl<Class, Type,
+                                              Type(Class::*)() const volatile,
+                                              PtrToMemberFunction>;
 
-template<
-  class Class,typename Type,
-  Type (Class::*PtrToMemberFunction)()const volatile
->
-struct cv_mem_fun:detail::const_mem_fun_impl<
-  Class,Type,Type (Class::*)()const volatile,PtrToMemberFunction
->{};
+template<class Class, typename Type, Type(Class::*PtrToMemberFunction)()>
+using mem_fun = detail::mem_fun_impl<Class, Type,
+                                     Type(Class::*)(),
+                                     PtrToMemberFunction>;
 
-template<class Class,typename Type,Type (Class::*PtrToMemberFunction)()>
-struct mem_fun:
-  detail::mem_fun_impl<Class,Type,Type (Class::*)(),PtrToMemberFunction>{};
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() volatile>
+using volatile_mem_fun = detail::mem_fun_impl<Class, Type,
+                                              Type(Class::*)() volatile,
+                                              PtrToMemberFunction>;
 
-template<
-  class Class,typename Type,Type (Class::*PtrToMemberFunction)()volatile
->
-struct volatile_mem_fun:detail::mem_fun_impl<
-  Class,Type,Type (Class::*)()volatile,PtrToMemberFunction
->{};
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() const & >
+using cref_mem_fun = detail::const_mem_fun_impl<Class, Type,
+                                                Type(Class::*)() const &,
+                                                PtrToMemberFunction>;
 
-template<
-  class Class,typename Type,Type (Class::*PtrToMemberFunction)()const&
->
-struct cref_mem_fun:detail::const_mem_fun_impl<
-  Class,Type,Type (Class::*)()const&,PtrToMemberFunction
->{};
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() const volatile & >
+using cvref_mem_fun = detail::const_mem_fun_impl<Class, Type,
+                                              Type(Class::*)() const volatile &,
+                                              PtrToMemberFunction>;
 
-template<
-  class Class,typename Type,
-  Type (Class::*PtrToMemberFunction)()const volatile&
->
-struct cvref_mem_fun:detail::const_mem_fun_impl<
-  Class,Type,Type (Class::*)()const volatile&,PtrToMemberFunction
->{};
+template<class Class, typename Type, Type(Class::*PtrToMemberFunction)() & >
+using ref_mem_fun = detail::mem_fun_impl<Class, Type,
+                                         Type(Class::*)() &,
+                                         PtrToMemberFunction>;
 
-template<class Class,typename Type,Type (Class::*PtrToMemberFunction)()&>
-struct ref_mem_fun:
-  detail::mem_fun_impl<Class,Type,Type (Class::*)()&,PtrToMemberFunction>{};
+template<class Class, typename Type,
+         Type(Class::*PtrToMemberFunction)() volatile& >
+using vref_mem_fun = detail::mem_fun_impl<Class, Type,
+                                          Type(Class::*)() volatile &,
+                                          PtrToMemberFunction>;
 
-template<
-  class Class,typename Type,Type (Class::*PtrToMemberFunction)()volatile&
->
-struct vref_mem_fun:detail::mem_fun_impl<
-  Class,Type,Type (Class::*)()volatile&,PtrToMemberFunction
->{};
-
+#if 0
 /* MSVC++ 6.0 has problems with const member functions as non-type template
  * parameters, somehow it takes them as non-const. const_mem_fun_explicit
  * workarounds this deficiency by accepting an extra type parameter that
  * specifies the signature of the member function. The workaround was found at:
  *   Daniel, C.:"Re: weird typedef problem in VC",
- *   news:microsoft.public.vc.language, 21st nov 2002, 
+ *   news:microsoft.public.vc.language, 21st nov 2002,
  *   http://groups.google.com/groups?
  *     hl=en&lr=&ie=UTF-8&selm=ukwvg3O0BHA.1512%40tkmsftngp05
  *
@@ -159,64 +140,46 @@ struct vref_mem_fun:detail::mem_fun_impl<
  * deprecated.
  */
 
-template<
-  class Class,typename Type,
-  typename PtrToMemberFunctionType,PtrToMemberFunctionType PtrToMemberFunction
->
-struct const_mem_fun_explicit
-{
-  typedef typename std::remove_reference_t<Type> result_type;
+template<class Class, typename Type,
+         typename PtrToMemberFunctionType,
+         PtrToMemberFunctionType PtrToMemberFunction>
+struct const_mem_fun_explicit {
+  using result_type = typename std::remove_reference_t<Type>;
 
   template<typename ChainedPtr>
   typename std::enable_if_t<
-    !std::is_convertible_v<const ChainedPtr&,const Class&>,Type>
-  operator()(const ChainedPtr& x)const
-  {
-    return operator()(*x);
-  }
+    !std::is_convertible_v<const ChainedPtr &, const Class &>,
+  Type> operator()(const ChainedPtr & x) const
+  { return operator()(*x); }
 
-  Type operator()(const Class& x)const
-  {
-    return (x.*PtrToMemberFunction)();
-  }
+  Type operator()(const Class& x) const
+  { return (x.*PtrToMemberFunction)(); }
 
-  Type operator()(const std::reference_wrapper<const Class>& x)const
-  { 
-    return operator()(x.get());
-  }
+  Type operator()(const std::reference_wrapper<const Class>& x) const
+  { return operator()(x.get()); }
 
-  Type operator()(const std::reference_wrapper<Class>& x)const
-  { 
-    return operator()(x.get());
-  }
-};
+  Type operator()(const std::reference_wrapper<Class>& x) const
+  { return operator()(x.get()); }
+}; // const_mem_fun_explicit
 
-template<
-  class Class,typename Type,
-  typename PtrToMemberFunctionType,PtrToMemberFunctionType PtrToMemberFunction
->
-struct mem_fun_explicit
-{
-  typedef typename std::remove_reference_t<Type> result_type;
+template<class Class, typename Type,
+         typename PtrToMemberFunctionType,
+         PtrToMemberFunctionType PtrToMemberFunction>
+struct mem_fun_explicit {
+  using result_type = typename std::remove_reference_t<Type>;
 
   template<typename ChainedPtr>
   typename std::enable_if_t<
-    !std::is_convertible_v<ChainedPtr&,Class&>,Type>
-  operator()(const ChainedPtr& x)const
-  {
-    return operator()(*x);
-  }
+    !std::is_convertible_v<ChainedPtr&, Class&>,
+  Type> operator()(const ChainedPtr& x) const
+  { return operator()(*x); }
 
-  Type operator()(Class& x)const
-  {
-    return (x.*PtrToMemberFunction)();
-  }
+  Type operator()(Class& x) const
+  { return (x.*PtrToMemberFunction)(); }
 
-  Type operator()(const std::reference_wrapper<Class>& x)const
-  { 
-    return operator()(x.get());
-  }
-};
+  Type operator()(const std::reference_wrapper<Class>& x) const
+  { return operator()(x.get()); }
+}; // mem_fun_explicit
 
 /* BOOST_MULTI_INDEX_CONST_MEM_FUN and BOOST_MULTI_INDEX_MEM_FUN used to
  * resolve to [const_]mem_fun_explicit for MSVC++ 6.0 and to
@@ -224,11 +187,13 @@ struct mem_fun_explicit
  * they are now just wrappers over [const_]mem_fun kept for backwards-
  * compatibility reasons.
  */
+#endif
 
-#define BOOST_MULTI_INDEX_CONST_MEM_FUN(Class,Type,MemberFunName) \
-::boost::multi_index::const_mem_fun< Class,Type,&Class::MemberFunName >
-#define BOOST_MULTI_INDEX_MEM_FUN(Class,Type,MemberFunName) \
-::boost::multi_index::mem_fun< Class,Type,&Class::MemberFunName >
+#define BOOST_MULTI_INDEX_CONST_MEM_FUN(Class, Type, MemberFunName) \
+::boost::multi_index::const_mem_fun< Class, Type, &Class::MemberFunName>
+
+#define BOOST_MULTI_INDEX_MEM_FUN(Class, Type, MemberFunName) \
+::boost::multi_index::mem_fun< Class, Type, &Class::MemberFunName>
 
 } // boost::multi_index
 
