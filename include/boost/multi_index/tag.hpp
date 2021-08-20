@@ -13,24 +13,23 @@
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <type_traits>
 
-/* A Mp11 list containing types used as tag names for indices in get()
+/* A type list containing types used as tag names for indices in get()
  * functions.
  */
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
-namespace detail{
+namespace detail {
 
-struct tag_marker{};
+struct tag_marker {};
 
 template<typename T>
-struct is_tag: std::is_base_of<tag_marker, T> { };
+using is_tag = std::is_base_of<tag_marker, T>;
 
 } // detail
 
 template<typename... T>
-struct tag:private detail::tag_marker
-{
+struct tag : private detail::tag_marker {
   static_assert(detail::no_duplicate_tags<tag>::value);
 };
 
