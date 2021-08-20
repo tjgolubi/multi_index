@@ -10,7 +10,7 @@
 #define BOOST_MULTI_INDEX_IDENTITY_FWD_HPP
 #pragma once
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
 template<class Type> struct identity;
 
