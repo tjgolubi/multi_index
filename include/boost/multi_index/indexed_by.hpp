@@ -12,19 +12,14 @@
 
 #include <boost/mp11/list.hpp>
 
-/* An alias to mp11::mp_list used to hide Mp11 from the user.
- * indexed_by contains the index specifiers for instantiation
+/* indexed_by contains the index specifiers for instantiation
  * of a multi_index_container.
  */
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
-template<typename... T>
-using indexed_by=mp11::mp_list<T...>;
+template<typename... T> struct indexed_by;
 
 } // boost::multi_index
-
-#undef BOOST_MULTI_INDEX_INDEXED_BY_TEMPLATE_PARM
-#undef BOOST_MULTI_INDEX_INDEXED_BY_SIZE
 
 #endif
