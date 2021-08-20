@@ -13,14 +13,14 @@
 #include <boost/multi_index/detail/ord_index_impl_fwd.hpp>
 #include <boost/multi_index/detail/ord_index_args.hpp>
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
 /* ordered_index specifiers */
 
-template<typename Arg1,typename Arg2=void,typename Arg3=void>
+template<typename Arg1, typename Arg2=void, typename Arg3=void>
 struct ordered_unique;
 
-template<typename Arg1,typename Arg2=void,typename Arg3=void>
+template<typename Arg1, typename Arg2=void, typename Arg3=void>
 struct ordered_non_unique;
 
 } // boost::multi_index
