@@ -126,69 +126,6 @@ using vref_mem_fun = detail::mem_fun_impl<Class, Type,
                                           Type(Class::*)() volatile &,
                                           PtrToMemberFunction>;
 
-#if 0
-/* MSVC++ 6.0 has problems with const member functions as non-type template
- * parameters, somehow it takes them as non-const. const_mem_fun_explicit
- * workarounds this deficiency by accepting an extra type parameter that
- * specifies the signature of the member function. The workaround was found at:
- *   Daniel, C.:"Re: weird typedef problem in VC",
- *   news:microsoft.public.vc.language, 21st nov 2002,
- *   http://groups.google.com/groups?
- *     hl=en&lr=&ie=UTF-8&selm=ukwvg3O0BHA.1512%40tkmsftngp05
- *
- * MSVC++ 6.0 support has been dropped and [const_]mem_fun_explicit is
- * deprecated.
- */
-
-template<class Class, typename Type,
-         typename PtrToMemberFunctionType,
-         PtrToMemberFunctionType PtrToMemberFunction>
-struct const_mem_fun_explicit {
-  using result_type = typename std::remove_reference_t<Type>;
-
-  template<typename ChainedPtr>
-  typename std::enable_if_t<
-    !std::is_convertible_v<const ChainedPtr &, const Class &>,
-  Type> operator()(const ChainedPtr & x) const
-  { return operator()(*x); }
-
-  Type operator()(const Class& x) const
-  { return (x.*PtrToMemberFunction)(); }
-
-  Type operator()(const std::reference_wrapper<const Class>& x) const
-  { return operator()(x.get()); }
-
-  Type operator()(const std::reference_wrapper<Class>& x) const
-  { return operator()(x.get()); }
-}; // const_mem_fun_explicit
-
-template<class Class, typename Type,
-         typename PtrToMemberFunctionType,
-         PtrToMemberFunctionType PtrToMemberFunction>
-struct mem_fun_explicit {
-  using result_type = typename std::remove_reference_t<Type>;
-
-  template<typename ChainedPtr>
-  typename std::enable_if_t<
-    !std::is_convertible_v<ChainedPtr&, Class&>,
-  Type> operator()(const ChainedPtr& x) const
-  { return operator()(*x); }
-
-  Type operator()(Class& x) const
-  { return (x.*PtrToMemberFunction)(); }
-
-  Type operator()(const std::reference_wrapper<Class>& x) const
-  { return operator()(x.get()); }
-}; // mem_fun_explicit
-
-/* BOOST_MULTI_INDEX_CONST_MEM_FUN and BOOST_MULTI_INDEX_MEM_FUN used to
- * resolve to [const_]mem_fun_explicit for MSVC++ 6.0 and to
- * [const_]mem_fun otherwise. Support for this compiler having been dropped,
- * they are now just wrappers over [const_]mem_fun kept for backwards-
- * compatibility reasons.
- */
-#endif
-
 #define BOOST_MULTI_INDEX_CONST_MEM_FUN(Class, Type, MemberFunName) \
 ::boost::multi_index::const_mem_fun< Class, Type, &Class::MemberFunName>
 
