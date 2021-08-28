@@ -1008,8 +1008,8 @@ protected:
   /* serialization */
 
   template<typename Archive>
-  void save_(
-      Archive& ar, const unsigned int version, const index_saver_type& sm) const
+  void save_(Archive& ar, const unsigned int version,
+             const index_saver_type& sm) const
   {
     ar << serialization::make_nvp("position", buckets);
     super::save_(ar, version, sm);

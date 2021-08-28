@@ -21,7 +21,7 @@ namespace boost::multi_index {
 
 namespace detail {
 
-struct tag_marker {};
+struct tag_marker { };
 
 template<typename T>
 using is_tag = std::is_base_of<tag_marker, T>;
