@@ -12,54 +12,52 @@
 
 #include <boost/multi_index/detail/hash_index_args.hpp>
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
-namespace detail{
+namespace detail {
 
 template<
-  typename KeyFromValue,typename Hash,typename Pred,
-  typename SuperMeta,typename TagList,typename Category
+  typename KeyFromValue, typename Hash, typename Pred,
+  typename SuperMeta, typename TagList, typename Category
 >
 class hashed_index;
 
 template<
-  typename KeyFromValue,typename Hash,typename Pred,
-  typename SuperMeta,typename TagList,typename Category
+  typename KeyFromValue, typename Hash, typename Pred,
+  typename SuperMeta, typename TagList, typename Category
 >
 bool operator==(
-  const hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& x,
-  const hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& y);
+  const hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& x,
+  const hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& y
+);
 
 template<
-  typename KeyFromValue,typename Hash,typename Pred,
-  typename SuperMeta,typename TagList,typename Category
+  typename KeyFromValue, typename Hash, typename Pred,
+  typename SuperMeta, typename TagList, typename Category
 >
 bool operator!=(
-  const hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& x,
-  const hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& y);
+  const hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& x,
+  const hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& y
+);
 
 template<
-  typename KeyFromValue,typename Hash,typename Pred,
-  typename SuperMeta,typename TagList,typename Category
+  typename KeyFromValue, typename Hash, typename Pred,
+  typename SuperMeta, typename TagList, typename Category
 >
 void swap(
-  hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& x,
-  hashed_index<KeyFromValue,Hash,Pred,SuperMeta,TagList,Category>& y);
+  hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& x,
+  hashed_index<KeyFromValue, Hash, Pred, SuperMeta, TagList, Category>& y);
 
 } // detail
 
 /* hashed_index specifiers */
 
-template<
-  typename Arg1,typename Arg2=void,
-  typename Arg3=void,typename Arg4=void
->
+template<typename Arg1, typename Arg2=void, typename Arg3=void,
+         typename Arg4=void>
 struct hashed_unique;
 
-template<
-  typename Arg1,typename Arg2=void,
-  typename Arg3=void,typename Arg4=void
->
+template<typename Arg1, typename Arg2=void, typename Arg3=void,
+         typename Arg4=void>
 struct hashed_non_unique;
 
 } // boost::multi_index
