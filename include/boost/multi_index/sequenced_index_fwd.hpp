@@ -12,71 +12,52 @@
 
 #include <boost/multi_index/tag.hpp>
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
-namespace detail{
+namespace detail {
 
-template<typename SuperMeta,typename TagList>
+template<typename SuperMeta, typename TagList>
 class sequenced_index;
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator==(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator==(const sequenced_index<SuperMeta1, TagList1>& x,
+                const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator<(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator<(const sequenced_index<SuperMeta1, TagList1>& x,
+               const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator!=(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator!=(const sequenced_index<SuperMeta1, TagList1>& x,
+                const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator>(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator>(const sequenced_index<SuperMeta1, TagList1>& x,
+               const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator>=(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator>=(const sequenced_index<SuperMeta1, TagList1>& x,
+                const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<
-  typename SuperMeta1,typename TagList1,
-  typename SuperMeta2,typename TagList2
->
-bool operator<=(
-  const sequenced_index<SuperMeta1,TagList1>& x,
-  const sequenced_index<SuperMeta2,TagList2>& y);
+template<typename SuperMeta1, typename TagList1,
+         typename SuperMeta2, typename TagList2>
+bool operator<=(const sequenced_index<SuperMeta1, TagList1>& x,
+                const sequenced_index<SuperMeta2, TagList2>& y);
 
-template<typename SuperMeta,typename TagList>
-void swap(
-  sequenced_index<SuperMeta,TagList>& x,
-  sequenced_index<SuperMeta,TagList>& y);
+template<typename SuperMeta, typename TagList>
+void swap(sequenced_index<SuperMeta, TagList>& x,
+          sequenced_index<SuperMeta, TagList>& y);
 
 } // detail
 
 /* index specifiers */
 
-template <typename TagList=tag<> >
+template<typename TagList=tag<>>
 struct sequenced;
 
 } // boost::multi_index
