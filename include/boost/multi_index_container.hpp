@@ -296,7 +296,7 @@ public:
   template<int N>
   struct nth_index {
     static_assert(N >= 0 && N < mp11::mp_size<index_type_list>::value);
-    typedef mp11::mp_at_c<index_type_list, N> type;
+    using type = mp11::mp_at_c<index_type_list, N>;
   };
 
   template<int N>
@@ -321,7 +321,7 @@ public:
         (pos::value < mp11::mp_size<index_type_list>::value);
     static_assert(index_found);
 
-    typedef mp11::mp_at<index_type_list, pos> type;
+    using type = mp11::mp_at<index_type_list, pos>;
   };
 
   template<typename Tag>
@@ -361,7 +361,7 @@ public:
 
   template<int N, typename IteratorType>
   typename nth_index_const_iterator<N>::type project(IteratorType it) const {
-    typedef typename nth_index<N>::type index_type;
+    using index_type = typename nth_index<N>::type;
 
     static_assert( mp11::mp_contains<iterator_type_list, IteratorType>::value
           || mp11::mp_contains<const_iterator_type_list, IteratorType>::value);
@@ -920,8 +920,7 @@ struct nth_index {
   static const int M =
       mp11::mp_size<typename MultiIndexContainer::index_type_list>::value;
   static_assert(N >= 0 && N < M);
-  typedef mp11::mp_at_c<
-      typename MultiIndexContainer::index_type_list, N> type;
+  using type = mp11::mp_at_c<typename MultiIndexContainer::index_type_list, N>;
 };
 
 template<int N, typename Value, typename IndexSpecifierList, typename Allocator>

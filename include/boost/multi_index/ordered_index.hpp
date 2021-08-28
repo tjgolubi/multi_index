@@ -22,12 +22,12 @@ namespace detail {
 struct null_augment_policy {
   template<typename OrderedIndexImpl>
   struct augmented_interface {
-    typedef OrderedIndexImpl type;
+    using type = OrderedIndexImpl;
   };
 
   template<typename OrderedIndexNodeImpl>
   struct augmented_node {
-    typedef OrderedIndexNodeImpl type;
+    using type = OrderedIndexNodeImpl;
   };
 
   template<typename Pointer> static void add(Pointer, Pointer) { }

@@ -48,7 +48,7 @@ struct const_member_base {
 
 template<class Class, typename Type, Type Class::*PtrToMember>
 struct non_const_member_base {
-  typedef Type result_type;
+  using result_type = Type;
 
   template<typename ChainedPtr>
   typename std::enable_if_t<
