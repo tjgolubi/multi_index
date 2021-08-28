@@ -449,9 +449,8 @@ public:
   template<typename CompatibleKey>
   iterator find(const CompatibleKey& k) const { return find(k, hash_, eq_); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   iterator find(const CompatibleKey& k,
                 const CompatibleHash& hash, const CompatiblePred& eq) const
   {
@@ -462,9 +461,8 @@ public:
   template<typename CompatibleKey>
   size_type count(const CompatibleKey& k) const { return count(k, hash_, eq_); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   size_type count(
       const CompatibleKey& k,
       const CompatibleHash& hash, const CompatiblePred& eq) const
@@ -477,9 +475,8 @@ public:
   std::pair<iterator, iterator> equal_range(const CompatibleKey& k) const
   { return equal_range(k, hash_, eq_); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   std::pair<iterator, iterator> equal_range(
                     const CompatibleKey& k,
                     const CompatibleHash& hash, const CompatiblePred& eq) const
@@ -947,9 +944,8 @@ protected:
 
   /* defect macro refers to class, not function, templates, but anyway */
 
-  template<
-    typename K, typename H, typename P, typename S, typename T, typename C
-  >
+  template<typename K, typename H, typename P, typename S, typename T,
+           typename C>
   friend bool operator==(const hashed_index<K, H, P, S, T, C>&,
                          const hashed_index<K, H, P, S, T, C>& y);
 
@@ -1441,9 +1437,8 @@ private:
                 const CompatiblePred& eq, std::true_type) const
   { return find(k, hash, eq, std::false_type()); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   iterator find(const CompatibleKey& k, const CompatibleHash& hash,
                 const CompatiblePred& eq, std::false_type) const
   {
@@ -1461,9 +1456,8 @@ private:
                   const CompatiblePred& eq, std::true_type) const
   { return count(k, hash, eq, std::false_type()); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   size_type count(const CompatibleKey& k, const CompatibleHash& hash,
                   const CompatiblePred& eq, std::false_type) const
   {
@@ -1489,9 +1483,8 @@ private:
       std::true_type) const
   { return equal_range(k, hash, eq, std::false_type()); }
 
-  template<
-    typename CompatibleKey, typename CompatibleHash, typename CompatiblePred
-  >
+  template<typename CompatibleKey, typename CompatibleHash,
+           typename CompatiblePred>
   std::pair<iterator, iterator> equal_range(const CompatibleKey& k,
                                             const CompatibleHash& hash,
                                             const CompatiblePred& eq,

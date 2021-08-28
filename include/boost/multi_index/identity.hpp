@@ -56,16 +56,15 @@ struct non_const_identity_base {
   /* templatized for pointer-like types */
 
   template<typename ChainedPtr>
-  typename std::enable_if_t <
-  !std::is_convertible_v<const ChainedPtr&, const Type&>,
-  Type& > operator()(const ChainedPtr& x) const
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&, const Type&>,
+    Type&>
+  operator()(const ChainedPtr& x) const
   { return operator()(*x); }
 
-  const Type& operator()(const Type& x) const
-  { return x; }
+  const Type& operator()(const Type& x) const { return x; }
 
-  Type& operator()(Type& x) const
-  { return x; }
+  Type& operator()(Type& x) const { return x; }
 
   const Type& operator()(const std::reference_wrapper<const Type>& x) const
   { return x.get(); }

@@ -32,13 +32,12 @@ struct const_member_base {
   using result_type = Type;
 
   template<typename ChainedPtr>
-  typename std::enable_if_t <
-  !std::is_convertible_v<const ChainedPtr&, const Class&>,
-  Type& > operator()(const ChainedPtr& x) const
-  { return operator()(*x); }
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&, const Class&>,
+    Type&>
+  operator()(const ChainedPtr& x) const  { return operator()(*x); }
 
-  Type& operator()(const Class& x) const
-  { return x.*PtrToMember; }
+  Type& operator()(const Class& x) const { return x.*PtrToMember; }
 
   Type& operator()(const std::reference_wrapper<const Class>& x) const
   { return operator()(x.get()); }
@@ -52,16 +51,14 @@ struct non_const_member_base {
   typedef Type result_type;
 
   template<typename ChainedPtr>
-  typename std::enable_if_t <
-  !std::is_convertible_v<const ChainedPtr&, const Class&>,
-  Type& > operator()(const ChainedPtr& x) const
-  { return operator()(*x); }
+  typename std::enable_if_t<
+    !std::is_convertible_v<const ChainedPtr&, const Class&>,
+    Type&>
+  operator()(const ChainedPtr& x) const { return operator()(*x); }
 
-  const Type& operator()(const Class& x) const
-  { return x.*PtrToMember; }
+  const Type& operator()(const Class& x) const { return x.*PtrToMember; }
 
-  Type& operator()(Class& x) const
-  { return x.*PtrToMember; }
+  Type& operator()(Class& x) const { return x.*PtrToMember; }
 
   const Type& operator()(const std::reference_wrapper<const Class>& x) const
   { return operator()(x.get()); }

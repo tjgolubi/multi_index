@@ -36,14 +36,13 @@ using result_type_of = typename KeyFromValue::result_type;
 
 template<typename CompositeKeyResult, template<typename> typename Compare>
 struct key_list_helper {
-  using composite_key_type = typename CompositeKeyResult::composite_key_type;
+  using composite_key_type  = typename CompositeKeyResult::composite_key_type;
   using key_extractor_tuple = typename composite_key_type::key_extractor_tuple;
-  using key_extractor_list =
+  using key_extractor_list  =
                             mp11::mp_rename<key_extractor_tuple, mp11::mp_list>;
-  using key_result_type = mp11::mp_transform<
-      result_type_of, key_extractor_list
-  >;
-  using type = mp11::mp_transform<Compare, key_result_type>;
+  using key_result_type     = mp11::mp_transform<
+                              result_type_of, key_extractor_list>;
+  using type                = mp11::mp_transform<Compare, key_result_type>;
 }; // key_list_helper
 
 template<typename CompositeKeyResult, template<typename> typename Compare>
@@ -92,14 +91,14 @@ using generic_operator_less_tuple =
  * hash_* computes a combination of elementwise hash values.
  */
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename EqualCons, std::size_t I=0>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename EqualCons, std::size_t I=0>
 struct equal_ckey_ckey; /* fwd decl. */
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename EqualCons>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename EqualCons>
 struct equal_ckey_ckey_terminal {
   static bool compare(const KeyCons1&, const Value1&,
                       const KeyCons2&, const Value2&,
@@ -107,9 +106,9 @@ struct equal_ckey_ckey_terminal {
  { return true; }
 }; // equal_ckey_ckey_terminal
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename EqualCons, std::size_t I>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename EqualCons, std::size_t I>
 struct equal_ckey_ckey_normal {
   static bool compare(const KeyCons1& c0, const Value1& v0,
                       const KeyCons2& c1, const Value2& v1,
@@ -124,9 +123,9 @@ struct equal_ckey_ckey_normal {
   }
 }; // equal_ckey_ckey_normal
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename EqualCons, std::size_t I>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename EqualCons, std::size_t I>
 struct equal_ckey_ckey
   : std::conditional_t<
     (I < std::tuple_size_v<KeyCons1> && I < std::tuple_size_v<KeyCons2>),
@@ -135,14 +134,12 @@ struct equal_ckey_ckey
     >
 { };
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons, std::size_t I=0>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename EqualCons, std::size_t I=0>
 struct equal_ckey_cval; /* fwd decl. */
 
-template <
-  typename KeyCons, typename Value,
-  typename ValCons, typename EqualCons
->
+template<typename KeyCons, typename Value,
+         typename ValCons, typename EqualCons>
 struct equal_ckey_cval_terminal {
   static bool compare(const KeyCons&, const Value&, const ValCons&,
                       const EqualCons&)
@@ -153,8 +150,8 @@ struct equal_ckey_cval_terminal {
   { return true; }
 }; // equal_ckey_cval_terminal
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons, std::size_t I>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename EqualCons, std::size_t I>
 struct equal_ckey_cval_normal {
   static bool compare(const KeyCons& c, const Value& v, const ValCons& vc,
                       const EqualCons& eq)
@@ -179,8 +176,8 @@ struct equal_ckey_cval_normal {
   } // compare
 }; // equal_ckey_cval_normal
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename EqualCons, std::size_t I>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename EqualCons, std::size_t I>
 struct equal_ckey_cval
   : std::conditional_t<
       (I < std::tuple_size_v<KeyCons> && I < std::tuple_size_v<ValCons>),
@@ -189,25 +186,24 @@ struct equal_ckey_cval
     >
 { };
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename CompareCons, std::size_t I=0>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename CompareCons, std::size_t I=0>
 struct compare_ckey_ckey; /* fwd decl. */
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename CompareCons>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename CompareCons>
 struct compare_ckey_ckey_terminal {
-  static bool compare(
-    const KeyCons1&, const Value1&,
-    const KeyCons2&, const Value2&,
-    const CompareCons&)
+  static bool compare(const KeyCons1&, const Value1&,
+                      const KeyCons2&, const Value2&,
+                      const CompareCons&)
   { return false; }
 }; // compare_ckey_ckey_terminal
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename CompareCons, std::size_t I>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename CompareCons, std::size_t I>
 struct compare_ckey_ckey_normal {
   static bool compare(const KeyCons1& c0, const Value1& v0,
                       const KeyCons2& c1, const Value2& v1,
@@ -227,9 +223,9 @@ struct compare_ckey_ckey_normal {
   }
 }; // compare_ckey_ckey_normal
 
-template <typename KeyCons1, typename Value1,
-          typename KeyCons2, typename Value2,
-          typename CompareCons, std::size_t I>
+template<typename KeyCons1, typename Value1,
+         typename KeyCons2, typename Value2,
+         typename CompareCons, std::size_t I>
 struct compare_ckey_ckey
   : std::conditional_t<
       (I < std::tuple_size_v<KeyCons1> && I < std::tuple_size_v<KeyCons2>),
@@ -242,12 +238,12 @@ struct compare_ckey_ckey
     >
 { };
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons, std::size_t I=0>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename CompareCons, std::size_t I=0>
 struct compare_ckey_cval; /* fwd decl. */
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename CompareCons>
 struct compare_ckey_cval_terminal {
   static bool compare(const KeyCons&, const Value&, const ValCons&,
                       const CompareCons&)
@@ -258,8 +254,8 @@ struct compare_ckey_cval_terminal {
   { return false; }
 }; // compare_ckey_cval_terminal
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons, std::size_t I>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename CompareCons, std::size_t I>
 struct compare_ckey_cval_normal {
   static bool compare(const KeyCons& c, const Value& v, const ValCons& vc,
                       const CompareCons& comp)
@@ -294,8 +290,8 @@ struct compare_ckey_cval_normal {
   } // compare
 }; // compare_ckey_cval_normal
 
-template <typename KeyCons, typename Value,
-          typename ValCons, typename CompareCons, std::size_t I>
+template<typename KeyCons, typename Value,
+         typename ValCons, typename CompareCons, std::size_t I>
 struct compare_ckey_cval
   : std::conditional_t<
       (I < std::tuple_size_v<KeyCons> && I < std::tuple_size_v<ValCons>),
@@ -390,7 +386,7 @@ struct composite_key_result {
 
 /* composite_key */
 
-template <typename Value, typename... KeyFromValueList>
+template<typename Value, typename... KeyFromValueList>
 struct composite_key {
 public:
   using key_extractor_tuple = std::tuple<KeyFromValueList...>;
@@ -412,7 +408,7 @@ public:
   key_extractor_tuple&       key_extractors()       { return key_ex; }
 
   template<typename ChainedPtr>
-  typename std::enable_if_t <
+  typename std::enable_if_t<
     !std::is_convertible_v<const ChainedPtr&, const value_type&>,
     result_type>
   operator()(const ChainedPtr& x) const { return operator()(*x); }
@@ -437,9 +433,9 @@ inline bool operator==(const composite_key_result<CompositeKey1>& x,
                        const composite_key_result<CompositeKey2>& y)
 {
   using key_extractor_tuple1 = typename CompositeKey1::key_extractor_tuple;
-  using value_type1 = typename CompositeKey1::value_type;
+  using value_type1          = typename CompositeKey1::value_type;
   using key_extractor_tuple2 = typename CompositeKey2::key_extractor_tuple;
-  using value_type2 = typename CompositeKey2::value_type;
+  using value_type2          = typename CompositeKey2::value_type;
 
   static_assert(   std::tuple_size_v<key_extractor_tuple1>
                 == std::tuple_size_v<key_extractor_tuple2>);
@@ -447,10 +443,9 @@ inline bool operator==(const composite_key_result<CompositeKey1>& x,
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple1>;
 
-  return detail::equal_ckey_ckey <
-            key_extractor_tuple1, value_type1,
-            key_extractor_tuple2, value_type2,
-            operator_tuple
+  return detail::equal_ckey_ckey<key_extractor_tuple1, value_type1,
+                                 key_extractor_tuple2, value_type2,
+                                 operator_tuple
          >::compare(x.composite_key.key_extractors(), x.value,
                     y.composite_key.key_extractors(), y.value,
                     operator_tuple());
@@ -470,10 +465,9 @@ inline bool operator==(const composite_key_result<CompositeKey>& x,
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
 
-  return detail::equal_ckey_cval <
-            key_extractor_tuple, value_type,
-            key_tuple,
-            operator_tuple
+  return detail::equal_ckey_cval<key_extractor_tuple, value_type,
+                                 key_tuple,
+                                 operator_tuple
          >::compare(x.composite_key.key_extractors(), x.value,
                     y,
                     operator_tuple());
@@ -493,10 +487,9 @@ inline bool operator==(const std::tuple<Values...>& x,
   using operator_tuple =
       detail::generic_operator_equal_tuple<key_extractor_tuple>;
 
-  return detail::equal_ckey_cval <
-            key_extractor_tuple, value_type,
-            key_tuple,
-            operator_tuple
+  return detail::equal_ckey_cval<key_extractor_tuple, value_type,
+                                 key_tuple,
+                                 operator_tuple
          >::compare(x,
                     y.composite_key.key_extractors(),
                     y.value,
@@ -517,10 +510,9 @@ inline bool operator<(const composite_key_result<CompositeKey1>& x,
   using operator_tuple =
       detail::generic_operator_less_tuple<key_extractor_tuple1>;
 
-  return detail::compare_ckey_ckey <
-            key_extractor_tuple1, value_type1,
-            key_extractor_tuple2, value_type2,
-            operator_tuple
+  return detail::compare_ckey_ckey<key_extractor_tuple1, value_type1,
+                                   key_extractor_tuple2, value_type2,
+                                   operator_tuple
          >::compare(x.composite_key.key_extractors(), x.value,
                     y.composite_key.key_extractors(), y.value,
                     operator_tuple());
@@ -537,10 +529,9 @@ inline bool operator<(const composite_key_result<CompositeKey>& x,
   using operator_tuple =
       detail::generic_operator_less_tuple<key_extractor_tuple>;
 
-  return detail::compare_ckey_cval <
-            key_extractor_tuple, value_type,
-            key_tuple,
-            operator_tuple
+  return detail::compare_ckey_cval<key_extractor_tuple, value_type,
+                                   key_tuple,
+                                   operator_tuple
          >::compare(x.composite_key.key_extractors(), x.value,
                     y,
                     operator_tuple());
@@ -557,10 +548,9 @@ inline bool operator<(const std::tuple<Values...>& x,
   using operator_tuple =
       detail::generic_operator_less_tuple<key_extractor_tuple>;
 
-  return detail::compare_ckey_cval <
-          key_extractor_tuple, value_type,
-          key_tuple,
-          operator_tuple
+  return detail::compare_ckey_cval<key_extractor_tuple, value_type,
+                                   key_tuple,
+                                   operator_tuple
          >::compare(x,
                     y.composite_key.key_extractors(),
                     y.value,
@@ -607,7 +597,7 @@ BOOST_MULTI_INDEX_CK_COMPLETE_COMP_OPS(
 
 /* composite_key_equal_to */
 
-template <typename... PredList>
+template<typename... PredList>
 struct composite_key_equal_to {
 public:
   using key_eq_tuple = std::tuple<PredList...>;
@@ -640,10 +630,9 @@ public:
                   &&   std::tuple_size_v<key_extractor_tuple1>
                     == std::tuple_size_v<key_extractor_tuple2>);
 
-    return detail::equal_ckey_ckey <
-              key_extractor_tuple1, value_type1,
-              key_extractor_tuple2, value_type2,
-              key_eq_tuple
+    return detail::equal_ckey_ckey<key_extractor_tuple1, value_type1,
+                                   key_extractor_tuple2, value_type2,
+                                   key_eq_tuple
            >::compare(x.composite_key.key_extractors(), x.value,
                       y.composite_key.key_extractors(), y.value,
                       key_eqs());
@@ -662,10 +651,9 @@ public:
               && std::tuple_size_v<key_extractor_tuple>
                 == std::tuple_size_v<key_tuple>);
 
-    return detail::equal_ckey_cval <
-              key_extractor_tuple, value_type,
-              key_tuple,
-              key_eq_tuple
+    return detail::equal_ckey_cval<key_extractor_tuple, value_type,
+                                   key_tuple,
+                                   key_eq_tuple
            >::compare(x.composite_key.key_extractors(), x.value,
                       y,
                       key_eqs());
@@ -684,10 +672,9 @@ public:
           && std::tuple_size_v<key_tuple>
             == std::tuple_size_v<key_extractor_tuple>);
 
-    return detail::equal_ckey_cval <
-              key_extractor_tuple, value_type,
-              key_tuple,
-              key_eq_tuple
+    return detail::equal_ckey_cval<key_extractor_tuple, value_type,
+                                   key_tuple,
+                                   key_eq_tuple
            >::compare(x,
                       y.composite_key.key_extractors(),
                       y.value,
@@ -697,7 +684,7 @@ public:
 
 /* composite_key_compare */
 
-template <typename... CompareList>
+template<typename... CompareList>
 struct composite_key_compare {
 public:
   using key_comp_tuple = std::tuple<CompareList...>;
@@ -730,10 +717,9 @@ public:
                   ||   std::tuple_size_v<key_extractor_tuple2>
                     <= std::tuple_size_v<key_comp_tuple>);
 
-    return detail::compare_ckey_ckey <
-              key_extractor_tuple1, value_type1,
-              key_extractor_tuple2, value_type2,
-              key_comp_tuple
+    return detail::compare_ckey_ckey<key_extractor_tuple1, value_type1,
+                                     key_extractor_tuple2, value_type2,
+                                     key_comp_tuple
            >::compare(x.composite_key.key_extractors(), x.value,
                       y.composite_key.key_extractors(), y.value,
                       key_comps());
@@ -762,10 +748,9 @@ public:
               || std::tuple_size_v<key_tuple>
                 <= std::tuple_size_v<key_comp_tuple>);
 
-    return detail::compare_ckey_cval <
-              key_extractor_tuple, value_type,
-              key_tuple,
-              key_comp_tuple
+    return detail::compare_ckey_cval<key_extractor_tuple, value_type,
+                                     key_tuple,
+                                     key_comp_tuple
            >::compare(x.composite_key.key_extractors(), x.value,
                       y,
                       key_comps());
@@ -784,10 +769,9 @@ public:
                 ||   std::tuple_size_v<key_extractor_tuple>
                   <= std::tuple_size_v<key_comp_tuple>);
 
-    return detail::compare_ckey_cval <
-              key_extractor_tuple, value_type,
-              key_tuple,
-              key_comp_tuple
+    return detail::compare_ckey_cval<key_extractor_tuple, value_type,
+                                     key_tuple,
+                                     key_comp_tuple
            >::compare(x,
                       y.composite_key.key_extractors(),
                       y.value,
@@ -797,7 +781,7 @@ public:
 
 /* composite_key_hash */
 
-template <typename... HashList>
+template<typename... HashList>
 struct composite_key_hash {
 public:
   using key_hasher_tuple = std::tuple<HashList...>;
@@ -825,7 +809,7 @@ public:
     static_assert(   std::tuple_size_v<key_extractor_tuple>
                   == std::tuple_size_v<key_hasher_tuple>);
 
-    return detail::hash_ckey <
+    return detail::hash_ckey<
               key_extractor_tuple, value_type,
               key_hasher_tuple
            >::hash(x.composite_key.key_extractors(), x.value,
@@ -839,7 +823,7 @@ public:
     static_assert(std::tuple_size_v<key_tuple>
               == std::tuple_size_v<key_hasher_tuple>);
 
-    return detail::hash_cval <
+    return detail::hash_cval<
               key_tuple,
               key_hasher_tuple
            >::hash(x, key_hash_functions());

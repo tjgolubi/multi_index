@@ -887,7 +887,7 @@ template<typename SuperMeta1, typename TagList1,
          typename SuperMeta2, typename TagList2>
 bool operator>(const sequenced_index<SuperMeta1, TagList1>& x,
                const sequenced_index<SuperMeta2, TagList2>& y)
-{ return y < x; }
+{ return (y < x); }
 
 template<typename SuperMeta1, typename TagList1,
          typename SuperMeta2, typename TagList2>

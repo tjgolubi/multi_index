@@ -25,13 +25,13 @@ using namespace boost::multi_index;
 
 void test_mpl_ops()
 {
-  typedef multi_index_container<
+  using indexed_t1 = multi_index_container<
     int,
     indexed_by<
-      ordered_unique<identity<int> >,
-      ordered_non_unique<identity<int> >
-     >
-  >                           indexed_t1;
+      ordered_unique<identity<int>>,
+      ordered_non_unique<identity<int>>
+    >
+  >;
 
   static_assert((std::is_same_v<
     boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0>,
