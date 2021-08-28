@@ -10,7 +10,7 @@
 #define BOOST_MULTI_INDEX_SAFE_MODE_ERRORS_HPP
 #pragma once
 
-namespace boost::multi_index::safe_mode{
+namespace boost::multi_index::safe_mode {
 
 /* Error codes for Boost.MultiIndex safe mode. These go in a separate
  * header so that the user can include it when redefining
@@ -18,9 +18,8 @@ namespace boost::multi_index::safe_mode{
  * any other header of Boost.MultiIndex.
  */
 
-enum error_code
-{
-  invalid_iterator=0,
+enum error_code {
+  invalid_iterator = 0,
   not_dereferenceable_iterator,
   not_incrementable_iterator,
   not_decrementable_iterator,
