@@ -13,7 +13,7 @@
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/version.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* Helper class for storing and retrieving a given type serialization class
  * version while avoiding saving the number multiple times in the same
@@ -22,14 +22,20 @@ namespace boost::multi_index::detail{
  */
 
 template<typename T>
-struct serialization_version
-{
+struct serialization_version {
   serialization_version():
-    value(boost::serialization::version<serialization_version>::value){}
+    value(boost::serialization::version<serialization_version>::value) {}
 
-  serialization_version& operator=(unsigned int x){value=x;return *this;};
+  serialization_version& operator=(unsigned int x)
+  {
+    value = x;
+    return *this;
+  };
 
-  operator unsigned int()const{return value;}
+  operator unsigned int()const
+  {
+    return value;
+  }
 
 private:
   friend class boost::serialization::access;
@@ -37,12 +43,12 @@ private:
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
   template<class Archive>
-  void save(Archive&,const unsigned int)const{}
+  void save(Archive&, const unsigned int)const {}
 
   template<class Archive>
-  void load(Archive&,const unsigned int version)
+  void load(Archive&, const unsigned int version)
   {
-    this->value=version;
+    this->value = version;
   }
 
   unsigned int value;
@@ -52,9 +58,8 @@ private:
 
 namespace boost::serialization {
 template<typename T>
-struct version<boost::multi_index::detail::serialization_version<T> >
-{
-  static const int value=version<T>::value;
+struct version<boost::multi_index::detail::serialization_version<T>> {
+  static const int value = version<T>::value;
 };
 } // boost::serialization
 

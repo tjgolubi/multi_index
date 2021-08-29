@@ -12,15 +12,14 @@
 
 #include <boost/mp11/algorithm.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* determines whether an index type has a given tag in its tag list */
 
 template<typename Tag>
-struct has_tag
-{
+struct has_tag {
   template<typename Index>
-  using fn=mp11::mp_contains<typename Index::tag_list,Tag>;
+  using fn = mp11::mp_contains<typename Index::tag_list, Tag>;
 };
 
 } // boost::multi_index::detail

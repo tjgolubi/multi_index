@@ -12,13 +12,12 @@
 
 #include <algorithm>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 template<typename T>
-void adl_swap(T& x,T& y)
-{
+void adl_swap(T& x, T& y) {
   using std::swap;
-  swap(x,y);
+  swap(x, y);
 }
 
 } // boost::multi_index::detail

@@ -12,15 +12,14 @@
 
 #include <iterator>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* duplicates_operator is given a range of ordered elements and
  * passes only over those which are duplicated.
  */
 
-template<typename Node,typename Predicate>
-class duplicates_iterator
-{
+template<typename Node, typename Predicate>
+class duplicates_iterator {
 public:
   typedef typename Node::value_type        value_type;
   typedef typename Node::difference_type   difference_type;
@@ -28,14 +27,14 @@ public:
   typedef const typename Node::value_type& reference;
   typedef std::forward_iterator_tag        iterator_category;
 
-  duplicates_iterator(Node* node_,Node* end_,Predicate pred_):
-    node(node_),begin_chunk(0),end(end_),pred(pred_)
+  duplicates_iterator(Node* node_, Node* end_, Predicate pred_):
+    node(node_), begin_chunk(0), end(end_), pred(pred_)
   {
     advance();
   }
 
-  duplicates_iterator(Node* end_,Predicate pred_):
-    node(end_),begin_chunk(end_),end(end_),pred(pred_)
+  duplicates_iterator(Node* end_, Predicate pred_):
+    node(end_), begin_chunk(end_), end(end_), pred(pred_)
   {
   }
 
@@ -63,21 +62,26 @@ public:
     return tmp;
   }
 
-  Node* get_node()const{return node;}
+  Node* get_node()const
+  {
+    return node;
+  }
 
 private:
   void sync()
   {
-    if(node!=end&&pred(begin_chunk->value(),node->value()))advance();
+    if (node != end && pred(begin_chunk->value(), node->value()))
+      advance();
   }
 
   void advance()
   {
-    for(Node* node2=node;node!=end;node=node2){
+    for (Node* node2 = node; node != end; node = node2) {
       Node::increment(node2);
-      if(node2!=end&&!pred(node->value(),node2->value()))break;
+      if (node2 != end && !pred(node->value(), node2->value()))
+        break;
     }
-    begin_chunk=node;
+    begin_chunk = node;
   }
 
   Node*     node;
@@ -86,20 +90,20 @@ private:
   Predicate pred;
 };
 
-template<typename Node,typename Predicate>
+template<typename Node, typename Predicate>
 bool operator==(
-  const duplicates_iterator<Node,Predicate>& x,
-  const duplicates_iterator<Node,Predicate>& y)
+    const duplicates_iterator<Node, Predicate>& x,
+    const duplicates_iterator<Node, Predicate>& y)
 {
-  return x.get_node()==y.get_node();
+  return x.get_node() == y.get_node();
 }
 
-template<typename Node,typename Predicate>
+template<typename Node, typename Predicate>
 bool operator!=(
-  const duplicates_iterator<Node,Predicate>& x,
-  const duplicates_iterator<Node,Predicate>& y)
+    const duplicates_iterator<Node, Predicate>& x,
+    const duplicates_iterator<Node, Predicate>& y)
 {
-  return !(x==y);
+  return !(x == y);
 }
 
 } // boost::multi_index::detail

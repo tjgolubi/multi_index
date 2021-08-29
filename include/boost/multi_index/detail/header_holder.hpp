@@ -12,7 +12,7 @@
 
 #include <boost/multi_index/detail/noncopyable.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* A utility class used to hold a pointer to the header node.
  * The base from member idiom is used because index classes, which are
@@ -22,16 +22,21 @@ namespace boost::multi_index::detail{
  * to the base from member trick.
  */
 
-template<typename NodeTypePtr,typename Final>
-struct header_holder:private noncopyable
-{
-  header_holder():member(final().allocate_node()){}
-  ~header_holder(){final().deallocate_node(&*member);}
+template<typename NodeTypePtr, typename Final>
+struct header_holder: private noncopyable {
+  header_holder(): member(final().allocate_node()) {}
+  ~header_holder()
+  {
+    final().deallocate_node(&*member);
+  }
 
   NodeTypePtr member;
 
 private:
-  Final& final(){return *static_cast<Final*>(this);}
+  Final& final()
+  {
+    return *static_cast<Final*>(this);
+  }
 };
 
 } // boost::multi_index::detail

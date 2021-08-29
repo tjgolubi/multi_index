@@ -15,11 +15,11 @@
 #include <boost/multi_index/detail/noncopyable.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/archive/archive_exception.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #include <algorithm>
 #include <cstddef>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* Counterpart of index_saver (check index_saver.hpp for serialization
  * details.)* multi_index_container is in charge of supplying the info about
@@ -27,26 +27,25 @@ namespace boost::multi_index::detail{
  * const interface of index_loader.
  */
 
-template<typename Node,typename FinalNode,typename Allocator>
-class index_loader:private noncopyable
-{
+template<typename Node, typename FinalNode, typename Allocator>
+class index_loader: private noncopyable {
 public:
-  index_loader(const Allocator& al,std::size_t size):
-    spc(al,size),size_(size),n(0),sorted(false)
+  index_loader(const Allocator& al, std::size_t size):
+    spc(al, size), size_(size), n(0), sorted(false)
   {
   }
 
   template<class Archive>
-  void add(Node* node,Archive& ar,const unsigned int)
+  void add(Node* node, Archive& ar, const unsigned int)
   {
-    ar>>serialization::make_nvp("position",*node);
-    entries()[n++]=node;
+    ar >> serialization::make_nvp("position", *node);
+    entries()[n++] = node;
   }
 
   template<class Archive>
-  void add_track(Node* node,Archive& ar,const unsigned int)
+  void add_track(Node* node, Archive& ar, const unsigned int)
   {
-    ar>>serialization::make_nvp("position",*node);
+    ar >> serialization::make_nvp("position", *node);
   }
 
   /* A rearranger is passed two nodes, and is expected to
@@ -55,36 +54,43 @@ public:
    * to the beginning of the sequence.
    */
 
-  template<typename Rearranger,class Archive>
-  void load(Rearranger r,Archive& ar,const unsigned int)const
+  template<typename Rearranger, class Archive>
+  void load(Rearranger r, Archive& ar, const unsigned int)const
   {
-    FinalNode* prev=unchecked_load_node(ar);
-    if(!prev)return;
+    FinalNode* prev = unchecked_load_node(ar);
+    if (!prev)
+      return;
 
-    if(!sorted){
-      std::sort(entries(),entries()+size_);
-      sorted=true;
+    if (!sorted) {
+      std::sort(entries(), entries() + size_);
+      sorted = true;
     }
 
     check_node(prev);
 
-    for(;;){
-      for(;;){
-        FinalNode* node=load_node(ar);
-        if(!node)break;
+    for (;;) {
+      for (;;) {
+        FinalNode* node = load_node(ar);
+        if (!node)
+          break;
 
-        if(node==prev)prev=0;
-        r(prev,node);
+        if (node == prev)
+          prev = 0;
+        r(prev, node);
 
-        prev=node;
+        prev = node;
       }
-      prev=load_node(ar);
-      if(!prev)break;
+      prev = load_node(ar);
+      if (!prev)
+        break;
     }
   }
 
 private:
-  Node** entries()const{return raw_ptr<Node**>(spc.data());}
+  Node** entries()const
+  {
+    return raw_ptr<Node**>(spc.data());
+  }
 
   /* We try to delay sorting as much as possible just in case it
    * is not necessary, hence this version of load_node.
@@ -93,30 +99,30 @@ private:
   template<class Archive>
   FinalNode* unchecked_load_node(Archive& ar)const
   {
-    Node* node=0;
-    ar>>serialization::make_nvp("pointer",node);
+    Node* node = 0;
+    ar >> serialization::make_nvp("pointer", node);
     return static_cast<FinalNode*>(node);
   }
 
   template<class Archive>
   FinalNode* load_node(Archive& ar)const
   {
-    Node* node=0;
-    ar>>serialization::make_nvp("pointer",node);
+    Node* node = 0;
+    ar >> serialization::make_nvp("pointer", node);
     check_node(node);
     return static_cast<FinalNode*>(node);
   }
 
   void check_node(Node* node)const
   {
-    if(node!=0&&!std::binary_search(entries(),entries()+size_,node)){
+    if (node != 0 && !std::binary_search(entries(), entries() + size_, node)) {
       boost::throw_exception(
-        archive::archive_exception(
-          archive::archive_exception::other_exception));
+          archive::archive_exception(
+              archive::archive_exception::other_exception));
     }
   }
 
-  auto_space<Node*,Allocator> spc;
+  auto_space<Node*, Allocator> spc;
   std::size_t                 size_;
   std::size_t                 n;
   mutable bool                sorted;

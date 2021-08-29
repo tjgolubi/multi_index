@@ -12,7 +12,7 @@
 
 #include <type_traits>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* has_uintptr_type is an MPL integral constant determining whether
  * there exists an unsigned integral type with the same size as
@@ -25,21 +25,30 @@ namespace boost::multi_index::detail{
  */
 
 template<int N>struct uintptr_candidates;
-template<>struct uintptr_candidates<-1>{typedef unsigned int           type;};
-template<>struct uintptr_candidates<0> {typedef unsigned int           type;};
-template<>struct uintptr_candidates<1> {typedef unsigned short         type;};
-template<>struct uintptr_candidates<2> {typedef unsigned long          type;};
-template<>struct uintptr_candidates<3> {typedef unsigned long long     type;};
+template<>struct uintptr_candidates < -1 > {
+  typedef unsigned int           type;
+};
+template<>struct uintptr_candidates<0> {
+  typedef unsigned int           type;
+};
+template<>struct uintptr_candidates<1> {
+  typedef unsigned short         type;
+};
+template<>struct uintptr_candidates<2> {
+  typedef unsigned long          type;
+};
+template<>struct uintptr_candidates<3> {
+  typedef unsigned long long     type;
+};
 
-struct uintptr_aux
-{
-  static const int index=
-    sizeof(void*)==sizeof(uintptr_candidates<0>::type)?0:
-    sizeof(void*)==sizeof(uintptr_candidates<1>::type)?1:
-    sizeof(void*)==sizeof(uintptr_candidates<2>::type)?2:
-    sizeof(void*)==sizeof(uintptr_candidates<3>::type)?3:-1;
+struct uintptr_aux {
+  static const int index =
+      sizeof(void*) == sizeof(uintptr_candidates<0>::type) ? 0 :
+      sizeof(void*) == sizeof(uintptr_candidates<1>::type) ? 1 :
+      sizeof(void*) == sizeof(uintptr_candidates<2>::type) ? 2 :
+      sizeof(void*) == sizeof(uintptr_candidates<3>::type) ? 3 : -1;
 
-  static const bool has_uintptr_type=(index>=0);
+  static const bool has_uintptr_type = (index >= 0);
 
   typedef uintptr_candidates<index>::type type;
 };

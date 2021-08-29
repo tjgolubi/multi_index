@@ -15,7 +15,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <cstddef>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* index_saver accepts a base sequence of previously saved elements
  * and saves a possibly reordered subsequence in an efficient manner,
@@ -26,33 +26,32 @@ namespace boost::multi_index::detail{
  * const interface of index_saver.
  */
 
-template<typename Node,typename Allocator>
-class index_saver:private noncopyable
-{
+template<typename Node, typename Allocator>
+class index_saver: private noncopyable {
 public:
-  index_saver(const Allocator& al,std::size_t size):alg(al,size){}
+  index_saver(const Allocator& al, std::size_t size): alg(al, size) {}
 
   template<class Archive>
-  void add(Node* node,Archive& ar,const unsigned int)
+  void add(Node* node, Archive& ar, const unsigned int)
   {
-    ar<<serialization::make_nvp("position",*node);
+    ar << serialization::make_nvp("position", *node);
     alg.add(node);
   }
 
   template<class Archive>
-  void add_track(Node* node,Archive& ar,const unsigned int)
+  void add_track(Node* node, Archive& ar, const unsigned int)
   {
-    ar<<serialization::make_nvp("position",*node);
+    ar << serialization::make_nvp("position", *node);
   }
 
-  template<typename IndexIterator,class Archive>
+  template<typename IndexIterator, class Archive>
   void save(
-    IndexIterator first,IndexIterator last,Archive& ar,
-    const unsigned int)const
+      IndexIterator first, IndexIterator last, Archive& ar,
+      const unsigned int)const
   {
     /* calculate ordered positions */
 
-    alg.execute(first,last);
+    alg.execute(first, last);
 
     /* Given a consecutive subsequence of displaced elements
      * x1,...,xn, the following information is serialized:
@@ -71,33 +70,37 @@ public:
      * sequence
      *
      *   a,B,c,D
-     * 
+     *
      * where B and D are displaced, but c is in its correct position.
      * Applying the schema described above we would serialize 6 pointers:
      *
      *  p(a),p(B),0
      *  p(c),p(D),0
-     * 
+     *
      * but this can be reduced to 5 pointers by treating c as a displaced
      * element:
      *
      *  p(a),p(B),p(c),p(D),0
      */
 
-    std::size_t last_saved=3; /* distance to last pointer saved */
-    for(IndexIterator it=first,prev=first;it!=last;prev=it++,++last_saved){
-      if(!alg.is_ordered(get_node(it))){
-        if(last_saved>1)save_node(get_node(prev),ar);
-        save_node(get_node(it),ar);
-        last_saved=0;
+    std::size_t last_saved = 3; /* distance to last pointer saved */
+    for (IndexIterator it = first, prev = first; it != last;
+         prev = it++, ++last_saved) {
+      if (!alg.is_ordered(get_node(it))) {
+        if (last_saved > 1)
+          save_node(get_node(prev), ar);
+        save_node(get_node(it), ar);
+        last_saved = 0;
       }
-      else if(last_saved==2)save_node(null_node(),ar);
+      else if (last_saved == 2)
+        save_node(null_node(), ar);
     }
-    if(last_saved<=2)save_node(null_node(),ar);
+    if (last_saved <= 2)
+      save_node(null_node(), ar);
 
     /* marks the end of the serialization info for [first,last) */
 
-    save_node(null_node(),ar);
+    save_node(null_node(), ar);
   }
 
 private:
@@ -107,15 +110,18 @@ private:
     return it.get_node();
   }
 
-  static Node* null_node(){return 0;}
-
-  template<typename Archive>
-  static void save_node(Node* node,Archive& ar)
+  static Node* null_node()
   {
-    ar<<serialization::make_nvp("pointer",node);
+    return 0;
   }
 
-  index_matcher::algorithm<Node,Allocator> alg;
+  template<typename Archive>
+  static void save_node(Node* node, Archive& ar)
+  {
+    ar << serialization::make_nvp("pointer", node);
+  }
+
+  index_matcher::algorithm<Node, Allocator> alg;
 };
 
 } // boost::multi_index::detail

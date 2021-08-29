@@ -12,7 +12,6 @@
 
 #include <boost/multi_index/sequenced_index_fwd.hpp>
 
-#include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/bidir_node_iterator.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/index_node_base.hpp>
@@ -93,7 +92,7 @@ public:
   using const_iterator = iterator;
 
 private:
-  using alloc_traits = allocator_traits<allocator_type>;
+  using alloc_traits = std::allocator_traits<allocator_type>;
 
 public:
   using pointer            = typename alloc_traits::pointer;

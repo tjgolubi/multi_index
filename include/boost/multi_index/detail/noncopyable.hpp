@@ -12,8 +12,7 @@
 
 namespace boost::multi_index::detail {
 
-class noncopyable
-{
+class noncopyable {
 protected:
   constexpr noncopyable() = default;
   ~noncopyable() = default;

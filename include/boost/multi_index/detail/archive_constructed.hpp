@@ -13,37 +13,36 @@
 #include <boost/serialization/serialization.hpp>
 #include <type_traits>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* constructs a stack-based object from a serialization archive */
 
 template<typename T>
-struct archive_constructed
-{
+struct archive_constructed {
   archive_constructed(const archive_constructed&) = delete;
   archive_constructed& operator=(const archive_constructed&) = delete;
 
-  template<class Archive>
-  archive_constructed(Archive& ar,const unsigned int version)
+  template<class Archive> archive_constructed(Archive& ar,
+      const unsigned int version)
   {
-    serialization::load_construct_data_adl(ar,&get(),version);
-    try{
-      ar>>get();
+    serialization::load_construct_data_adl(ar, &get(), version);
+    try {
+      ar >> get();
     }
-    catch(...){
+    catch (...) {
       (&get())->~T();
       throw;
     }
   }
 
-  template<class Archive>
-  archive_constructed(const char* name,Archive& ar,const unsigned int version)
+  template<class Archive> archive_constructed(const char* name, Archive& ar,
+      const unsigned int version)
   {
-    serialization::load_construct_data_adl(ar,&get(),version);
-    try{
-      ar>>serialization::make_nvp(name,get());
+    serialization::load_construct_data_adl(ar, &get(), version);
+    try {
+      ar >> serialization::make_nvp(name, get());
     }
-    catch(...){
+    catch (...) {
       (&get())->~T();
       throw;
     }
@@ -54,11 +53,14 @@ struct archive_constructed
     (&get())->~T();
   }
 
-  T& get(){return *reinterpret_cast<T*>(&space);}
+  T& get()
+  {
+    return *reinterpret_cast<T*>(&space);
+  }
 
 private:
-  typename std::aligned_storage<sizeof(T),std::alignment_of<T>::value>::type
-      space;
+  typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type
+  space;
 };
 
 } // boost::multi_index::detail

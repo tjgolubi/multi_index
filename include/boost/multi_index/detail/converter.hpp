@@ -10,29 +10,34 @@
 #define BOOST_MULTI_INDEX_DETAIL_CONVERTER_HPP
 #pragma once
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* converter offers means to access indices of a given multi_index_container
  * and for convertibilty between index iterators, so providing a
  * localized access point for get() and project() functions.
  */
 
-template<typename MultiIndexContainer,typename Index>
-struct converter
-{
-  static const Index& index(const MultiIndexContainer& x){return x;}
-  static Index&       index(MultiIndexContainer& x){return x;}
+template<typename MultiIndexContainer, typename Index>
+struct converter {
+  static const Index& index(const MultiIndexContainer& x)
+  {
+    return x;
+  }
+  static Index&       index(MultiIndexContainer& x)
+  {
+    return x;
+  }
 
   static typename Index::const_iterator const_iterator(
-    const MultiIndexContainer& x,
-    typename MultiIndexContainer::final_node_type* node)
+      const MultiIndexContainer& x,
+      typename MultiIndexContainer::final_node_type* node)
   {
     return x.Index::make_iterator(node);
   }
 
   static typename Index::iterator iterator(
-    MultiIndexContainer& x,
-    typename MultiIndexContainer::final_node_type* node)
+      MultiIndexContainer& x,
+      typename MultiIndexContainer::final_node_type* node)
   {
     return x.Index::make_iterator(node);
   }

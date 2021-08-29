@@ -16,24 +16,23 @@
 #include <boost/multi_index/detail/is_index_list.hpp>
 #include <boost/mp11/algorithm.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* MPL machinery to construct the internal node type associated to an
  * index list.
  */
 
-template<typename IndexSpecifier,typename Super>
-using node_type=typename IndexSpecifier::template node_class<Super>::type; 
+template<typename IndexSpecifier, typename Super>
+using node_type = typename IndexSpecifier::template node_class<Super>::type;
 
-template<typename Value,typename IndexSpecifierList,typename Allocator>
-struct multi_index_node_type
-{
+template<typename Value, typename IndexSpecifierList, typename Allocator>
+struct multi_index_node_type {
   static_assert(detail::is_index_list<IndexSpecifierList>::value);
 
-  typedef mp11::mp_reverse_fold<
-    IndexSpecifierList,
-    index_node_base<Value,Allocator>,
-    node_type
+  typedef mp11::mp_reverse_fold <
+  IndexSpecifierList,
+  index_node_base<Value, Allocator>,
+  node_type
   > type;
 };
 

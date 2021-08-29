@@ -12,26 +12,25 @@
 
 #include <boost/multi_index/detail/call_traits.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
-template<typename Value,typename KeyFromValue,typename Compare>
-struct value_comparison
-{
+template<typename Value, typename KeyFromValue, typename Compare>
+struct value_comparison {
   typedef Value first_argument_type;
   typedef Value second_argument_type;
   typedef bool  result_type;
 
   value_comparison(
-    const KeyFromValue& key_=KeyFromValue(),const Compare& comp_=Compare()):
-    key(key_),comp(comp_)
+      const KeyFromValue& key_ = KeyFromValue(), const Compare& comp_ = Compare()):
+    key(key_), comp(comp_)
   {
   }
 
   bool operator()(
-    typename detail::call_traits<Value>::param_type x,
-    typename detail::call_traits<Value>::param_type y)const
+      typename detail::call_traits<Value>::param_type x,
+      typename detail::call_traits<Value>::param_type y)const
   {
-    return comp(key(x),key(y));
+    return comp(key(x), key(y));
   }
 
 private:

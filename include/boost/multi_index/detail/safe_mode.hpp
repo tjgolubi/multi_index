@@ -120,9 +120,9 @@
 #include <mutex>
 #include <algorithm>
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
-namespace safe_mode{
+namespace safe_mode {
 
 /* Checking routines. Assume the best for unchecked iterators
  * (i.e. they pass the checking when there is not enough info
@@ -132,52 +132,55 @@ namespace safe_mode{
 template<typename Iterator>
 inline bool check_valid_iterator(const Iterator& it)
 {
-  return it.valid()||it.unchecked();
+  return it.valid() || it.unchecked();
 }
 
 template<typename Iterator>
 inline bool check_dereferenceable_iterator(const Iterator& it)
 {
-  return (it.valid()&&it!=it.owner()->end())||it.unchecked();
+  return (it.valid() && it != it.owner()->end()) || it.unchecked();
 }
 
 template<typename Iterator>
 inline bool check_incrementable_iterator(const Iterator& it)
 {
-  return (it.valid()&&it!=it.owner()->end())||it.unchecked();
+  return (it.valid() && it != it.owner()->end()) || it.unchecked();
 }
 
 template<typename Iterator>
 inline bool check_decrementable_iterator(const Iterator& it)
 {
-  return (it.valid()&&it!=it.owner()->begin())||it.unchecked();
+  return (it.valid() && it != it.owner()->begin()) || it.unchecked();
 }
 
 template<typename Iterator>
 inline bool check_is_owner(
-  const Iterator& it,const typename Iterator::container_type& cont)
+    const Iterator& it, const typename Iterator::container_type& cont)
 {
-  return (it.valid()&&it.owner()==&cont)||it.unchecked();
+  return (it.valid() && it.owner() == &cont) || it.unchecked();
 }
 
 template<typename Iterator>
-inline bool check_same_owner(const Iterator& it0,const Iterator& it1)
+inline bool check_same_owner(const Iterator& it0, const Iterator& it1)
 {
-  return (it0.valid()&&it1.valid()&&it0.owner()==it1.owner())||
-         it0.unchecked()||it1.unchecked();
+  return (it0.valid() && it1.valid() && it0.owner() == it1.owner()) ||
+         it0.unchecked() || it1.unchecked();
 }
 
 template<typename Iterator>
-inline bool check_valid_range(const Iterator& it0,const Iterator& it1)
+inline bool check_valid_range(const Iterator& it0, const Iterator& it1)
 {
-  if(!check_same_owner(it0,it1))return false;
+  if (!check_same_owner(it0, it1))
+    return false;
 
-  if(it0.valid()){
-    Iterator last=it0.owner()->end();
-    if(it1==last)return true;
+  if (it0.valid()) {
+    Iterator last = it0.owner()->end();
+    if (it1 == last)
+      return true;
 
-    for(Iterator first=it0;first!=last;++first){
-      if(first==it1)return true;
+    for (Iterator first = it0; first != last; ++first) {
+      if (first == it1)
+        return true;
     }
     return false;
   }
@@ -186,49 +189,57 @@ inline bool check_valid_range(const Iterator& it0,const Iterator& it1)
 
 template<typename Iterator>
 inline bool check_outside_range(
-  const Iterator& it,const Iterator& it0,const Iterator& it1)
+    const Iterator& it, const Iterator& it0, const Iterator& it1)
 {
-  if(!check_same_owner(it0,it1))return false;
+  if (!check_same_owner(it0, it1))
+    return false;
 
-  if(it0.valid()){
-    Iterator last=it0.owner()->end();
-    bool found=false;
+  if (it0.valid()) {
+    Iterator last = it0.owner()->end();
+    bool found = false;
 
-    Iterator first=it0;
-    for(;first!=last;++first){
-      if(first==it1)break;
-    
+    Iterator first = it0;
+    for (; first != last; ++first) {
+      if (first == it1)
+        break;
+
       /* crucial that this check goes after previous break */
-    
-      if(first==it)found=true;
+
+      if (first == it)
+        found = true;
     }
-    if(first!=it1)return false;
+    if (first != it1)
+      return false;
     return !found;
   }
   return true;
 }
 
-template<typename Iterator,typename Difference>
-inline bool check_in_bounds(const Iterator& it,Difference n)
+template<typename Iterator, typename Difference>
+inline bool check_in_bounds(const Iterator& it, Difference n)
 {
-  if(it.unchecked())return true;
-  if(!it.valid())   return false;
-  if(n>0)           return it.owner()->end()-it>=n;
-  else              return it.owner()->begin()-it<=n;
+  if (it.unchecked())
+    return true;
+  if (!it.valid())
+    return false;
+  if (n > 0)
+    return it.owner()->end() - it >= n;
+  else
+    return it.owner()->begin() - it <= n;
 }
 
 template<typename Container>
 inline bool check_different_container(
-  const Container& cont0,const Container& cont1)
+    const Container& cont0, const Container& cont1)
 {
-  return &cont0!=&cont1;
+  return &cont0 != &cont1;
 }
 
-template<typename Container0,typename Container1>
+template<typename Container0, typename Container1>
 inline bool check_equal_allocators(
-  const Container0& cont0,const Container1& cont1)
+    const Container0& cont0, const Container1& cont1)
 {
-  return cont0.get_allocator()==cont1.get_allocator();
+  return cont0.get_allocator() == cont1.get_allocator();
 }
 
 /* Invalidates all iterators equivalent to that given. Safe containers
@@ -239,18 +250,19 @@ inline bool check_equal_allocators(
 template<typename Iterator>
 inline void detach_equivalent_iterators(Iterator& it)
 {
-  if(it.valid()){
+  if (it.valid()) {
     {
       const std::lock_guard<std::mutex> lock(it.cont->mutex);
-      Iterator *prev_,*next_;
-      for(
-        prev_=static_cast<Iterator*>(&it.cont->header);
-        (next_=static_cast<Iterator*>(prev_->next))!=0;){
-        if(next_!=&it&&*next_==it){
-          prev_->next=next_->next;
-          next_->cont=0;
+      Iterator* prev_, *next_;
+      for (
+          prev_ = static_cast<Iterator*>(&it.cont->header);
+          (next_ = static_cast<Iterator*>(prev_->next)) != 0;) {
+        if (next_ != &it && *next_ == it) {
+          prev_->next = next_->next;
+          next_->cont = 0;
         }
-        else prev_=next_;
+        else
+          prev_ = next_;
       }
     }
     it.detach();
@@ -261,26 +273,31 @@ template<typename Container> class safe_container; /* fwd decl. */
 
 } // safe_mode
 
-namespace detail{
+namespace detail {
 
 class safe_container_base;                 /* fwd decl. */
 
-class safe_iterator_base
-{
+class safe_iterator_base {
 public:
-  bool valid()const{return cont!=0;}
-  bool unchecked()const{return unchecked_;}
+  bool valid()const
+  {
+    return cont != 0;
+  }
+  bool unchecked()const
+  {
+    return unchecked_;
+  }
 
   inline void detach();
 
   void uncheck()
   {
     detach();
-    unchecked_=true;
+    unchecked_ = true;
   }
 
 protected:
-  safe_iterator_base():cont(0),next(0),unchecked_(false){}
+  safe_iterator_base(): cont(0), next(0), unchecked_(false) {}
 
   explicit safe_iterator_base(safe_container_base* cont_):
     unchecked_(false)
@@ -296,9 +313,9 @@ protected:
 
   safe_iterator_base& operator=(const safe_iterator_base& it)
   {
-    unchecked_=it.unchecked_;
-    safe_container_base* new_cont=it.cont;
-    if(cont!=new_cont){
+    unchecked_ = it.unchecked_;
+    safe_container_base* new_cont = it.cont;
+    if (cont != new_cont) {
       detach();
       attach(new_cont);
     }
@@ -310,14 +327,17 @@ protected:
     detach();
   }
 
-  const safe_container_base* owner()const{return cont;}
+  const safe_container_base* owner()const
+  {
+    return cont;
+  }
 
 private:
   friend class safe_container_base;
 
   template<typename>          friend class safe_mode::safe_container;
   template<typename Iterator> friend
-    void safe_mode::detach_equivalent_iterators(Iterator&);
+  void safe_mode::detach_equivalent_iterators(Iterator&);
 
   inline void attach(safe_container_base* cont_);
 
@@ -326,10 +346,9 @@ private:
   bool                 unchecked_;
 };
 
-class safe_container_base
-{
+class safe_container_base {
 public:
-  safe_container_base(){}
+  safe_container_base() {}
 
   safe_container_base(const safe_container_base&) = delete;
   safe_container_base& operator=(const safe_container_base&) = delete;
@@ -338,7 +357,7 @@ protected:
   friend class safe_iterator_base;
 
   template<typename Iterator> friend
-    void safe_mode::detach_equivalent_iterators(Iterator&);
+  void safe_mode::detach_equivalent_iterators(Iterator&);
 
   ~safe_container_base()
   {
@@ -346,16 +365,19 @@ protected:
      * be those pointing to the end of the container.
      */
 
-    for(safe_iterator_base* it=header.next;it;it=it->next)it->cont=0;
-    header.next=0;
+    for (safe_iterator_base* it = header.next; it; it = it->next)
+      it->cont = 0;
+    header.next = 0;
   }
 
   void swap(safe_container_base& x)
   {
-    for(safe_iterator_base* it0=header.next;it0;it0=it0->next)it0->cont=&x;
-    for(safe_iterator_base* it1=x.header.next;it1;it1=it1->next)it1->cont=this;
-    std::swap(header.cont,x.header.cont);
-    std::swap(header.next,x.header.next);
+    for (safe_iterator_base* it0 = header.next; it0; it0 = it0->next)
+      it0->cont = &x;
+    for (safe_iterator_base* it1 = x.header.next; it1; it1 = it1->next)
+      it1->cont = this;
+    std::swap(header.cont, x.header.cont);
+    std::swap(header.next, x.header.next);
   }
 
   safe_iterator_base header;
@@ -365,44 +387,43 @@ protected:
 
 void safe_iterator_base::attach(safe_container_base* cont_)
 {
-  cont=cont_;
-  if(cont){
+  cont = cont_;
+  if (cont) {
     const std::lock_guard<std::mutex> lock(cont->mutex);
-    next=cont->header.next;
-    cont->header.next=this;
+    next = cont->header.next;
+    cont->header.next = this;
   }
 }
 
 void safe_iterator_base::detach()
 {
-  if(cont){
+  if (cont) {
     const std::lock_guard<std::mutex> lock(cont->mutex);
-    safe_iterator_base *prev_,*next_;
-    for(prev_=&cont->header;(next_=prev_->next)!=this;prev_=next_){}
-    prev_->next=next;
-    cont=0;
+    safe_iterator_base* prev_, *next_;
+    for (prev_ = &cont->header; (next_ = prev_->next) != this; prev_ = next_) {}
+    prev_->next = next;
+    cont = 0;
   }
 }
 
 } // detail
 
-namespace safe_mode{
+namespace safe_mode {
 
 /* In order to enable safe mode on a container:
  *   - The container must derive from safe_container<container_type>,
  *   - iterators must be generated via safe_iterator, which adapts a
  *     preexistent unsafe iterator class.
  */
- 
+
 template<typename Container>
 class safe_container;
 
-template<typename Iterator,typename Container>
+template<typename Iterator, typename Container>
 class safe_iterator:
-  public detail::iter_adaptor<safe_iterator<Iterator,Container>,Iterator>,
-  public detail::safe_iterator_base
-{
-  typedef detail::iter_adaptor<safe_iterator,Iterator> super;
+  public detail::iter_adaptor<safe_iterator<Iterator, Container>, Iterator>,
+  public detail::safe_iterator_base {
+  typedef detail::iter_adaptor<safe_iterator, Iterator> super;
   typedef detail::safe_iterator_base                   safe_super;
 
 public:
@@ -410,22 +431,21 @@ public:
   typedef typename Iterator::reference                 reference;
   typedef typename Iterator::difference_type           difference_type;
 
-  safe_iterator(){}
+  safe_iterator() {}
   explicit safe_iterator(safe_container<container_type>* cont_):
-    safe_super(cont_){}
-  template<typename T0>
-  safe_iterator(const T0& t0,safe_container<container_type>* cont_):
-    super(Iterator(t0)),safe_super(cont_){}
-  template<typename T0,typename T1>
-  safe_iterator(
-    const T0& t0,const T1& t1,safe_container<container_type>* cont_):
-    super(Iterator(t0,t1)),safe_super(cont_){}
-  safe_iterator(const safe_iterator& x):super(x),safe_super(x){}
+    safe_super(cont_) {}
+  template<typename T0> safe_iterator(const T0& t0,
+                                      safe_container<container_type>* cont_):
+    super(Iterator(t0)), safe_super(cont_) {}
+  template<typename T0, typename T1> safe_iterator(
+      const T0& t0, const T1& t1, safe_container<container_type>* cont_):
+    super(Iterator(t0, t1)), safe_super(cont_) {}
+  safe_iterator(const safe_iterator& x): super(x), safe_super(x) {}
 
   safe_iterator& operator=(const safe_iterator& x)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(x);
-    this->base_reference()=x.base_reference();
+    this->base_reference() = x.base_reference();
     safe_super::operator=(x);
     return *this;
   }
@@ -433,16 +453,19 @@ public:
   const container_type* owner()const
   {
     return
-      static_cast<const container_type*>(
-        static_cast<const safe_container<container_type>*>(
-          this->safe_super::owner()));
+        static_cast<const container_type*>(
+            static_cast<const safe_container<container_type>*>(
+                this->safe_super::owner()));
   }
 
   /* get_node is not to be used by the user */
 
   typedef typename Iterator::node_type node_type;
 
-  node_type* get_node()const{return this->base_reference().get_node();}
+  node_type* get_node()const
+  {
+    return this->base_reference().get_node();
+  }
 
 private:
   friend class boost::multi_index::detail::iter_adaptor_access;
@@ -458,8 +481,8 @@ private:
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(x);
-    BOOST_MULTI_INDEX_CHECK_SAME_OWNER(*this,x);
-    return this->base_reference()==x.base_reference();
+    BOOST_MULTI_INDEX_CHECK_SAME_OWNER(*this, x);
+    return this->base_reference() == x.base_reference();
   }
 
   void increment()
@@ -479,16 +502,16 @@ private:
   void advance(difference_type n)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
-    BOOST_MULTI_INDEX_CHECK_IN_BOUNDS(*this,n);
-    this->base_reference()+=n;
+    BOOST_MULTI_INDEX_CHECK_IN_BOUNDS(*this, n);
+    this->base_reference() += n;
   }
 
   difference_type distance_to(const safe_iterator& x)const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(x);
-    BOOST_MULTI_INDEX_CHECK_SAME_OWNER(*this,x);
-    return x.base_reference()-this->base_reference();
+    BOOST_MULTI_INDEX_CHECK_SAME_OWNER(*this, x);
+    return x.base_reference() - this->base_reference();
   }
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
@@ -504,31 +527,30 @@ private:
    * deeper, this is especially relevant with XML archives.
    * It'd be nice if Boost.Serialization provided some forwarding
    * facility for use by adaptor classes.
-   */ 
+   */
 
   friend class boost::serialization::access;
 
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
   template<class Archive>
-  void save(Archive& ar,const unsigned int version)const
+  void save(Archive& ar, const unsigned int version)const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
-    this->base_reference().save(ar,version);
+    this->base_reference().save(ar, version);
   }
 
   template<class Archive>
-  void load(Archive& ar,const unsigned int version)
+  void load(Archive& ar, const unsigned int version)
   {
-    this->base_reference().load(ar,version);
+    this->base_reference().load(ar, version);
     safe_super::uncheck();
   }
 #endif
 };
 
 template<typename Container>
-class safe_container:public detail::safe_container_base
-{
+class safe_container: public detail::safe_container_base {
   typedef detail::safe_container_base super;
 
 public:
@@ -536,16 +558,17 @@ public:
   {
     typedef typename Container::iterator iterator;
 
-    iterator end_=static_cast<Container*>(this)->end();
-    iterator *prev_,*next_;
-    for(
-      prev_=static_cast<iterator*>(&this->header);
-      (next_=static_cast<iterator*>(prev_->next))!=0;){
-      if(*next_!=end_){
-        prev_->next=next_->next;
-        next_->cont=0;
+    iterator end_ = static_cast<Container*>(this)->end();
+    iterator* prev_, *next_;
+    for (
+        prev_ = static_cast<iterator*>(&this->header);
+        (next_ = static_cast<iterator*>(prev_->next)) != 0;) {
+      if (*next_ != end_) {
+        prev_->next = next_->next;
+        next_->cont = 0;
       }
-      else prev_=next_;
+      else
+        prev_ = next_;
     }
   }
 
@@ -560,13 +583,12 @@ public:
 } // boost::multi_index
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
-namespace boost::serialization{
-template<typename Iterator,typename Container>
-struct version<
-  boost::multi_index::safe_mode::safe_iterator<Iterator,Container>
->
-{
-  static const int value=boost::serialization::version<Iterator>::value;
+namespace boost::serialization {
+template<typename Iterator, typename Container>
+struct version <
+  boost::multi_index::safe_mode::safe_iterator<Iterator, Container>
+  > {
+  static const int value = boost::serialization::version<Iterator>::value;
 };
 } // boost::serialization
 #endif

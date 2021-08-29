@@ -14,7 +14,7 @@
 
 #include <boost/mp11/utility.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* Poor man's version of boost::iterator_adaptor. Used instead of the
  * original as compile times for the latter are significantly higher.
@@ -28,17 +28,16 @@ namespace boost::multi_index::detail{
  * in template code where T is a dependent type.
  */
 
-class iter_adaptor_access
-{
+class iter_adaptor_access {
 public:
   template<class Class>
-    static typename Class::reference dereference(const Class& x)
+  static typename Class::reference dereference(const Class& x)
   {
     return x.dereference();
   }
 
   template<class Class>
-  static bool equal(const Class& x,const Class& y)
+  static bool equal(const Class& x, const Class& y)
   {
     return x.equal(y);
   }
@@ -56,14 +55,14 @@ public:
   }
 
   template<class Class>
-  static void advance(Class& x,typename Class::difference_type n)
+  static void advance(Class& x, typename Class::difference_type n)
   {
     x.advance(n);
   }
 
   template<class Class>
   static typename Class::difference_type distance_to(
-    const Class& x,const Class& y)
+      const Class& x, const Class& y)
   {
     return x.distance_to(y);
   }
@@ -72,15 +71,14 @@ public:
 template<typename Category>
 struct iter_adaptor_selector;
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 class forward_iter_adaptor_base:
-  public forward_iterator_helper<
-    Derived,
-    typename Base::value_type,
-    typename Base::difference_type,
-    typename Base::pointer,
-    typename Base::reference>
-{
+  public forward_iterator_helper <
+  Derived,
+  typename Base::value_type,
+  typename Base::difference_type,
+  typename Base::pointer,
+  typename Base::reference > {
 public:
   typedef typename Base::reference reference;
 
@@ -89,9 +87,9 @@ public:
     return iter_adaptor_access::dereference(final());
   }
 
-  friend bool operator==(const Derived& x,const Derived& y)
+  friend bool operator==(const Derived& x, const Derived& y)
   {
-    return iter_adaptor_access::equal(x,y);
+    return iter_adaptor_access::equal(x, y);
   }
 
   Derived& operator++()
@@ -101,35 +99,39 @@ public:
   }
 
 private:
-  Derived& final(){return *static_cast<Derived*>(this);}
-  const Derived& final()const{return *static_cast<const Derived*>(this);}
+  Derived& final()
+  {
+    return *static_cast<Derived*>(this);
+  }
+  const Derived& final()const
+  {
+    return *static_cast<const Derived*>(this);
+  }
 };
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 bool operator==(
-  const forward_iter_adaptor_base<Derived,Base>& x,
-  const forward_iter_adaptor_base<Derived,Base>& y)
+    const forward_iter_adaptor_base<Derived, Base>& x,
+    const forward_iter_adaptor_base<Derived, Base>& y)
 {
   return iter_adaptor_access::equal(
-    static_cast<const Derived&>(x),static_cast<const Derived&>(y));
+             static_cast<const Derived&>(x), static_cast<const Derived&>(y));
 }
 
 template<>
-struct iter_adaptor_selector<std::forward_iterator_tag>
-{
-  template<class Derived,class Base>
-  using fn=forward_iter_adaptor_base<Derived,Base>;
+struct iter_adaptor_selector<std::forward_iterator_tag> {
+  template<class Derived, class Base>
+  using fn = forward_iter_adaptor_base<Derived, Base>;
 };
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 class bidirectional_iter_adaptor_base:
-  public bidirectional_iterator_helper<
-    Derived,
-    typename Base::value_type,
-    typename Base::difference_type,
-    typename Base::pointer,
-    typename Base::reference>
-{
+  public bidirectional_iterator_helper <
+  Derived,
+  typename Base::value_type,
+  typename Base::difference_type,
+  typename Base::pointer,
+  typename Base::reference > {
 public:
   typedef typename Base::reference reference;
 
@@ -138,9 +140,9 @@ public:
     return iter_adaptor_access::dereference(final());
   }
 
-  friend bool operator==(const Derived& x,const Derived& y)
+  friend bool operator==(const Derived& x, const Derived& y)
   {
-    return iter_adaptor_access::equal(x,y);
+    return iter_adaptor_access::equal(x, y);
   }
 
   Derived& operator++()
@@ -156,35 +158,39 @@ public:
   }
 
 private:
-  Derived& final(){return *static_cast<Derived*>(this);}
-  const Derived& final()const{return *static_cast<const Derived*>(this);}
+  Derived& final()
+  {
+    return *static_cast<Derived*>(this);
+  }
+  const Derived& final()const
+  {
+    return *static_cast<const Derived*>(this);
+  }
 };
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 bool operator==(
-  const bidirectional_iter_adaptor_base<Derived,Base>& x,
-  const bidirectional_iter_adaptor_base<Derived,Base>& y)
+    const bidirectional_iter_adaptor_base<Derived, Base>& x,
+    const bidirectional_iter_adaptor_base<Derived, Base>& y)
 {
   return iter_adaptor_access::equal(
-    static_cast<const Derived&>(x),static_cast<const Derived&>(y));
+             static_cast<const Derived&>(x), static_cast<const Derived&>(y));
 }
 
 template<>
-struct iter_adaptor_selector<std::bidirectional_iterator_tag>
-{
-  template<class Derived,class Base>
-  using fn=bidirectional_iter_adaptor_base<Derived,Base>;
+struct iter_adaptor_selector<std::bidirectional_iterator_tag> {
+  template<class Derived, class Base>
+  using fn = bidirectional_iter_adaptor_base<Derived, Base>;
 };
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 class random_access_iter_adaptor_base:
-  public random_access_iterator_helper<
-    Derived,
-    typename Base::value_type,
-    typename Base::difference_type,
-    typename Base::pointer,
-    typename Base::reference>
-{
+  public random_access_iterator_helper <
+  Derived,
+  typename Base::value_type,
+  typename Base::difference_type,
+  typename Base::pointer,
+  typename Base::reference > {
 public:
   typedef typename Base::reference       reference;
   typedef typename Base::difference_type difference_type;
@@ -194,14 +200,14 @@ public:
     return iter_adaptor_access::dereference(final());
   }
 
-  friend bool operator==(const Derived& x,const Derived& y)
+  friend bool operator==(const Derived& x, const Derived& y)
   {
-    return iter_adaptor_access::equal(x,y);
+    return iter_adaptor_access::equal(x, y);
   }
 
-  friend bool operator<(const Derived& x,const Derived& y)
+  friend bool operator<(const Derived& x, const Derived& y)
   {
-    return iter_adaptor_access::distance_to(x,y)>0;
+    return iter_adaptor_access::distance_to(x, y) > 0;
   }
 
   Derived& operator++()
@@ -218,76 +224,86 @@ public:
 
   Derived& operator+=(difference_type n)
   {
-    iter_adaptor_access::advance(final(),n);
+    iter_adaptor_access::advance(final(), n);
     return final();
   }
 
   Derived& operator-=(difference_type n)
   {
-    iter_adaptor_access::advance(final(),-n);
+    iter_adaptor_access::advance(final(), -n);
     return final();
   }
 
-  friend difference_type operator-(const Derived& x,const Derived& y)
+  friend difference_type operator-(const Derived& x, const Derived& y)
   {
-    return iter_adaptor_access::distance_to(y,x);
+    return iter_adaptor_access::distance_to(y, x);
   }
 
 private:
-  Derived& final(){return *static_cast<Derived*>(this);}
-  const Derived& final()const{return *static_cast<const Derived*>(this);}
+  Derived& final()
+  {
+    return *static_cast<Derived*>(this);
+  }
+  const Derived& final()const
+  {
+    return *static_cast<const Derived*>(this);
+  }
 };
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 bool operator==(
-  const random_access_iter_adaptor_base<Derived,Base>& x,
-  const random_access_iter_adaptor_base<Derived,Base>& y)
+    const random_access_iter_adaptor_base<Derived, Base>& x,
+    const random_access_iter_adaptor_base<Derived, Base>& y)
 {
   return iter_adaptor_access::equal(
-    static_cast<const Derived&>(x),static_cast<const Derived&>(y));
+             static_cast<const Derived&>(x), static_cast<const Derived&>(y));
 }
 
-template<class Derived,class Base>
+template<class Derived, class Base>
 bool operator<(
-  const random_access_iter_adaptor_base<Derived,Base>& x,
-  const random_access_iter_adaptor_base<Derived,Base>& y)
+    const random_access_iter_adaptor_base<Derived, Base>& x,
+    const random_access_iter_adaptor_base<Derived, Base>& y)
 {
   return iter_adaptor_access::distance_to(
-    static_cast<const Derived&>(x),static_cast<const Derived&>(y))>0;
+             static_cast<const Derived&>(x), static_cast<const Derived&>(y)) > 0;
 }
 
-template<class Derived,class Base>
-typename random_access_iter_adaptor_base<Derived,Base>::difference_type
-operator-(
-  const random_access_iter_adaptor_base<Derived,Base>& x,
-  const random_access_iter_adaptor_base<Derived,Base>& y)
+template<class Derived, class Base>
+typename random_access_iter_adaptor_base<Derived, Base>::difference_type operator
+-(
+    const random_access_iter_adaptor_base<Derived, Base>& x,
+    const random_access_iter_adaptor_base<Derived, Base>& y)
 {
   return iter_adaptor_access::distance_to(
-    static_cast<const Derived&>(y),static_cast<const Derived&>(x));
+             static_cast<const Derived&>(y), static_cast<const Derived&>(x));
 }
 
 template<>
-struct iter_adaptor_selector<std::random_access_iterator_tag>
-{
-  template<class Derived,class Base>
-  using fn=random_access_iter_adaptor_base<Derived,Base>;
+struct iter_adaptor_selector<std::random_access_iterator_tag> {
+  template<class Derived, class Base>
+  using fn = random_access_iter_adaptor_base<Derived, Base>;
 };
 
-template<class Derived,class Base>
-using iter_adaptor_base= mp11::mp_invoke_q<
-  iter_adaptor_selector<typename Base::iterator_category>,
-  Derived,Base
->;
+template<class Derived, class Base>
+using iter_adaptor_base = mp11::mp_invoke_q <
+                          iter_adaptor_selector<typename Base::iterator_category>,
+                          Derived, Base
+                          >;
 
-template<class Derived,class Base>
-class iter_adaptor:public iter_adaptor_base<Derived,Base>
-{
+template<class Derived, class Base>
+class iter_adaptor: public iter_adaptor_base<Derived, Base> {
 protected:
-  iter_adaptor(){}
-  explicit iter_adaptor(const Base& b_):b(b_){}
+  iter_adaptor() {}
+  explicit iter_adaptor(const Base& b_): b(b_) {}
 
-  const Base& base_reference()const{return b;}
-  Base&       base_reference(){return b;}
+  const Base& base_reference()const
+  {
+    return b;
+  }
+  Base&       base_reference()
+  {
+    return b;
+  }
 
 private:
   Base b;

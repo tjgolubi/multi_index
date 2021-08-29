@@ -17,23 +17,22 @@
 #include <boost/serialization/split_member.hpp>
 #endif
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* Iterator class for node-based indices with random access iterators. */
 
 template<typename Node>
 class rnd_node_iterator:
-  public random_access_iterator_helper<
-    rnd_node_iterator<Node>,
-    typename Node::value_type,
-    typename Node::difference_type,
-    const typename Node::value_type*,
-    const typename Node::value_type&>
-{
+  public random_access_iterator_helper <
+  rnd_node_iterator<Node>,
+  typename Node::value_type,
+  typename Node::difference_type,
+  const typename Node::value_type*,
+  const typename Node::value_type& > {
 public:
   /* coverity[uninit_ctor]: suppress warning */
-  rnd_node_iterator(){}
-  explicit rnd_node_iterator(Node* node_):node(node_){}
+  rnd_node_iterator() {}
+  explicit rnd_node_iterator(Node* node_): node(node_) {}
 
   const typename Node::value_type& operator*()const
   {
@@ -54,13 +53,13 @@ public:
 
   rnd_node_iterator& operator+=(typename Node::difference_type n)
   {
-    Node::advance(node,n);
+    Node::advance(node, n);
     return *this;
   }
 
   rnd_node_iterator& operator-=(typename Node::difference_type n)
   {
-    Node::advance(node,-n);
+    Node::advance(node, -n);
     return *this;
   }
 
@@ -74,18 +73,18 @@ public:
   typedef typename Node::base_type node_base_type;
 
   template<class Archive>
-  void save(Archive& ar,const unsigned int)const
+  void save(Archive& ar, const unsigned int)const
   {
-    node_base_type* bnode=node;
-    ar<<serialization::make_nvp("pointer",bnode);
+    node_base_type* bnode = node;
+    ar << serialization::make_nvp("pointer", bnode);
   }
 
   template<class Archive>
-  void load(Archive& ar,const unsigned int)
+  void load(Archive& ar, const unsigned int)
   {
     node_base_type* bnode;
-    ar>>serialization::make_nvp("pointer",bnode);
-    node=static_cast<Node*>(bnode);
+    ar >> serialization::make_nvp("pointer", bnode);
+    node = static_cast<Node*>(bnode);
   }
 #endif
 
@@ -93,7 +92,10 @@ public:
 
   typedef Node node_type;
 
-  Node* get_node()const{return node;}
+  Node* get_node()const
+  {
+    return node;
+  }
 
 private:
   Node* node;
@@ -101,26 +103,26 @@ private:
 
 template<typename Node>
 bool operator==(
-  const rnd_node_iterator<Node>& x,
-  const rnd_node_iterator<Node>& y)
+    const rnd_node_iterator<Node>& x,
+    const rnd_node_iterator<Node>& y)
 {
-  return x.get_node()==y.get_node();
+  return x.get_node() == y.get_node();
 }
 
 template<typename Node>
 bool operator<(
-  const rnd_node_iterator<Node>& x,
-  const rnd_node_iterator<Node>& y)
+    const rnd_node_iterator<Node>& x,
+    const rnd_node_iterator<Node>& y)
 {
-  return Node::distance(x.get_node(),y.get_node())>0;
+  return Node::distance(x.get_node(), y.get_node()) > 0;
 }
 
 template<typename Node>
 typename Node::difference_type operator-(
-  const rnd_node_iterator<Node>& x,
-  const rnd_node_iterator<Node>& y)
+    const rnd_node_iterator<Node>& x,
+    const rnd_node_iterator<Node>& y)
 {
-  return Node::distance(y.get_node(),x.get_node());
+  return Node::distance(y.get_node(), x.get_node());
 }
 
 } // boost::multi_index::detail

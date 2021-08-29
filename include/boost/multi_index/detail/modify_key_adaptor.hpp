@@ -10,18 +10,17 @@
 #define BOOST_MULTI_INDEX_DETAIL_MODIFY_KEY_ADAPTOR_HPP
 #pragma once
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* Functional adaptor to resolve modify_key as a call to modify.
  * Preferred over compose_f_gx and stuff cause it eliminates problems
  * with references to references, dealing with function pointers, etc.
  */
 
-template<typename Fun,typename Value,typename KeyFromValue>
-struct modify_key_adaptor
-{
+template<typename Fun, typename Value, typename KeyFromValue>
+struct modify_key_adaptor {
 
-  modify_key_adaptor(Fun f_,KeyFromValue kfv_):f(f_),kfv(kfv_){}
+  modify_key_adaptor(Fun f_, KeyFromValue kfv_): f(f_), kfv(kfv_) {}
 
   void operator()(Value& x)
   {

@@ -20,7 +20,7 @@
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <boost/multi_index/detail/header_holder.hpp>
-#include <boost/multi_index/detail/allocator_traits.hpp>
+#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/base_type.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
@@ -82,7 +82,7 @@ class multi_index_container
       >::type
     >
   , private detail::header_holder<
-      typename detail::allocator_traits<
+      typename std::allocator_traits<
         typename detail::rebind_alloc_for<
           Allocator,
           typename detail::multi_index_node_type<
@@ -104,7 +104,7 @@ private:
                     Value, IndexSpecifierList, Allocator>::type;
   using node_allocator = typename detail::rebind_alloc_for<
                             Allocator, typename super::index_node_type>::type;
-  using node_alloc_traits = detail::allocator_traits<node_allocator>;
+  using node_alloc_traits = std::allocator_traits<node_allocator>;
   using node_pointer = typename node_alloc_traits::pointer;
   using bfm_allocator = detail::base_from_member<node_allocator>;
   using bfm_header = detail::header_holder<node_pointer, multi_index_container>;

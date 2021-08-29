@@ -14,23 +14,22 @@
 #include <boost/mp11/list.hpp>
 #include <boost/mp11/set.hpp>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* no_duplicate_tags check at compile-time that a tag list
  * has no duplicate tags.
  */
 
 template<typename TagList>
-struct no_duplicate_tags
-{
-  typedef mp11::mp_fold<
-    TagList,
-    mp11::mp_list<>,
-    mp11::mp_set_push_back
+struct no_duplicate_tags {
+  typedef mp11::mp_fold <
+  TagList,
+  mp11::mp_list<>,
+  mp11::mp_set_push_back
   > aux;
- 
-  static const bool value=
-      (mp11::mp_size<TagList>::value==mp11::mp_size<aux>::value);
+
+  static const bool value =
+      (mp11::mp_size<TagList>::value == mp11::mp_size<aux>::value);
 };
 
 /* Variant for an index list: duplication is checked
@@ -38,15 +37,15 @@ struct no_duplicate_tags
  */
 
 template<typename Index>
-using index_tag_list=typename Index::tag_list;
+using index_tag_list = typename Index::tag_list;
 
 template<typename IndexList>
-using no_duplicate_tags_in_index_list=no_duplicate_tags<
-  mp11::mp_apply<
-    mp11::mp_append,
-    mp11::mp_transform<index_tag_list,IndexList>
-  >
->;
+using no_duplicate_tags_in_index_list = no_duplicate_tags <
+                                        mp11::mp_apply <
+                                        mp11::mp_append,
+                                        mp11::mp_transform<index_tag_list, IndexList>
+                                        >
+                                        >;
 
 } // boost::multi_index::detail
 

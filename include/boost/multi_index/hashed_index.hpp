@@ -12,7 +12,6 @@
 
 #include <boost/multi_index/hashed_index_fwd.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
-#include <boost/multi_index/detail/allocator_traits.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/bucket_array.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
@@ -104,7 +103,7 @@ public:
   using allocator_type = typename super::final_allocator_type;
 
 private:
-  using alloc_traits = allocator_traits<allocator_type>;
+  using alloc_traits = std::allocator_traits<allocator_type>;
 
 public:
   using pointer         = typename alloc_traits::pointer;

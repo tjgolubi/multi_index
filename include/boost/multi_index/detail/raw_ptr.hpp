@@ -12,26 +12,26 @@
 
 #include <type_traits>
 
-namespace boost::multi_index::detail{
+namespace boost::multi_index::detail {
 
 /* gets the underlying pointer of a pointer-like value */
 
 template<typename RawPointer>
-inline RawPointer raw_ptr(RawPointer const& p,std::true_type)
+inline RawPointer raw_ptr(RawPointer const& p, std::true_type)
 {
   return p;
 }
 
-template<typename RawPointer,typename Pointer>
-inline RawPointer raw_ptr(Pointer const& p,std::false_type)
+template<typename RawPointer, typename Pointer>
+inline RawPointer raw_ptr(Pointer const& p, std::false_type)
 {
-  return p==Pointer(0)?0:&*p;
+  return p == Pointer(0) ? 0 : &*p;
 }
 
-template<typename RawPointer,typename Pointer>
+template<typename RawPointer, typename Pointer>
 inline RawPointer raw_ptr(Pointer const& p)
 {
-  return raw_ptr<RawPointer>(p,std::is_same<RawPointer,Pointer>());
+  return raw_ptr<RawPointer>(p, std::is_same<RawPointer, Pointer>());
 }
 
 } // boost::multi_index::detail

@@ -10,7 +10,7 @@
 #define BOOST_MULTI_INDEX_DETAIL_UNBOUNDED_HPP
 #pragma once
 
-namespace boost::multi_index{
+namespace boost::multi_index {
 
 /* dummy type and variable for use in ordered_index::range() */
 
@@ -18,20 +18,21 @@ namespace boost::multi_index{
  * http://lists.boost.org/Archives/boost/2006/07/108355.php
  */
 
-namespace detail{class unbounded_helper;}
+namespace detail {
+class unbounded_helper;
+}
 
 detail::unbounded_helper unbounded(detail::unbounded_helper);
 
-namespace detail{
+namespace detail {
 
-class unbounded_helper
-{
-  unbounded_helper(){}
-  unbounded_helper(const unbounded_helper&){}
+class unbounded_helper {
+  unbounded_helper() {}
+  unbounded_helper(const unbounded_helper&) {}
   friend unbounded_helper multi_index::unbounded(unbounded_helper);
 };
 
-typedef unbounded_helper (*unbounded_type)(unbounded_helper);
+typedef unbounded_helper(*unbounded_type)(unbounded_helper);
 
 } // detail
 
@@ -42,12 +43,12 @@ inline detail::unbounded_helper unbounded(detail::unbounded_helper)
 
 /* tags used in the implementation of range */
 
-namespace detail{
+namespace detail {
 
-struct none_unbounded_tag{};
-struct lower_unbounded_tag{};
-struct upper_unbounded_tag{};
-struct both_unbounded_tag{};
+struct none_unbounded_tag {};
+struct lower_unbounded_tag {};
+struct upper_unbounded_tag {};
+struct both_unbounded_tag {};
 
 } // detail
 
