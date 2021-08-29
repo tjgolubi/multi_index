@@ -210,58 +210,58 @@ public:
    * Assignment operators defined at ordered_index rather than here.
    */
 
-  allocator_type get_allocator()const noexcept
+  allocator_type get_allocator() const noexcept
   {
     return this->final().get_allocator();
   }
 
   /* iterators */
 
-  iterator begin()noexcept
+  iterator begin() noexcept
   {
     return make_iterator(leftmost());
   }
-  const_iterator begin()const noexcept
+  const_iterator begin() const noexcept
   {
     return make_iterator(leftmost());
   }
-  iterator end()noexcept
+  iterator end() noexcept
   {
     return make_iterator(header());
   }
-  const_iterator end()const noexcept
+  const_iterator end() const noexcept
   {
     return make_iterator(header());
   }
-  reverse_iterator rbegin()noexcept
+  reverse_iterator rbegin() noexcept
   {
     return std::make_reverse_iterator(end());
   }
-  const_reverse_iterator rbegin()const noexcept
+  const_reverse_iterator rbegin() const noexcept
   {
     return std::make_reverse_iterator(end());
   }
-  reverse_iterator rend()noexcept
+  reverse_iterator rend() noexcept
   {
     return std::make_reverse_iterator(begin());
   }
-  const_reverse_iterator rend()const noexcept
+  const_reverse_iterator rend() const noexcept
   {
     return std::make_reverse_iterator(begin());
   }
-  const_iterator cbegin()const noexcept
+  const_iterator cbegin() const noexcept
   {
     return begin();
   }
-  const_iterator cend()const noexcept
+  const_iterator cend() const noexcept
   {
     return end();
   }
-  const_reverse_iterator crbegin()const noexcept
+  const_reverse_iterator crbegin() const noexcept
   {
     return rbegin();
   }
-  const_reverse_iterator crend()const noexcept
+  const_reverse_iterator crend() const noexcept
   {
     return rend();
   }
@@ -272,7 +272,7 @@ public:
                node_from_value<index_node_type>(std::addressof(x)));
   }
 
-  const_iterator iterator_to(const value_type& x)const
+  const_iterator iterator_to(const value_type& x) const
   {
     return make_iterator(
                node_from_value<index_node_type>(std::addressof(x)));
@@ -280,15 +280,15 @@ public:
 
   /* capacity */
 
-  bool      empty()const noexcept
+  bool      empty() const noexcept
   {
     return this->final_empty_();
   }
-  size_type size()const noexcept
+  size_type size() const noexcept
   {
     return this->final_size_();
   }
-  size_type max_size()const noexcept
+  size_type max_size() const noexcept
   {
     return this->final_max_size_();
   }
@@ -528,7 +528,7 @@ public:
     this->final_swap_(x.final());
   }
 
-  void clear()noexcept
+  void clear() noexcept
   {
     BOOST_MULTI_INDEX_ORD_INDEX_CHECK_INVARIANT;
     this->final_clear_();
@@ -536,15 +536,15 @@ public:
 
   /* observers */
 
-  key_from_value key_extractor()const
+  key_from_value key_extractor() const
   {
     return key;
   }
-  key_compare    key_comp()const
+  key_compare    key_comp() const
   {
     return comp_;
   }
-  value_compare  value_comp()const
+  value_compare  value_comp() const
   {
     return value_compare(key, comp_);
   }
@@ -556,26 +556,26 @@ public:
    */
 
   template<typename CompatibleKey>
-  iterator find(const CompatibleKey& x)const
+  iterator find(const CompatibleKey& x) const
   {
     return make_iterator(ordered_index_find(root(), header(), key, x, comp_));
   }
 
   template<typename CompatibleKey, typename CompatibleCompare>
   iterator find(
-      const CompatibleKey& x, const CompatibleCompare& comp)const
+      const CompatibleKey& x, const CompatibleCompare& comp) const
   {
     return make_iterator(ordered_index_find(root(), header(), key, x, comp));
   }
 
   template<typename CompatibleKey>
-  size_type count(const CompatibleKey& x)const
+  size_type count(const CompatibleKey& x) const
   {
     return count(x, comp_);
   }
 
   template<typename CompatibleKey, typename CompatibleCompare>
-  size_type count(const CompatibleKey& x, const CompatibleCompare& comp)const
+  size_type count(const CompatibleKey& x, const CompatibleCompare& comp) const
   {
     std::pair<iterator, iterator> p = equal_range(x, comp);
     size_type n = static_cast<size_type>(std::distance(p.first, p.second));
@@ -583,7 +583,7 @@ public:
   }
 
   template<typename CompatibleKey>
-  iterator lower_bound(const CompatibleKey& x)const
+  iterator lower_bound(const CompatibleKey& x) const
   {
     return make_iterator(
                ordered_index_lower_bound(root(), header(), key, x, comp_));
@@ -591,14 +591,14 @@ public:
 
   template<typename CompatibleKey, typename CompatibleCompare>
   iterator lower_bound(
-      const CompatibleKey& x, const CompatibleCompare& comp)const
+      const CompatibleKey& x, const CompatibleCompare& comp) const
   {
     return make_iterator(
                ordered_index_lower_bound(root(), header(), key, x, comp));
   }
 
   template<typename CompatibleKey>
-  iterator upper_bound(const CompatibleKey& x)const
+  iterator upper_bound(const CompatibleKey& x) const
   {
     return make_iterator(
                ordered_index_upper_bound(root(), header(), key, x, comp_));
@@ -606,7 +606,7 @@ public:
 
   template<typename CompatibleKey, typename CompatibleCompare>
   iterator upper_bound(
-      const CompatibleKey& x, const CompatibleCompare& comp)const
+      const CompatibleKey& x, const CompatibleCompare& comp) const
   {
     return make_iterator(
                ordered_index_upper_bound(root(), header(), key, x, comp));
@@ -614,7 +614,7 @@ public:
 
   template<typename CompatibleKey>
   std::pair<iterator, iterator> equal_range(
-      const CompatibleKey& x)const
+      const CompatibleKey& x) const
   {
     std::pair<index_node_type*, index_node_type*> p =
         ordered_index_equal_range(root(), header(), key, x, comp_);
@@ -624,7 +624,7 @@ public:
 
   template<typename CompatibleKey, typename CompatibleCompare>
   std::pair<iterator, iterator> equal_range(
-      const CompatibleKey& x, const CompatibleCompare& comp)const
+      const CompatibleKey& x, const CompatibleCompare& comp) const
   {
     std::pair<index_node_type*, index_node_type*> p =
         ordered_index_equal_range(root(), header(), key, x, comp);
@@ -635,7 +635,7 @@ public:
   /* range */
 
   template<typename LowerBounder, typename UpperBounder>
-  std::pair<iterator, iterator> range(LowerBounder lower, UpperBounder upper)const
+  std::pair<iterator, iterator> range(LowerBounder lower, UpperBounder upper) const
   {
     typedef mp11::mp_if <
     std::is_same<LowerBounder, unbounded_type>,
@@ -701,7 +701,7 @@ protected:
   {
     return iterator(node, this);
   }
-  const_iterator make_iterator(index_node_type* node)const
+  const_iterator make_iterator(index_node_type* node) const
   {
     return const_iterator(node, const_cast<ordered_index_impl*>(this));
   }
@@ -710,7 +710,7 @@ protected:
   {
     return iterator(node);
   }
-  const_iterator make_iterator(index_node_type* node)const
+  const_iterator make_iterator(index_node_type* node) const
   {
     return const_iterator(node);
   }
@@ -979,7 +979,7 @@ protected:
     }
   }
 
-  bool check_rollback_(index_node_type* x)const
+  bool check_rollback_(index_node_type* x) const
   {
     return in_place(x->value(), x, Category()) && super::check_rollback_(x);
   }
@@ -989,7 +989,7 @@ protected:
 
   template<typename Archive>
   void save_(
-      Archive& ar, const unsigned int version, const index_saver_type& sm)const
+      Archive& ar, const unsigned int version, const index_saver_type& sm) const
   {
     save_(ar, version, sm, Category());
   }
@@ -1004,7 +1004,7 @@ protected:
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
   /* invariant stuff */
 
-  bool invariant_()const
+  bool invariant_() const
   {
     if (size() == 0 || begin() == end()) {
       if (size() != 0 || begin() != end() ||
@@ -1054,26 +1054,26 @@ protected:
    * final_check_invariant is already an inherited member function of
    * ordered_index_impl.
    */
-  void check_invariant_()const
+  void check_invariant_() const
   {
     this->final_check_invariant_();
   }
 #endif
 
 protected: /* for the benefit of AugmentPolicy::augmented_interface */
-  index_node_type* header()const
+  index_node_type* header() const
   {
     return this->final_header();
   }
-  index_node_type* root()const
+  index_node_type* root() const
   {
     return index_node_type::from_impl(header()->parent());
   }
-  index_node_type* leftmost()const
+  index_node_type* leftmost() const
   {
     return index_node_type::from_impl(header()->left());
   }
-  index_node_type* rightmost()const
+  index_node_type* rightmost() const
   {
     return index_node_type::from_impl(header()->right());
   }
@@ -1257,7 +1257,7 @@ private:
     this->final_delete_node_(static_cast<final_node_type*>(x));
   }
 
-  bool in_place(value_param_type v, index_node_type* x, ordered_unique_tag)const
+  bool in_place(value_param_type v, index_node_type* x, ordered_unique_tag) const
   {
     index_node_type* y;
     if (x != leftmost()) {
@@ -1273,7 +1273,7 @@ private:
   }
 
   bool in_place(
-      value_param_type v, index_node_type* x, ordered_non_unique_tag)const
+      value_param_type v, index_node_type* x, ordered_non_unique_tag) const
   {
     index_node_type* y;
     if (x != leftmost()) {
@@ -1320,7 +1320,7 @@ private:
 
   template<typename LowerBounder, typename UpperBounder>
   std::pair<iterator, iterator> range(LowerBounder lower, UpperBounder upper,
-                                      none_unbounded_tag)const
+                                      none_unbounded_tag) const
   {
     index_node_type* y = header();
     index_node_type* z = root();
@@ -1346,7 +1346,7 @@ private:
 
   template<typename LowerBounder, typename UpperBounder>
   std::pair<iterator, iterator> range(LowerBounder, UpperBounder upper,
-                                      lower_unbounded_tag)const
+                                      lower_unbounded_tag) const
   {
     return std::pair<iterator, iterator>(
                begin(),
@@ -1355,7 +1355,7 @@ private:
 
   template<typename LowerBounder, typename UpperBounder>
   std::pair<iterator, iterator> range(LowerBounder lower, UpperBounder,
-                                      upper_unbounded_tag)const
+                                      upper_unbounded_tag) const
   {
     return std::pair<iterator, iterator>(
                make_iterator(lower_range(root(), header(), lower)),
@@ -1364,14 +1364,14 @@ private:
 
   template<typename LowerBounder, typename UpperBounder>
   std::pair<iterator, iterator> range(LowerBounder, UpperBounder,
-                                      both_unbounded_tag)const
+                                      both_unbounded_tag) const
   {
     return std::pair<iterator, iterator>(begin(), end());
   }
 
   template<typename LowerBounder>
   index_node_type* lower_range(
-      index_node_type* top, index_node_type* y, LowerBounder lower)const
+      index_node_type* top, index_node_type* y, LowerBounder lower) const
   {
     while (top) {
       if (lower(key(top->value()))) {
@@ -1387,7 +1387,7 @@ private:
 
   template<typename UpperBounder>
   index_node_type* upper_range(
-      index_node_type* top, index_node_type* y, UpperBounder upper)const
+      index_node_type* top, index_node_type* y, UpperBounder upper) const
   {
     while (top) {
       if (!upper(key(top->value()))) {
@@ -1405,7 +1405,7 @@ private:
   template<typename Archive>
   void save_(
       Archive& ar, const unsigned int version, const index_saver_type& sm,
-      ordered_unique_tag)const
+      ordered_unique_tag) const
   {
     super::save_(ar, version, sm);
   }
@@ -1421,7 +1421,7 @@ private:
   template<typename Archive>
   void save_(
       Archive& ar, const unsigned int version, const index_saver_type& sm,
-      ordered_non_unique_tag)const
+      ordered_non_unique_tag) const
   {
     typedef duplicates_iterator<index_node_type, value_compare> dup_iterator;
 

@@ -21,7 +21,7 @@ using namespace boost::multi_index;
 
 struct less_by_employee_age
 {
-  bool operator()(const employee& e1,const employee& e2)const
+  bool operator()(const employee& e1,const employee& e2) const
   {
     return e1.age<e2.age;
   }
@@ -31,7 +31,7 @@ struct no_addressof_type
 {
   no_addressof_type(int n):n(n){}
 
-  void operator&()const{}
+  void operator&() const{}
 
   int n;
 };

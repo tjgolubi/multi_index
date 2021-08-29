@@ -43,11 +43,11 @@ public:
     end_->up() = end();
   }
 
-  size_type size()const
+  size_type size() const
   {
     return size_;
   }
-  size_type capacity()const
+  size_type capacity() const
   {
     return capacity_;
   }
@@ -70,15 +70,15 @@ public:
       set_capacity(size_);
   }
 
-  pointer begin()const
+  pointer begin() const
   {
     return ptrs();
   }
-  pointer end()const
+  pointer end() const
   {
     return ptrs() + size_;
   }
-  pointer at(size_type n)const
+  pointer at(size_type n) const
   {
     return ptrs() + n;
   }
@@ -125,7 +125,7 @@ private:
   size_type                        capacity_;
   auto_space<value_type, Allocator> spc;
 
-  pointer ptrs()const
+  pointer ptrs() const
   {
     return spc.data();
   }

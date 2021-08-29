@@ -85,7 +85,7 @@ struct ordered_index_node_std_base {
   {
     return color_;
   }
-  ordered_index_color  color()const
+  ordered_index_color  color() const
   {
     return color_;
   }
@@ -93,7 +93,7 @@ struct ordered_index_node_std_base {
   {
     return parent_;
   }
-  pointer              parent()const
+  pointer              parent() const
   {
     return parent_;
   }
@@ -101,7 +101,7 @@ struct ordered_index_node_std_base {
   {
     return left_;
   }
-  pointer              left()const
+  pointer              left() const
   {
     return left_;
   }
@@ -109,7 +109,7 @@ struct ordered_index_node_std_base {
   {
     return right_;
   }
-  pointer              right()const
+  pointer              right() const
   {
     return right_;
   }
@@ -143,7 +143,7 @@ struct ordered_index_node_compressed_base {
     color_ref(uintptr_type* r_): r(r_) {}
     color_ref(const color_ref& x): r(x.r) {}
 
-    operator ordered_index_color()const
+    operator ordered_index_color() const
     {
       return ordered_index_color(*r & uintptr_type(1));
     }
@@ -168,7 +168,7 @@ struct ordered_index_node_compressed_base {
     parent_ref(uintptr_type* r_): r(r_) {}
     parent_ref(const parent_ref& x): r(x.r) {}
 
-    operator pointer()const
+    operator pointer() const
     {
       return (pointer)(void*)(*r & ~uintptr_type(1));
     }
@@ -184,7 +184,7 @@ struct ordered_index_node_compressed_base {
       return operator=(x.operator pointer());
     }
 
-    pointer operator->()const
+    pointer operator->() const
     {
       return operator pointer();
     }
@@ -197,7 +197,7 @@ struct ordered_index_node_compressed_base {
   {
     return color_ref(&parentcolor_);
   }
-  ordered_index_color color()const
+  ordered_index_color color() const
   {
     return ordered_index_color(parentcolor_ & uintptr_type(1));
   }
@@ -206,7 +206,7 @@ struct ordered_index_node_compressed_base {
   {
     return parent_ref(&parentcolor_);
   }
-  pointer    parent()const
+  pointer    parent() const
   {
     return (pointer)(void*)(parentcolor_ & ~uintptr_type(1));
   }
@@ -215,7 +215,7 @@ struct ordered_index_node_compressed_base {
   {
     return left_;
   }
-  pointer  left()const
+  pointer  left() const
   {
     return left_;
   }
@@ -223,7 +223,7 @@ struct ordered_index_node_compressed_base {
   {
     return right_;
   }
-  pointer  right()const
+  pointer  right() const
   {
     return right_;
   }
@@ -644,7 +644,7 @@ public:
   {
     return trampoline::color();
   }
-  ordered_index_color color()const
+  ordered_index_color color() const
   {
     return trampoline::color();
   }
@@ -652,7 +652,7 @@ public:
   {
     return trampoline::parent();
   }
-  impl_pointer        parent()const
+  impl_pointer        parent() const
   {
     return trampoline::parent();
   }
@@ -660,7 +660,7 @@ public:
   {
     return trampoline::left();
   }
-  impl_pointer        left()const
+  impl_pointer        left() const
   {
     return trampoline::left();
   }
@@ -668,7 +668,7 @@ public:
   {
     return trampoline::right();
   }
-  impl_pointer        right()const
+  impl_pointer        right() const
   {
     return trampoline::right();
   }
@@ -679,7 +679,7 @@ public:
                static_cast<impl_type*>(static_cast<trampoline*>(this)));
   }
 
-  const_impl_pointer impl()const
+  const_impl_pointer impl() const
   {
     return static_cast<const_impl_pointer>(
                static_cast<const impl_type*>(static_cast<const trampoline*>(this)));

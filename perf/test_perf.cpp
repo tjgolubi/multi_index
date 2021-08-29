@@ -141,7 +141,7 @@ double measure(F f)
 template <typename Iterator,typename Compare>
 struct it_compare
 {
-  bool operator()(const Iterator& x,const Iterator& y)const{return comp(*x,*y);}
+  bool operator()(const Iterator& x,const Iterator& y) const{return comp(*x,*y);}
 
 private:
   Compare comp;

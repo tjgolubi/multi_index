@@ -273,7 +273,7 @@ struct xyz
 struct modulo_equal
 {
   modulo_equal(int i):i_(i){}
-  bool operator ()(int x,int y)const{return (x%i_)==(y%i_);}
+  bool operator ()(int x,int y) const{return (x%i_)==(y%i_);}
 
 private:
   int i_;

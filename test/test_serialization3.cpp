@@ -21,7 +21,7 @@ struct non_default_ctble
 {
   non_default_ctble(int n_):n(n_){}
 
-  bool operator==(const non_default_ctble& x)const{return n==x.n;}
+  bool operator==(const non_default_ctble& x) const{return n==x.n;}
 
   int n;
 };
@@ -63,8 +63,8 @@ struct non_copyable
   non_copyable(int n_=0):n(n_){}
   non_copyable(non_copyable&& x):n(x.n){}
 
-  bool operator==(const non_copyable& x)const{return n==x.n;}
-  bool operator<(const non_copyable& x)const{return n<x.n;}
+  bool operator==(const non_copyable& x) const{return n==x.n;}
+  bool operator<(const non_copyable& x) const{return n<x.n;}
 
   int n;
 

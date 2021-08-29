@@ -44,7 +44,7 @@ public:
   always_one():n(1){}
   ~always_one(){n=0;}
 
-  int get()const{return n;}
+  int get() const{return n;}
 
 private:
   int n;
@@ -122,8 +122,8 @@ struct tempvalue_iterator:
   tempvalue_iterator(int n_):n(n_){}
   
   void increment(){++n;}
-  bool equal(const tempvalue_iterator& x)const{return n==x.n;}
-  int dereference()const{return n;}
+  bool equal(const tempvalue_iterator& x) const{return n==x.n;}
+  int dereference() const{return n;}
   
   int n;
 };
@@ -132,7 +132,7 @@ struct change_int
 {
   change_int(int n):n(n){}
 
-  void operator()(int& x)const{x=n;}
+  void operator()(int& x) const{x=n;}
 
   int n;
 };
@@ -141,7 +141,7 @@ struct change_int_and_throw
 {
   change_int_and_throw(int n):n(n){}
 
-  void operator()(int& x)const{x=n;throw 0;}
+  void operator()(int& x) const{x=n;throw 0;}
 
   int n;
 };

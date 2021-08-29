@@ -35,14 +35,14 @@ public:
     root(x.root){}
 
   template<typename U>
-  bool operator==(const rooted_allocator<U,Propagate,AlwaysEqual>& x)const
+  bool operator==(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
     {return AlwaysEqual?true:root==x.root;}
   template<typename U>
-  bool operator!=(const rooted_allocator<U,Propagate,AlwaysEqual>& x)const
+  bool operator!=(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
     {return !(*this==x);}
 
   template<typename U>
-  bool comes_from(const rooted_allocator<U,Propagate,AlwaysEqual>& x)const
+  bool comes_from(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
     {return root==&x;}
 
 private:

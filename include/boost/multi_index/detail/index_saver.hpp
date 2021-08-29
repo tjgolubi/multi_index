@@ -47,7 +47,7 @@ public:
   template<typename IndexIterator, class Archive>
   void save(
       IndexIterator first, IndexIterator last, Archive& ar,
-      const unsigned int)const
+      const unsigned int) const
   {
     /* calculate ordered positions */
 

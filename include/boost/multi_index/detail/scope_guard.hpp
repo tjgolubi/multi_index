@@ -34,11 +34,11 @@ namespace boost::multi_index::detail {
 class scope_guard_impl_base {
 public:
   scope_guard_impl_base(): dismissed_(false) {}
-  void dismiss()const
+  void dismiss() const
   {
     dismissed_ = true;
   }
-  void touch()const {}
+  void touch() const {}
 
 protected:
   ~scope_guard_impl_base() {}

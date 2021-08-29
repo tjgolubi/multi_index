@@ -53,9 +53,9 @@ public:
   typedef container_type::iterator  iterator;
   typedef container_type::size_type size_type;
 
-  iterator  begin()const{return cont.begin();}
-  iterator  end()const{return cont.end();}
-  size_type size()const{return cont.size();}
+  iterator  begin() const{return cont.begin();}
+  iterator  end() const{return cont.end();}
+  size_type size() const{return cont.size();}
 
   template<typename InputIterator>
   void rearrange(InputIterator it)
@@ -70,7 +70,7 @@ public:
     cont.rearrange(get<1>(cont).begin());
   }
 
-  std::size_t position(int i)const
+  std::size_t position(int i) const
   {
     /* The position of a card in the deck is calculated by locating
      * the card through the start index (which is ordered), projecting
@@ -81,7 +81,7 @@ public:
     return project<0>(cont,get<1>(cont).begin()+i)-cont.begin();
   }
 
-  std::size_t rising_sequences()const
+  std::size_t rising_sequences() const
   {
     /* Iterate through all cards and increment the sequence count
      * when the current position is left to the previous.
@@ -160,7 +160,7 @@ void riffle_shuffle(
 
 struct riffle_shuffler
 {
-  void operator()(deck& d)const
+  void operator()(deck& d) const
   {
     dv.clear();
     dv.reserve(d.size());

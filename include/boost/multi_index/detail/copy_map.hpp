@@ -38,7 +38,7 @@ struct copy_map_entry {
   Node* first;
   Node* second;
 
-  bool operator<(const copy_map_entry<Node>& x)const
+  bool operator<(const copy_map_entry<Node>& x) const
   {
     return std::less<Node*>()(first, x.first);
   }
@@ -46,7 +46,7 @@ struct copy_map_entry {
 
 struct copy_map_value_copier {
   template<typename Value>
-  const Value& operator()(Value& x)const
+  const Value& operator()(Value& x) const
   {
     return x;
   }
@@ -54,7 +54,7 @@ struct copy_map_value_copier {
 
 struct copy_map_value_mover {
   template<typename Value>
-  Value&& operator()(Value& x)const
+  Value&& operator()(Value& x) const
   {
     return std::move(x);
   }
@@ -88,11 +88,11 @@ public:
     }
   }
 
-  const_iterator begin()const
+  const_iterator begin() const
   {
     return raw_ptr<const_iterator>(spc.data());
   }
-  const_iterator end()const
+  const_iterator end() const
   {
     return raw_ptr<const_iterator>(spc.data() + n);
   }
@@ -106,7 +106,7 @@ public:
     clone(node, copy_map_value_mover());
   }
 
-  Node* find(Node* node)const
+  Node* find(Node* node) const
   {
     if (node == header_org_)
       return header_cpy_;

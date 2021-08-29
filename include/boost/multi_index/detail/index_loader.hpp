@@ -55,7 +55,7 @@ public:
    */
 
   template<typename Rearranger, class Archive>
-  void load(Rearranger r, Archive& ar, const unsigned int)const
+  void load(Rearranger r, Archive& ar, const unsigned int) const
   {
     FinalNode* prev = unchecked_load_node(ar);
     if (!prev)
@@ -87,7 +87,7 @@ public:
   }
 
 private:
-  Node** entries()const
+  Node** entries() const
   {
     return raw_ptr<Node**>(spc.data());
   }
@@ -97,7 +97,7 @@ private:
    */
 
   template<class Archive>
-  FinalNode* unchecked_load_node(Archive& ar)const
+  FinalNode* unchecked_load_node(Archive& ar) const
   {
     Node* node = 0;
     ar >> serialization::make_nvp("pointer", node);
@@ -105,7 +105,7 @@ private:
   }
 
   template<class Archive>
-  FinalNode* load_node(Archive& ar)const
+  FinalNode* load_node(Archive& ar) const
   {
     Node* node = 0;
     ar >> serialization::make_nvp("pointer", node);
@@ -113,7 +113,7 @@ private:
     return static_cast<FinalNode*>(node);
   }
 
-  void check_node(Node* node)const
+  void check_node(Node* node) const
   {
     if (node != 0 && !std::binary_search(entries(), entries() + size_, node)) {
       boost::throw_exception(

@@ -42,7 +42,7 @@ public:
   hashed_index_iterator() {}
   hashed_index_iterator(Node* node_): node(node_) {}
 
-  const typename Node::value_type& operator*()const
+  const typename Node::value_type& operator*() const
   {
     return node->value();
   }
@@ -63,7 +63,7 @@ public:
   typedef typename Node::base_type node_base_type;
 
   template<class Archive>
-  void save(Archive& ar, const unsigned int)const
+  void save(Archive& ar, const unsigned int) const
   {
     node_base_type* bnode = node;
     ar << serialization::make_nvp("pointer", bnode);
@@ -110,7 +110,7 @@ public:
 
   typedef Node node_type;
 
-  Node* get_node()const
+  Node* get_node() const
   {
     return node;
   }

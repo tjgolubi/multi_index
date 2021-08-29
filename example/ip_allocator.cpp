@@ -80,17 +80,17 @@ struct partial_string
 
 struct partial_str_less
 {
-  bool operator()(const shared_string& x,const shared_string& y)const
+  bool operator()(const shared_string& x,const shared_string& y) const
   {
     return x<y;
   }
 
-  bool operator()(const shared_string& x,const partial_string& y)const
+  bool operator()(const shared_string& x,const partial_string& y) const
   {
     return x.substr(0,y.str.size())<y.str;
   }
 
-  bool operator()(const partial_string& x,const shared_string& y)const
+  bool operator()(const partial_string& x,const shared_string& y) const
   {
     return x.str<y.substr(0,x.str.size());
   }

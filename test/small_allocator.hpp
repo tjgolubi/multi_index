@@ -40,7 +40,7 @@ public:
     delete[](char *)&*p;
   }
 
-  size_type max_size()const{return (size_type)(-1);}
+  size_type max_size() const{return (size_type)(-1);}
 
   friend bool operator==(const small_allocator&,const small_allocator&)
   {

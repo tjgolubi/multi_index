@@ -50,12 +50,12 @@ struct auto_space: private noncopyable {
       alloc_traits::deallocate(al_, data_, n_);
   }
 
-  Allocator get_allocator()const
+  Allocator get_allocator() const
   {
     return al_;
   }
 
-  pointer data()const
+  pointer data() const
   {
     return data_;
   }

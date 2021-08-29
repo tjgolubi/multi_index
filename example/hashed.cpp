@@ -59,7 +59,7 @@ typedef multi_index_container<
 template<typename T>
 struct increment
 {
-  void operator()(T& x)const{++x;}
+  void operator()(T& x) const{++x;}
 };
 
 typedef boost::tokenizer<boost::char_separator<char> > text_tokenizer;

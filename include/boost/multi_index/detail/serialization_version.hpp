@@ -32,7 +32,7 @@ struct serialization_version {
     return *this;
   };
 
-  operator unsigned int()const
+  operator unsigned int() const
   {
     return value;
   }
@@ -43,7 +43,7 @@ private:
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
   template<class Archive>
-  void save(Archive&, const unsigned int)const {}
+  void save(Archive&, const unsigned int) const {}
 
   template<class Archive>
   void load(Archive&, const unsigned int version)

@@ -163,7 +163,7 @@ protected:
     return true;
   }
 
-  bool check_rollback_(index_node_type*)const
+  bool check_rollback_(index_node_type*) const
   {
     return true;
   }
@@ -172,7 +172,7 @@ protected:
   /* serialization */
 
   template<typename Archive>
-  void save_(Archive&, const unsigned int, const index_saver_type&)const {}
+  void save_(Archive&, const unsigned int, const index_saver_type&) const {}
 
   template<typename Archive>
   void load_(Archive&, const unsigned int, const index_loader_type&) {}
@@ -181,7 +181,7 @@ protected:
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
   /* invariant stuff */
 
-  bool invariant_()const
+  bool invariant_() const
   {
     return true;
   }
@@ -193,25 +193,25 @@ protected:
   {
     return *static_cast<final_type*>(this);
   }
-  const final_type& final()const
+  const final_type& final() const
   {
     return *static_cast<const final_type*>(this);
   }
 
-  final_node_type* final_header()const
+  final_node_type* final_header() const
   {
     return final().header();
   }
 
-  bool      final_empty_()const
+  bool      final_empty_() const
   {
     return final().empty_();
   }
-  size_type final_size_()const
+  size_type final_size_() const
   {
     return final().size_();
   }
-  size_type final_max_size_()const
+  size_type final_max_size_() const
   {
     return final().max_size_();
   }
@@ -332,7 +332,7 @@ protected:
   }
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
-  void final_check_invariant_()const
+  void final_check_invariant_() const
   {
     final().check_invariant_();
   }

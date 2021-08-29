@@ -35,25 +35,25 @@ struct base
   int       x;
   const int cx;
   int       f(){return x;};
-  int       cf()const{return x;};
+  int       cf() const{return x;};
   int       vf()volatile{return x;};
-  int       cvf()const volatile{return x;};
+  int       cvf() const volatile{return x;};
   int       rf()&{return x;};
-  int       crf()const&{return x;};
+  int       crf() const&{return x;};
   int       vrf()volatile&{return x;};
-  int       cvrf()const volatile&{return x;};
-  int       nef()noexcept{return x;};
-  int       cnef()const noexcept{return x;};
+  int       cvrf() const volatile&{return x;};
+  int       nef() noexcept{return x;};
+  int       cnef() const noexcept{return x;};
   int       vnef()volatile noexcept{return x;};
-  int       cvnef()const volatile noexcept{return x;};
+  int       cvnef() const volatile noexcept{return x;};
   int       rnef()& noexcept{return x;};
-  int       crnef()const& noexcept{return x;};
+  int       crnef() const& noexcept{return x;};
   int       vrnef()volatile& noexcept{return x;};
-  int       cvrnef()const volatile& noexcept{return x;};
+  int       cvrnef() const volatile& noexcept{return x;};
 };
 
 int gf(const base& b){return b.x;}
-int negf(const base& b)noexcept{return b.x;}
+int negf(const base& b) noexcept{return b.x;}
 
 struct derived:base
 {

@@ -41,14 +41,14 @@ bool same_position(
 struct less_equal_than
 {
   less_equal_than(int n_):n(n_){}
-  bool operator()(int x)const{return x<=n;}
+  bool operator()(int x) const{return x<=n;}
   int n;
 };
 
 struct greater_equal_than
 {
   greater_equal_than(int n_):n(n_){}
-  bool operator()(int x)const{return x>=n;}
+  bool operator()(int x) const{return x>=n;}
   int n;
 };
 

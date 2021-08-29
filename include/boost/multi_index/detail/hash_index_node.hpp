@@ -105,7 +105,7 @@ struct hashed_index_base_node_impl {
   {
     return prior_;
   }
-  pointer  prior()const
+  pointer  prior() const
   {
     return prior_;
   }
@@ -131,7 +131,7 @@ public:
   {
     return next_;
   }
-  base_pointer  next()const
+  base_pointer  next() const
   {
     return next_;
   }
@@ -726,7 +726,7 @@ public:
   {
     return trampoline::prior();
   }
-  impl_pointer       prior()const
+  impl_pointer       prior() const
   {
     return trampoline::prior();
   }
@@ -734,7 +734,7 @@ public:
   {
     return trampoline::next();
   }
-  impl_base_pointer  next()const
+  impl_base_pointer  next() const
   {
     return trampoline::next();
   }
@@ -745,7 +745,7 @@ public:
                static_cast<impl_type*>(static_cast<trampoline*>(this)));
   }
 
-  const_impl_pointer impl()const
+  const_impl_pointer impl() const
   {
     return static_cast<const_impl_pointer>(
                static_cast<const impl_type*>(static_cast<const trampoline*>(this)));

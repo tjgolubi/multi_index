@@ -17,12 +17,12 @@ struct pair_of_ints
 {
   pair_of_ints(int first_=0,int second_=0):first(first_),second(second_){}
 
-  bool operator==(const pair_of_ints& x)const
+  bool operator==(const pair_of_ints& x) const
   {
     return first==x.first&&second==x.second;
   }
 
-  bool operator!=(const pair_of_ints& x)const{return !(*this==x);}
+  bool operator!=(const pair_of_ints& x) const{return !(*this==x);}
 
   int first,second;
 };

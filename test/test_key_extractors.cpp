@@ -25,15 +25,15 @@ struct test_class
   int       int_member;
   const int int_cmember;
 
-  bool bool_mem_fun_const()const{return true;}
+  bool bool_mem_fun_const() const{return true;}
   bool bool_mem_fun(){return false;}
   bool bool_mem_fun_volatile()volatile{return false;}
-  bool bool_mem_fun_cv()const volatile{return true;}
+  bool bool_mem_fun_cv() const volatile{return true;}
 
-  bool bool_mem_fun_cref()const&{return true;}
+  bool bool_mem_fun_cref() const&{return true;}
   bool bool_mem_fun_ref()&{return false;}
   bool bool_mem_fun_vref()volatile&{return false;}
-  bool bool_mem_fun_cvref()const volatile&{return true;}
+  bool bool_mem_fun_cvref() const volatile&{return true;}
 
   static bool bool_global_fun(test_class){return true;}
   static bool bool_global_fun_const_ref(const test_class&){return false;}
@@ -50,14 +50,14 @@ struct test_class
     return *this;
   }
 
-  bool operator<(const test_class& x)const
+  bool operator<(const test_class& x) const
   {
     if(int_member<x.int_member)return true;
     if(x.int_member<int_member)return false;
     return int_cmember<x.int_cmember;
   }
 
-  bool operator==(const test_class& x)const
+  bool operator==(const test_class& x) const
   {
     return int_member==x.int_member&&int_cmember==x.int_cmember;
   }
@@ -124,7 +124,7 @@ struct test_nc_class
   int       int_member;
   const int int_cmember;
 
-  bool bool_mem_fun_const()const{return true;}
+  bool bool_mem_fun_const() const{return true;}
   bool bool_mem_fun(){return false;}
 
   static bool bool_global_fun_const_ref(const test_nc_class&){return false;}
@@ -133,7 +133,7 @@ struct test_nc_class
   test_nc_class(int i=0):int_member(i),int_cmember(i){}
   test_nc_class(int i,int j):int_member(i),int_cmember(j){}
 
-  bool operator==(const test_nc_class& x)const
+  bool operator==(const test_nc_class& x) const
   {
     return int_member==x.int_member&&int_cmember==x.int_cmember;
   }

@@ -39,13 +39,13 @@ using namespace boost::multi_index;
 
 struct is_even
 {
-  bool operator()(int x)const{return x%2==0;}
+  bool operator()(int x) const{return x%2==0;}
 };
 
 template <int m>
 struct same_integral_div
 {
-  bool operator()(int x,int y)const{return (x/m)==(y/m);}
+  bool operator()(int x,int y) const{return (x/m)==(y/m);}
 };
 
 template <typename Container,typename Compare>

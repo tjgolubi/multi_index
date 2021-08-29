@@ -33,7 +33,7 @@ struct modulo_less
 {
   modulo_less(IntegralType m):modulo(m){}
 
-  bool operator()(IntegralType x,IntegralType y)const
+  bool operator()(IntegralType x,IntegralType y) const
   {
     return (x%modulo)<(y%modulo);
   }

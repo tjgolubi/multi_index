@@ -35,7 +35,7 @@ struct random_access_index_node_impl {
   {
     return up_;
   }
-  ptr_pointer  up()const
+  ptr_pointer  up() const
   {
     return up_;
   }
@@ -199,7 +199,7 @@ public:
   {
     return trampoline::up();
   }
-  impl_ptr_pointer  up()const
+  impl_ptr_pointer  up() const
   {
     return trampoline::up();
   }
@@ -210,7 +210,7 @@ public:
                static_cast<impl_type*>(static_cast<trampoline*>(this)));
   }
 
-  const_impl_pointer impl()const
+  const_impl_pointer impl() const
   {
     return static_cast<const_impl_pointer>(
                static_cast<const impl_type*>(static_cast<const trampoline*>(this)));

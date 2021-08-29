@@ -120,7 +120,7 @@ struct random_access_index_sort_compare {
   random_access_index_sort_compare(Compare comp_ = Compare()): comp(comp_) {}
 
   bool operator()(
-      typename Node::impl_pointer x, typename Node::impl_pointer y)const
+      typename Node::impl_pointer x, typename Node::impl_pointer y) const
   {
     typedef typename Node::value_type value_type;
 

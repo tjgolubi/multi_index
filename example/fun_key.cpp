@@ -34,7 +34,7 @@ struct name_record
     given_name(given_name_),family_name(family_name_)
   {}
 
-  std::string name()const
+  std::string name() const
   {
     std::string str=family_name;
     str+=" ";

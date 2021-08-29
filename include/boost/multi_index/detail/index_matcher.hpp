@@ -67,7 +67,7 @@ struct entry {
 
   struct less_by_node {
     bool operator()(
-        const entry& x, const entry& y)const
+        const entry& x, const entry& y) const
     {
       return std::less<void*>()(x.node, y.node);
     }
@@ -80,7 +80,7 @@ struct entry {
 
   struct less_by_pile_top {
     bool operator()(
-        const entry& x, const entry& y)const
+        const entry& x, const entry& y) const
     {
       return x.pile_top < y.pile_top;
     }
@@ -103,7 +103,7 @@ protected:
     ++n_;
   }
 
-  void begin_algorithm()const
+  void begin_algorithm() const
   {
     if (!sorted) {
       std::sort(entries(), entries() + size_, entry::less_by_node());
@@ -112,7 +112,7 @@ protected:
     num_piles = 0;
   }
 
-  void add_node_to_algorithm(void* node)const
+  void add_node_to_algorithm(void* node) const
   {
     entry* ent =
         std::lower_bound(
@@ -140,7 +140,7 @@ protected:
       ++num_piles;
   }
 
-  void finish_algorithm()const
+  void finish_algorithm() const
   {
     if (num_piles > 0) {
       /* Mark those elements which are in their correct position, i.e. those
@@ -156,7 +156,7 @@ protected:
     }
   }
 
-  bool is_ordered(void* node)const
+  bool is_ordered(void* node) const
   {
     return std::lower_bound(
                entries(), entries() + size_,
@@ -164,7 +164,7 @@ protected:
   }
 
 private:
-  entry* entries()const
+  entry* entries() const
   {
     return raw_ptr<entry*>(spc.data());
   }
@@ -195,7 +195,7 @@ public:
   }
 
   template<typename IndexIterator>
-  void execute(IndexIterator first, IndexIterator last)const
+  void execute(IndexIterator first, IndexIterator last) const
   {
     super::begin_algorithm();
 
@@ -205,13 +205,13 @@ public:
     super::finish_algorithm();
   }
 
-  bool is_ordered(Node* node)const
+  bool is_ordered(Node* node) const
   {
     return super::is_ordered(node);
   }
 
 private:
-  void add_node_to_algorithm(Node* node)const
+  void add_node_to_algorithm(Node* node) const
   {
     super::add_node_to_algorithm(node);
   }

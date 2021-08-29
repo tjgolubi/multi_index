@@ -70,7 +70,7 @@ public:
    * based on Boost.Serialization.
    */
 
-  void save_to_file(const char* file_name)const
+  void save_to_file(const char* file_name) const
   {
     std::ofstream ofs(file_name);
     boost::archive::text_oarchive oa(ofs);

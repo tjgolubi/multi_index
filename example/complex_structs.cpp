@@ -40,7 +40,7 @@ public:
   {}
 
   template<typename Arg>
-  result_type operator()(Arg& arg)const
+  result_type operator()(Arg& arg) const
   {
     return key1(key2(arg));
   }

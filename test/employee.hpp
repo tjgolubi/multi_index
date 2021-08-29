@@ -62,25 +62,25 @@ struct employee
     return *this;
   }
 
-  bool operator==(const employee& x)const
+  bool operator==(const employee& x) const
   {
     return id==x.id&&name==x.name&&age==x.age;
   }
 
-  bool operator<(const employee& x)const
+  bool operator<(const employee& x) const
   {
     return id<x.id;
   }
 
-  bool operator!=(const employee& x)const{return !(*this==x);}
-  bool operator> (const employee& x)const{return x<*this;}
-  bool operator>=(const employee& x)const{return !(*this<x);}
-  bool operator<=(const employee& x)const{return !(x<*this);}
+  bool operator!=(const employee& x) const{return !(*this==x);}
+  bool operator> (const employee& x) const{return x<*this;}
+  bool operator>=(const employee& x) const{return !(*this<x);}
+  bool operator<=(const employee& x) const{return !(x<*this);}
 
   struct comp_id
   {
-    bool operator()(int x,const employee& e2)const{return x<e2.id;}
-    bool operator()(const employee& e1,int x)const{return e1.id<x;}
+    bool operator()(int x,const employee& e2) const{return x<e2.id;}
+    bool operator()(const employee& e1,int x) const{return e1.id<x;}
   };
 
   friend std::ostream& operator<<(std::ostream& os,const employee& e)

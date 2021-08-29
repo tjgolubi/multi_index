@@ -28,7 +28,7 @@ struct value_comparison {
 
   bool operator()(
       typename detail::call_traits<Value>::param_type x,
-      typename detail::call_traits<Value>::param_type y)const
+      typename detail::call_traits<Value>::param_type y) const
   {
     return comp(key(x), key(y));
   }

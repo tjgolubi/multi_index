@@ -82,7 +82,7 @@ class forward_iter_adaptor_base:
 public:
   typedef typename Base::reference reference;
 
-  reference operator*()const
+  reference operator*() const
   {
     return iter_adaptor_access::dereference(final());
   }
@@ -103,7 +103,7 @@ private:
   {
     return *static_cast<Derived*>(this);
   }
-  const Derived& final()const
+  const Derived& final() const
   {
     return *static_cast<const Derived*>(this);
   }
@@ -135,7 +135,7 @@ class bidirectional_iter_adaptor_base:
 public:
   typedef typename Base::reference reference;
 
-  reference operator*()const
+  reference operator*() const
   {
     return iter_adaptor_access::dereference(final());
   }
@@ -162,7 +162,7 @@ private:
   {
     return *static_cast<Derived*>(this);
   }
-  const Derived& final()const
+  const Derived& final() const
   {
     return *static_cast<const Derived*>(this);
   }
@@ -195,7 +195,7 @@ public:
   typedef typename Base::reference       reference;
   typedef typename Base::difference_type difference_type;
 
-  reference operator*()const
+  reference operator*() const
   {
     return iter_adaptor_access::dereference(final());
   }
@@ -244,7 +244,7 @@ private:
   {
     return *static_cast<Derived*>(this);
   }
-  const Derived& final()const
+  const Derived& final() const
   {
     return *static_cast<const Derived*>(this);
   }
@@ -296,7 +296,7 @@ protected:
   iter_adaptor() {}
   explicit iter_adaptor(const Base& b_): b(b_) {}
 
-  const Base& base_reference()const
+  const Base& base_reference() const
   {
     return b;
   }

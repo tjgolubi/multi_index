@@ -28,23 +28,23 @@ public:
   non_raw_pointer(){}
   explicit non_raw_pointer(T* p_):p(p_){}
 
-  T& operator*()const
+  T& operator*() const
   {
     if(!p) throw std::runtime_error("null indirection");
 
     return *p;
   }
 
-  T* operator->()const{return p;}
+  T* operator->() const{return p;}
   non_raw_pointer& operator++(){++p;return *this;}
   non_raw_pointer operator++(int){non_raw_pointer t(*this);++p;return t;}
   non_raw_pointer& operator--(){--p;return *this;}
   non_raw_pointer operator--(int){non_raw_pointer t(*this);--p;return t;}
   non_raw_pointer& operator+=(std::ptrdiff_t n){p+=n;return *this;}
   non_raw_pointer& operator-=(std::ptrdiff_t n){p-=n;return *this;}
-  T& operator[](std::ptrdiff_t n)const{return p[n];}
+  T& operator[](std::ptrdiff_t n) const{return p[n];}
 
-  T* raw_ptr()const{return p;}
+  T* raw_ptr() const{return p;}
 
 private:
   T* p;

@@ -21,20 +21,20 @@
 struct do_nothing
 {
   template<typename T>
-  void operator()(const T&)const{}
+  void operator()(const T&) const{}
 };
 
 struct null_hash
 {
   template<typename T>
-  std::size_t operator()(const T&)const{return 0;}
+  std::size_t operator()(const T&) const{return 0;}
 };
 
 struct assign_value
 {
   assign_value(int n):n_(n){}
 
-  void operator()(int& x)const{x=n_;}
+  void operator()(int& x) const{x=n_;}
 
   int n_;
 };

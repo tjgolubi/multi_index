@@ -38,12 +38,12 @@ public:
   {
   }
 
-  reference operator*()const
+  reference operator*() const
   {
     return node->value();
   }
 
-  pointer operator->()const
+  pointer operator->() const
   {
     return &node->value();
   }
@@ -62,7 +62,7 @@ public:
     return tmp;
   }
 
-  Node* get_node()const
+  Node* get_node() const
   {
     return node;
   }

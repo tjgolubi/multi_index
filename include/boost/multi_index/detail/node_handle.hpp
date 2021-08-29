@@ -31,9 +31,9 @@ private:
   typedef std::allocator_traits<allocator_type> alloc_traits;
 
 public:
-  node_handle()noexcept: node(0) {}
+  node_handle() noexcept: node(0) {}
 
-  node_handle(node_handle&& x)noexcept: node(x.node)
+  node_handle(node_handle&& x) noexcept: node(x.node)
   {
     if (!x.empty()) {
       move_construct_allocator(std::move(x));
@@ -74,22 +74,22 @@ public:
     return *this;
   }
 
-  value_type& value()const
+  value_type& value() const
   {
     return node->value();
   }
-  allocator_type get_allocator()const
+  allocator_type get_allocator() const
   {
     return *allocator_ptr();
   }
 
-  explicit operator bool()const noexcept
+  explicit operator bool() const noexcept
   {
     return (node != 0);
   }
 
   [[nodiscard]]
-  bool empty()const noexcept
+  bool empty() const noexcept
   {
     return (node == 0);
   }
@@ -143,7 +143,7 @@ private:
     }
   }
 
-  const allocator_type* allocator_ptr()const
+  const allocator_type* allocator_ptr() const
   {
     return reinterpret_cast<const allocator_type*>(&space);
   }

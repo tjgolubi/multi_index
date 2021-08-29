@@ -44,7 +44,7 @@ struct index_node_base
     return *reinterpret_cast<value_type*>(&this->space);
   }
 
-  const value_type& value()const
+  const value_type& value() const
   {
     return *reinterpret_cast<const value_type*>(&this->space);
   }

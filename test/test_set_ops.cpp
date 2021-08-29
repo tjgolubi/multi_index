@@ -27,34 +27,34 @@ struct type1{};
 struct type2
 {
 private:
-  operator type1()const{return type1();}
+  operator type1() const{return type1();}
 };
 
 struct type3
 {
-  operator type1()const{return type1();}
+  operator type1() const{return type1();}
 };
 
 struct less_type12
 {
-  bool operator()(type1,type1)const{return false;}
-  bool operator()(type1,type2)const{return false;}
-  bool operator()(type2,type1)const{return false;}
+  bool operator()(type1,type1) const{return false;}
+  bool operator()(type1,type2) const{return false;}
+  bool operator()(type2,type1) const{return false;}
 };
 
 bool less_type1_f(type1,type1){return false;}
 
 struct hash_type12
 {
-  std::size_t operator()(type1)const{return 0;}
-  std::size_t operator()(type2)const{return 0;}
+  std::size_t operator()(type1) const{return 0;}
+  std::size_t operator()(type2) const{return 0;}
 };
 
 struct eq_type12
 {
-  bool operator()(type1,type1)const{return true;}
-  bool operator()(type1,type2)const{return true;}
-  bool operator()(type2,type1)const{return true;}
+  bool operator()(type1,type1) const{return true;}
+  bool operator()(type1,type2) const{return true;}
+  bool operator()(type2,type1) const{return true;}
 };
 
 void test_set_ops()

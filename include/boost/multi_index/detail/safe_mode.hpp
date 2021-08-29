@@ -279,11 +279,11 @@ class safe_container_base;                 /* fwd decl. */
 
 class safe_iterator_base {
 public:
-  bool valid()const
+  bool valid() const
   {
     return cont != 0;
   }
-  bool unchecked()const
+  bool unchecked() const
   {
     return unchecked_;
   }
@@ -327,7 +327,7 @@ protected:
     detach();
   }
 
-  const safe_container_base* owner()const
+  const safe_container_base* owner() const
   {
     return cont;
   }
@@ -450,7 +450,7 @@ public:
     return *this;
   }
 
-  const container_type* owner()const
+  const container_type* owner() const
   {
     return
         static_cast<const container_type*>(
@@ -462,7 +462,7 @@ public:
 
   typedef typename Iterator::node_type node_type;
 
-  node_type* get_node()const
+  node_type* get_node() const
   {
     return this->base_reference().get_node();
   }
@@ -470,14 +470,14 @@ public:
 private:
   friend class boost::multi_index::detail::iter_adaptor_access;
 
-  reference dereference()const
+  reference dereference() const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     BOOST_MULTI_INDEX_CHECK_DEREFERENCEABLE_ITERATOR(*this);
     return *(this->base_reference());
   }
 
-  bool equal(const safe_iterator& x)const
+  bool equal(const safe_iterator& x) const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(x);
@@ -506,7 +506,7 @@ private:
     this->base_reference() += n;
   }
 
-  difference_type distance_to(const safe_iterator& x)const
+  difference_type distance_to(const safe_iterator& x) const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(x);
@@ -534,7 +534,7 @@ private:
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
   template<class Archive>
-  void save(Archive& ar, const unsigned int version)const
+  void save(Archive& ar, const unsigned int version) const
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(*this);
     this->base_reference().save(ar, version);

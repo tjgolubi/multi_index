@@ -29,12 +29,12 @@ static int string_to_int(const std::string& str)
 
 struct comp_int_string
 {
-  bool operator()(int x,const std::string& y)const
+  bool operator()(int x,const std::string& y) const
   {
     return x<string_to_int(y);
   }
 
-  bool operator()(const std::string& x,int y)const
+  bool operator()(const std::string& x,int y) const
   {
     return string_to_int(x)<y;
   }
@@ -42,7 +42,7 @@ struct comp_int_string
 
 struct hash_string_as_int
 {
-  int operator()(const std::string& x)const
+  int operator()(const std::string& x) const
   {
     return static_cast<int>(std::hash<int>()(string_to_int(x)));
   }
@@ -50,12 +50,12 @@ struct hash_string_as_int
 
 struct eq_string_int
 {
-  bool operator()(int x,const std::string& y)const
+  bool operator()(int x,const std::string& y) const
   {
     return x==string_to_int(y);
   }
 
-  bool operator()(const std::string& x,int y)const
+  bool operator()(const std::string& x,int y) const
   {
     return operator()(y,x);
   }
