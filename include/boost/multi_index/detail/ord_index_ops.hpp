@@ -51,7 +51,7 @@ namespace boost::multi_index::detail {
  * advance to increase efficiency.
  */
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -68,7 +68,7 @@ inline Node* ordered_index_find(
              promotes_2nd_arg<CompatibleCompare, key_type, CompatibleKey> > ());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleCompare
     >
@@ -80,7 +80,7 @@ inline Node* ordered_index_find(
   return ordered_index_find(top, y, key, x, comp, std::false_type());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -102,7 +102,7 @@ inline Node* ordered_index_find(
   return (y == y0 || comp(x, key(y->value()))) ? y0 : y;
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -117,7 +117,7 @@ inline Node* ordered_index_lower_bound(
              promotes_2nd_arg<CompatibleCompare, key_type, CompatibleKey>());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleCompare
     >
@@ -129,7 +129,7 @@ inline Node* ordered_index_lower_bound(
   return ordered_index_lower_bound(top, y, key, x, comp, std::false_type());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -149,7 +149,7 @@ inline Node* ordered_index_lower_bound(
   return y;
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -164,7 +164,7 @@ inline Node* ordered_index_upper_bound(
              promotes_1st_arg<CompatibleCompare, CompatibleKey, key_type>());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleCompare
     >
@@ -176,7 +176,7 @@ inline Node* ordered_index_upper_bound(
   return ordered_index_upper_bound(top, y, key, x, comp, std::false_type());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -196,7 +196,7 @@ inline Node* ordered_index_upper_bound(
   return y;
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >
@@ -213,7 +213,7 @@ inline std::pair<Node*, Node*> ordered_index_equal_range(
              promotes_2nd_arg<CompatibleCompare, key_type, CompatibleKey> > ());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleCompare
     >
@@ -225,7 +225,7 @@ inline std::pair<Node*, Node*> ordered_index_equal_range(
   return ordered_index_equal_range(top, y, key, x, comp, std::false_type());
 }
 
-template <
+template<
     typename Node, typename KeyFromValue,
     typename CompatibleKey, typename CompatibleCompare
     >

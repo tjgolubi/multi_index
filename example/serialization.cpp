@@ -34,7 +34,7 @@ using namespace boost::multi_index;
  * appear twice, the MRU list relocates it to the first position.
  */
 
-template <typename Item>
+template<typename Item>
 class mru_list
 {
   typedef multi_index_container<

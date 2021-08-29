@@ -127,7 +127,7 @@ private:
   node_handle(const node_handle&) = delete;
   node_handle& operator=(const node_handle&) = delete;
 
-  template <typename, typename, typename>
+  template<typename, typename, typename>
   friend class boost::multi_index::multi_index_container;
 
   node_handle(Node* node_, const allocator_type& al): node(node_)

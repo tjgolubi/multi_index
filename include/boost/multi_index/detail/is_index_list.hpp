@@ -17,7 +17,7 @@ namespace boost::multi_index::detail {
 template<typename T>
 struct is_index_list: std::false_type {};
 
-template<template <class...> class L, typename T0, typename... T>
+template<template<class...> class L, typename T0, typename... T>
 struct is_index_list<L<T0, T...>>: std::true_type {};
 
 } // boost::multi_index::detail

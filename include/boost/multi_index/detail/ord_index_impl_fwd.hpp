@@ -12,13 +12,13 @@
 
 namespace boost::multi_index::detail {
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >
 class ordered_index;
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -32,7 +32,7 @@ bool operator==(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -46,7 +46,7 @@ bool operator<(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -60,7 +60,7 @@ bool operator!=(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -74,7 +74,7 @@ bool operator>(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -88,7 +88,7 @@ bool operator>=(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -102,7 +102,7 @@ bool operator<=(
     const ordered_index <
     KeyFromValue2, Compare2, SuperMeta2, TagList2, Category2, AugmentPolicy2 > & y);
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >

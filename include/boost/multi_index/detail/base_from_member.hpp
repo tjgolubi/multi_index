@@ -35,7 +35,7 @@ namespace boost::multi_index::detail {
 
 // Contributed by Daryle Walker
 
-template < typename T >
+template< typename T >
 struct remove_cv_ref {
   typedef typename std::remove_cv<typename
   std::remove_reference<T>::type>::type  type;
@@ -48,7 +48,7 @@ struct remove_cv_ref {
 
 // Contributed by Daryle Walker, based on a work-around by Luc Danton
 
-template < typename T, typename U >
+template< typename T, typename U >
 struct is_related
   : public std::is_same <
     typename detail::remove_cv_ref<T>::type,
@@ -80,12 +80,12 @@ struct enable_if_unrelated<T, U, U2...>
 
 // Contributed by Daryle Walker
 
-template < typename MemberType, int UniqueID = 0 >
+template< typename MemberType, int UniqueID = 0 >
 class base_from_member {
 protected:
   MemberType  member;
 
-  template <typename ...T, typename EnableIf = typename
+  template<typename ...T, typename EnableIf = typename
             detail::enable_if_unrelated<base_from_member, T...>::type>
   explicit constexpr base_from_member(T && ...x)
   noexcept(noexcept(::new ((void*) 0) MemberType(
@@ -95,7 +95,7 @@ protected:
 
 }; // base_from_member
 
-template < typename MemberType, int UniqueID >
+template< typename MemberType, int UniqueID >
 class base_from_member<MemberType&, UniqueID> {
 protected:
   MemberType& member;

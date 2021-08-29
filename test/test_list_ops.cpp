@@ -42,13 +42,13 @@ struct is_even
   bool operator()(int x) const{return x%2==0;}
 };
 
-template <int m>
+template<int m>
 struct same_integral_div
 {
   bool operator()(int x,int y) const{return (x/m)==(y/m);}
 };
 
-template <typename Container,typename Compare>
+template<typename Container,typename Compare>
 bool is_sorted(
   const Container& c,const Compare& comp=Compare())
 {

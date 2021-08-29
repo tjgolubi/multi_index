@@ -24,39 +24,39 @@
 
 namespace boost::multi_index::detail {
 
-template <typename T, bool small_>
+template<typename T, bool small_>
 struct ct_imp2 {
   typedef const T& param_type;
 };
 
-template <typename T>
+template<typename T>
 struct ct_imp2<T, true> {
   typedef const T param_type;
 };
 
-template <typename T, bool isp, bool b1, bool b2>
+template<typename T, bool isp, bool b1, bool b2>
 struct ct_imp {
   typedef const T& param_type;
 };
 
-template <typename T, bool isp, bool b2>
+template<typename T, bool isp, bool b2>
 struct ct_imp<T, isp, true, b2> {
   typedef typename ct_imp2 < T, sizeof(T) <= sizeof(void*) >::param_type
   param_type;
 };
 
-template <typename T, bool isp, bool b1>
+template<typename T, bool isp, bool b1>
 struct ct_imp<T, isp, b1, true> {
   typedef typename ct_imp2 < T, sizeof(T) <= sizeof(void*) >::param_type
   param_type;
 };
 
-template <typename T, bool b1, bool b2>
+template<typename T, bool b1, bool b2>
 struct ct_imp<T, true, b1, b2> {
   typedef const T param_type;
 };
 
-template <typename T>
+template<typename T>
 struct call_traits {
 public:
   typedef T value_type;
@@ -76,7 +76,7 @@ public:
   >::param_type param_type;
 };
 
-template <typename T>
+template<typename T>
 struct call_traits<T&> {
   typedef T& value_type;
   typedef T& reference;
@@ -84,7 +84,7 @@ struct call_traits<T&> {
   typedef T& param_type;  // hh removed const
 };
 
-template <typename T, std::size_t N>
+template<typename T, std::size_t N>
 struct call_traits<T [N]> {
 private:
   typedef T array_type[N];
@@ -96,7 +96,7 @@ public:
   typedef const T* const param_type;
 };
 
-template <typename T, std::size_t N>
+template<typename T, std::size_t N>
 struct call_traits<const T [N]> {
 private:
   typedef const T array_type[N];

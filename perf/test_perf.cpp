@@ -138,7 +138,7 @@ double measure(F f)
 
 /* dereferencing compare predicate */
 
-template <typename Iterator,typename Compare>
+template<typename Iterator,typename Compare>
 struct it_compare
 {
   bool operator()(const Iterator& x,const Iterator& y) const{return comp(*x,*y);}
@@ -152,7 +152,7 @@ private:
  * routines do assume.
  */
 
-template <typename List>
+template<typename List>
 struct list_wrapper:List
 {
   typedef typename List::value_type value_type;
@@ -165,7 +165,7 @@ struct list_wrapper:List
   }
 };
 
-template <typename Multiset>
+template<typename Multiset>
 struct multiset_wrapper:Multiset
 {
   typedef typename Multiset::value_type value_type;
@@ -209,7 +209,7 @@ size_t node_size(const list_wrapper<List>&)
  * compositions of two and three standard containers, respectively.
  */
 
-template <typename Container>
+template<typename Container>
 struct mono_container
 {
   mono_container(int n_):n(n_){}
@@ -238,7 +238,7 @@ private:
   int n;
 };
 
-template <typename Container1,typename Container2>
+template<typename Container1,typename Container2>
 struct bi_container
 {
   bi_container(int n_):n(n_){}
@@ -271,7 +271,7 @@ private:
   int n;
 };
 
-template <typename Container1,typename Container2,typename Container3>
+template<typename Container1,typename Container2,typename Container3>
 struct tri_container
 {
   tri_container(int n_):n(n_){}
@@ -313,7 +313,7 @@ private:
  * and also estimates relative memory consumption.
  */
 
-template <typename IndexedTest,typename ManualTest>
+template<typename IndexedTest,typename ManualTest>
 void run_tests(const char* title)
 {
   cout<<fixed<<setprecision(2);
@@ -345,7 +345,7 @@ void run_tests(const char* title)
  * latter and run the tests.
  */
 
-template <typename IndexedType,typename ManualType>
+template<typename IndexedType,typename ManualType>
 void compare_structures(const char* title)
 {
   run_tests<
@@ -354,7 +354,7 @@ void compare_structures(const char* title)
   >(title);
 }
 
-template <typename IndexedType,typename ManualType1,typename ManualType2>
+template<typename IndexedType,typename ManualType1,typename ManualType2>
 void compare_structures2(const char* title)
 {
   run_tests<
@@ -363,7 +363,7 @@ void compare_structures2(const char* title)
   >(title);
 }
 
-template <
+template<
   typename IndexedType,
   typename ManualType1,typename ManualType2,typename ManualType3
 >

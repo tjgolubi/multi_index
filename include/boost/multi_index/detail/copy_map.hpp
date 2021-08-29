@@ -31,7 +31,7 @@ namespace boost::multi_index::detail {
  *   - fast retrieval of copied nodes (including the headers.)
  */
 
-template <typename Node>
+template<typename Node>
 struct copy_map_entry {
   copy_map_entry(Node* f, Node* s): first(f), second(s) {}
 
@@ -60,7 +60,7 @@ struct copy_map_value_mover {
   }
 };
 
-template <typename Node, typename Allocator>
+template<typename Node, typename Allocator>
 class copy_map: private noncopyable {
   using allocator_type = typename std::allocator_traits<Allocator>::
                                                             rebind_alloc<Node>;

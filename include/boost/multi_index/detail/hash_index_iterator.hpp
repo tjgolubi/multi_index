@@ -26,7 +26,7 @@ namespace boost::multi_index::detail {
 struct hashed_index_global_iterator_tag {};
 struct hashed_index_local_iterator_tag {};
 
-template <
+template<
     typename Node, typename BucketArray,
     typename IndexCategory, typename IteratorCategory
     >
@@ -130,7 +130,7 @@ private:
   Node* node;
 };
 
-template <
+template<
     typename Node, typename BucketArray,
     typename IndexCategory, typename IteratorCategory
     >
@@ -151,7 +151,7 @@ bool operator==(
  */
 
 namespace boost::serialization {
-template <
+template<
     typename Node, typename BucketArray,
     typename IndexCategory, typename IteratorCategory
     >

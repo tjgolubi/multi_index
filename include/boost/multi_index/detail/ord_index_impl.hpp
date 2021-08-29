@@ -94,13 +94,13 @@ namespace boost::multi_index::detail {
 struct ordered_unique_tag {};
 struct ordered_non_unique_tag {};
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >
 class ordered_index;
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >
@@ -1470,7 +1470,7 @@ protected: /* for the benefit of AugmentPolicy::augmented_interface */
   key_compare    comp_;
 };
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >
@@ -1523,7 +1523,7 @@ protected:
 
 /* comparison */
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1540,7 +1540,7 @@ bool operator==(
   return x.size() == y.size() && std::equal(x.begin(), x.end(), y.begin());
 }
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1557,7 +1557,7 @@ bool operator<(
   return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 }
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1574,7 +1574,7 @@ bool operator!=(
   return !(x == y);
 }
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1591,7 +1591,7 @@ bool operator>(
   return y < x;
 }
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1608,7 +1608,7 @@ bool operator>=(
   return !(x < y);
 }
 
-template <
+template<
     typename KeyFromValue1, typename Compare1,
     typename SuperMeta1, typename TagList1, typename Category1,
     typename AugmentPolicy1,
@@ -1627,7 +1627,7 @@ bool operator<=(
 
 /*  specialized algorithms */
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >
@@ -1644,7 +1644,7 @@ void swap(
 
 /* Boost.Foreach compatibility */
 
-template <
+template<
     typename KeyFromValue, typename Compare,
     typename SuperMeta, typename TagList, typename Category, typename AugmentPolicy
     >

@@ -21,7 +21,7 @@ namespace boost::multi_index::detail {
  * non-templatized versions.
  */
 
-template <typename SequencedIndex, typename Predicate>
+template<typename SequencedIndex, typename Predicate>
 void sequenced_index_remove(SequencedIndex& x, Predicate pred)
 {
   typedef typename SequencedIndex::iterator iterator;
@@ -33,7 +33,7 @@ void sequenced_index_remove(SequencedIndex& x, Predicate pred)
   }
 }
 
-template <typename SequencedIndex, class BinaryPredicate>
+template<typename SequencedIndex, class BinaryPredicate>
 void sequenced_index_unique(SequencedIndex& x, BinaryPredicate binary_pred)
 {
   typedef typename SequencedIndex::iterator iterator;
@@ -49,7 +49,7 @@ void sequenced_index_unique(SequencedIndex& x, BinaryPredicate binary_pred)
   }
 }
 
-template <typename SequencedIndex, typename Compare>
+template<typename SequencedIndex, typename Compare>
 void sequenced_index_merge(SequencedIndex& x, SequencedIndex& y, Compare comp)
 {
   typedef typename SequencedIndex::iterator iterator;
