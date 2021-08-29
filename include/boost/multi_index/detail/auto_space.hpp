@@ -34,48 +34,38 @@ namespace boost::multi_index::detail {
  */
 
 template<typename T, typename Allocator=std::allocator<T>>
-struct auto_space: private noncopyable {
+struct auto_space: private noncopyable
+{
   using allocator = typename std::allocator_traits<Allocator>::rebind_alloc<T>;
   using alloc_traits = std::allocator_traits<allocator>;
   using pointer      = typename alloc_traits::pointer;
   using size_type    = typename alloc_traits::size_type;
 
-  explicit auto_space(const Allocator& al = Allocator(), size_type n = 1):
-    al_(al), n_(n), data_(n_ ? alloc_traits::allocate(al_, n_) : pointer(0))
-  {}
+  explicit auto_space(const Allocator& al = Allocator(), size_type n = 1)
+    : al_(al), n_(n), data_(n_ ? alloc_traits::allocate(al_, n_) : pointer(0))
+    { }
 
-  ~auto_space()
-  {
+  ~auto_space() {
     if (n_)
       alloc_traits::deallocate(al_, data_, n_);
   }
 
-  Allocator get_allocator() const
-  {
-    return al_;
-  }
+  Allocator get_allocator() const { return al_; }
 
-  pointer data() const
-  {
-    return data_;
-  }
+  pointer data() const { return data_; }
 
-  void swap(auto_space& x)
-  {
-    swap(
-        x,
+  void swap(auto_space& x) {
+    swap(x,
         std::bool_constant<alloc_traits::propagate_on_container_swap::value>());
   }
 
-  void swap(auto_space& x, std::true_type /* swap_allocators */)
-  {
+  void swap(auto_space& x, std::true_type /* swap_allocators */) {
     adl_swap(al_, x.al_);
     std::swap(n_, x.n_);
     std::swap(data_, x.data_);
   }
 
-  void swap(auto_space& x, std::false_type /* don't swap_allocators */)
-  {
+  void swap(auto_space& x, std::false_type /* don't swap_allocators */) {
     std::swap(n_, x.n_);
     std::swap(data_, x.data_);
   }
@@ -84,13 +74,11 @@ private:
   allocator al_;
   size_type n_;
   pointer   data_;
-};
+}; // auto_space
 
 template<typename T, typename Allocator>
 void swap(auto_space<T, Allocator>& x, auto_space<T, Allocator>& y)
-{
-  x.swap(y);
-}
+{ x.swap(y); }
 
 } // boost::multi_index::detail
 
