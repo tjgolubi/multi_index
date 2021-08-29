@@ -11,7 +11,6 @@
 #pragma once
 
 #include <boost/multi_index_container_fwd.hpp>
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/copy_map.hpp>
 #include <boost/multi_index/detail/do_not_copy_elements_tag.hpp>
 #include <boost/multi_index/detail/node_handle.hpp>
@@ -50,9 +49,8 @@ protected:
   typedef multi_index_container <
   Value, IndexSpecifierList, Allocator >       final_type;
   typedef std::tuple<>                        ctor_args_list;
-  typedef typename rebind_alloc_for <
-  Allocator, typename Allocator::value_type
-  >::type                                     final_allocator_type;
+  using final_allocator_type = typename std::allocator_traits<Allocator>::
+                                  rebind_alloc<typename Allocator::value_type>;
   typedef node_handle <
   final_node_type, final_allocator_type >     final_node_handle_type;
   typedef mp11::mp_list<>                     index_type_list;

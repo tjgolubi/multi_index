@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_BUCKET_ARRAY_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/hash_index_node.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
@@ -95,9 +94,9 @@ protected:
 template<typename Allocator>
 class bucket_array : bucket_array_base {
   using super = bucket_array_base;
-  using base_node_impl_type = hashed_index_base_node_impl <
-                              typename rebind_alloc_for<Allocator, char>::type
-                              >;
+  using base_node_impl_type =
+      hashed_index_base_node_impl<
+          typename std::allocator_traits<Allocator>::rebind_alloc<char>>;
 
 public:
   using base_pointer = typename base_node_impl_type::base_pointer;

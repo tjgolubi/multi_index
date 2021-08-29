@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_COPY_MAP_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
@@ -63,15 +62,14 @@ struct copy_map_value_mover {
 
 template <typename Node, typename Allocator>
 class copy_map: private noncopyable {
-  typedef typename rebind_alloc_for <
-  Allocator, Node
-  >::type                                  allocator_type;
-  typedef std::allocator_traits<allocator_type> alloc_traits;
-  typedef typename alloc_traits::pointer   pointer;
+  using allocator_type = typename std::allocator_traits<Allocator>::
+                                                            rebind_alloc<Node>;
+  using alloc_traits = std::allocator_traits<allocator_type>;
+  using pointer = typename alloc_traits::pointer;
 
 public:
-  typedef const copy_map_entry<Node>*      const_iterator;
-  typedef typename alloc_traits::size_type size_type;
+  using const_iterator = const copy_map_entry<Node>*;
+  using size_type = typename alloc_traits::size_type;
 
   copy_map(
       const Allocator& al, size_type size, Node* header_org, Node* header_cpy):

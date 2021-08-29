@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_HASH_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <utility>
 
@@ -90,12 +89,10 @@ struct hashed_index_node_impl;
 
 template<typename Allocator>
 struct hashed_index_base_node_impl {
-  typedef typename rebind_alloc_for <
-  Allocator, hashed_index_base_node_impl
-  >::type                                             base_allocator;
-  typedef typename rebind_alloc_for <
-  Allocator, hashed_index_node_impl<Allocator>
-  >::type                                             node_allocator;
+  using base_allocator = typename std::allocator_traits<Allocator>::
+                                      rebind_alloc<hashed_index_base_node_impl>;
+  using node_allocator = typename std::allocator_traits<Allocator>::
+                                rebind_alloc<hashed_index_node_impl<Allocator>>;
   typedef std::allocator_traits<base_allocator>       base_alloc_traits;
   typedef std::allocator_traits<node_allocator>       node_alloc_traits;
   typedef typename base_alloc_traits::pointer         base_pointer;
@@ -695,16 +692,15 @@ private:
 };
 
 template<typename Super>
-struct hashed_index_node_trampoline:
-  hashed_index_node_impl <
-  typename rebind_alloc_for <
-  typename Super::allocator_type, char
-  >::type
-  > {
-  typedef typename rebind_alloc_for <
-  typename Super::allocator_type, char
-  >::type                                             impl_allocator_type;
-  typedef hashed_index_node_impl<impl_allocator_type> impl_type;
+struct hashed_index_node_trampoline
+  : hashed_index_node_impl<
+      typename std::allocator_traits<typename Super::allocator_type>::
+        rebind_alloc<char>>
+{
+  using impl_allocator_type =
+      typename std::allocator_traits<typename Super::allocator_type>::
+          rebind_alloc<char>;
+  using impl_type = hashed_index_node_impl<impl_allocator_type>;
 };
 
 template<typename Super>

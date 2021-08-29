@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <numeric>
 #include <algorithm>
@@ -21,18 +20,16 @@ namespace boost::multi_index::detail {
 
 template<typename Allocator>
 struct random_access_index_node_impl {
-  typedef typename rebind_alloc_for <
-  Allocator, random_access_index_node_impl
-  >::type                                             node_allocator;
-  typedef std::allocator_traits<node_allocator>       node_alloc_traits;
-  typedef typename node_alloc_traits::pointer         pointer;
-  typedef typename node_alloc_traits::const_pointer   const_pointer;
-  typedef typename node_alloc_traits::difference_type difference_type;
-  typedef typename rebind_alloc_for <
-  Allocator, pointer
-  >::type                                             ptr_allocator;
-  typedef std::allocator_traits<ptr_allocator>        ptr_alloc_traits;
-  typedef typename ptr_alloc_traits::pointer          ptr_pointer;
+  using node_allocator = typename std::allocator_traits<Allocator>::
+                                    rebind_alloc<random_access_index_node_impl>;
+  using node_alloc_traits = std::allocator_traits<node_allocator>;
+  using pointer = typename node_alloc_traits::pointer;
+  using const_pointer   = typename node_alloc_traits::const_pointer;
+  using difference_type = typename node_alloc_traits::difference_type;
+  using ptr_allocator =
+              typename std::allocator_traits<Allocator>::rebind_alloc<pointer>;
+  using ptr_alloc_traits = std::allocator_traits<ptr_allocator>;
+  using ptr_pointer = typename ptr_alloc_traits::pointer;
 
   ptr_pointer& up()
   {
@@ -175,19 +172,14 @@ private:
 };
 
 template<typename Super>
-struct random_access_index_node_trampoline:
-  random_access_index_node_impl <
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-  char
-  >::type
-  > {
-  typedef random_access_index_node_impl <
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-           char
-           >::type
-           > impl_type;
+struct random_access_index_node_trampoline
+  : random_access_index_node_impl<
+      typename std::allocator_traits<typename Super::allocator_type>::
+                                                          rebind_alloc<char>>
+{
+  using impl_type = random_access_index_node_impl<
+    typename std::allocator_traits<typename Super::allocator_type>::
+                                                            rebind_alloc<char>>;
 };
 
 template<typename Super>

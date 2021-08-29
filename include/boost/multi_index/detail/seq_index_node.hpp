@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_SEQ_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <algorithm>
 
@@ -20,13 +19,12 @@ namespace boost::multi_index::detail {
 
 template<typename Allocator>
 struct sequenced_index_node_impl {
-  typedef typename rebind_alloc_for <
-  Allocator, sequenced_index_node_impl
-  >::type                                        node_allocator;
-  typedef std::allocator_traits<node_allocator>  alloc_traits;
-  typedef typename alloc_traits::pointer         pointer;
-  typedef typename alloc_traits::const_pointer   const_pointer;
-  typedef typename alloc_traits::difference_type difference_type;
+  using node_allocator  = typename std::allocator_traits<Allocator>::
+                                        rebind_alloc<sequenced_index_node_impl>;
+  using alloc_traits    = std::allocator_traits<node_allocator>;
+  using pointer         = typename alloc_traits::pointer;
+  using const_pointer   = typename alloc_traits::const_pointer;
+  using difference_type = typename alloc_traits::difference_type;
 
   pointer& prior()
   {
@@ -139,19 +137,14 @@ private:
 };
 
 template<typename Super>
-struct sequenced_index_node_trampoline:
-  sequenced_index_node_impl <
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-  char
-  >::type
-  > {
-  typedef sequenced_index_node_impl <
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-           char
-           >::type
-           > impl_type;
+struct sequenced_index_node_trampoline
+  : sequenced_index_node_impl<
+      typename std::allocator_traits<typename Super::allocator_type>::
+                                                            rebind_alloc<char>>
+{
+  using impl_type = sequenced_index_node_impl<
+      typename std::allocator_traits<typename Super::allocator_type>::
+                                                            rebind_alloc<char>>;
 };
 
 template<typename Super>

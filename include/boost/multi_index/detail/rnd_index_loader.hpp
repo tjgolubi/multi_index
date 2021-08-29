@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_LOADER_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/rnd_index_ptr_array.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
@@ -33,26 +32,25 @@ namespace boost::multi_index::detail {
 
 template<typename Allocator>
 class random_access_index_loader_base: private noncopyable {
+private:
+  using alloc_traits = std::allocator_traits<Allocator>;
+  using size_type    =  typename alloc_traits::size_type;
+
 protected:
-  typedef random_access_index_node_impl <
-  typename rebind_alloc_for <
-  Allocator,
-  char
-  >::type
-  >                                                 node_impl_type;
-  typedef typename node_impl_type::pointer          node_impl_pointer;
-  typedef random_access_index_ptr_array<Allocator>  ptr_array;
+  using node_impl_type = random_access_index_node_impl<
+                                    typename alloc_traits::rebind_alloc<char>>;
+  using node_impl_pointer = typename node_impl_type::pointer;
+  using ptr_array = random_access_index_ptr_array<Allocator>;
 
-  random_access_index_loader_base(const Allocator& al_, ptr_array& ptrs_):
-    al(al_),
-    ptrs(ptrs_),
-    header(*ptrs.end()),
-    prev_spc(al, 0),
-    preprocessed(false)
-  {}
+  random_access_index_loader_base(const Allocator& al_, ptr_array& ptrs_)
+    : al(al_)
+    , ptrs(ptrs_)
+    , header(*ptrs.end())
+    , prev_spc(al, 0)
+    , preprocessed(false)
+  { }
 
-  ~random_access_index_loader_base()
-  {
+  ~random_access_index_loader_base() {
     if (preprocessed) {
       node_impl_pointer n = header;
       next(n) = n;
@@ -71,8 +69,7 @@ protected:
     }
   }
 
-  void rearrange(node_impl_pointer position_, node_impl_pointer x)
-  {
+  void rearrange(node_impl_pointer position_, node_impl_pointer x) {
     preprocess(); /* only incur this penalty if rearrange() is ever called */
     if (position_ == node_impl_pointer(0))
       position_ = header;
@@ -84,77 +81,63 @@ protected:
   }
 
 private:
-  typedef std::allocator_traits<Allocator>      alloc_traits;
-  typedef typename alloc_traits::size_type size_type;
+  void preprocess() {
+    if (preprocessed)
+      return;
 
-  void preprocess()
-  {
-    if (!preprocessed) {
-      /* get space for the auxiliary prev array */
-      auto_space<node_impl_pointer, Allocator> tmp(al, ptrs.size() + 1);
-      prev_spc.swap(tmp);
+    /* get space for the auxiliary prev array */
+    auto_space<node_impl_pointer, Allocator> tmp(al, ptrs.size() + 1);
+    prev_spc.swap(tmp);
 
-      /* prev_spc elements point to the prev nodes */
-      std::rotate_copy(
-          &*ptrs.begin(), &*ptrs.end(), &*ptrs.end() + 1, &*prev_spc.data());
+    /* prev_spc elements point to the prev nodes */
+    std::rotate_copy(
+        &*ptrs.begin(), &*ptrs.end(), &*ptrs.end() + 1, &*prev_spc.data());
 
-      /* ptrs elements point to the next nodes */
-      std::rotate(&*ptrs.begin(), &*ptrs.begin() + 1, &*ptrs.end() + 1);
+    /* ptrs elements point to the next nodes */
+    std::rotate(&*ptrs.begin(), &*ptrs.begin() + 1, &*ptrs.end() + 1);
 
-      preprocessed = true;
-    }
+    preprocessed = true;
   }
 
-  size_type position(node_impl_pointer x)const
-  {
-    return (size_type)(x->up() - ptrs.begin());
-  }
+  size_type position(node_impl_pointer x) const
+  { return (size_type)(x->up() - ptrs.begin()); }
 
-  node_impl_pointer& next_at(size_type n)const
-  {
-    return *ptrs.at(n);
-  }
+  node_impl_pointer& next_at(size_type n) const
+  { return *ptrs.at(n); }
 
-  node_impl_pointer& prev_at(size_type n)const
-  {
-    return *(prev_spc.data() + n);
-  }
+  node_impl_pointer& prev_at(size_type n) const
+  { return *(prev_spc.data() + n); }
 
-  node_impl_pointer& next(node_impl_pointer x)const
-  {
-    return *(x->up());
-  }
+  node_impl_pointer& next(node_impl_pointer x) const
+  { return *(x->up()); }
 
-  node_impl_pointer& prev(node_impl_pointer x)const
-  {
-    return prev_at(position(x));
-  }
+  node_impl_pointer& prev(node_impl_pointer x) const
+  { return prev_at(position(x)); }
 
-  Allocator                               al;
-  ptr_array&                              ptrs;
-  node_impl_pointer                       header;
+  Allocator                                al;
+  ptr_array&                               ptrs;
+  node_impl_pointer                        header;
   auto_space<node_impl_pointer, Allocator> prev_spc;
-  bool                                    preprocessed;
-};
+  bool                                     preprocessed;
+}; // random_access_index_loader_base
 
 template<typename Node, typename Allocator>
-class random_access_index_loader:
-  private random_access_index_loader_base<Allocator> {
-  typedef random_access_index_loader_base<Allocator> super;
-  typedef typename super::node_impl_pointer          node_impl_pointer;
-  typedef typename super::ptr_array                  ptr_array;
+class random_access_index_loader
+  : private random_access_index_loader_base<Allocator>
+{
+  using super             = random_access_index_loader_base<Allocator>;
+  using node_impl_pointer = typename super::node_impl_pointer;
+  using ptr_array         = typename super::ptr_array;
 
 public:
-  random_access_index_loader(const Allocator& al_, ptr_array& ptrs_):
-    super(al_, ptrs_)
-  {}
+  random_access_index_loader(const Allocator& al_, ptr_array& ptrs_)
+    : super(al_, ptrs_) { }
 
-  void rearrange(Node* position_, Node* x)
-  {
+  void rearrange(Node* position_, Node* x) {
     super::rearrange(
         position_ ? position_->impl() : node_impl_pointer(0), x->impl());
   }
-};
+}; // random_access_index_loader
 
 } // boost::multi_index::detail
 

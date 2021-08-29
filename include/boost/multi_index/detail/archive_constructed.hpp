@@ -22,9 +22,8 @@ struct archive_constructed {
   archive_constructed(const archive_constructed&) = delete;
   archive_constructed& operator=(const archive_constructed&) = delete;
 
-  template<class Archive> archive_constructed(Archive& ar,
-      const unsigned int version)
-  {
+  template<class Archive>
+  archive_constructed(Archive& ar, const unsigned int version) {
     serialization::load_construct_data_adl(ar, &get(), version);
     try {
       ar >> get();
@@ -35,8 +34,8 @@ struct archive_constructed {
     }
   }
 
-  template<class Archive> archive_constructed(const char* name, Archive& ar,
-      const unsigned int version)
+  template<class Archive>
+  archive_constructed(const char* name, Archive& ar, const unsigned int version)
   {
     serialization::load_construct_data_adl(ar, &get(), version);
     try {
@@ -48,20 +47,14 @@ struct archive_constructed {
     }
   }
 
-  ~archive_constructed()
-  {
-    (&get())->~T();
-  }
+  ~archive_constructed() { (&get())->~T(); }
 
-  T& get()
-  {
-    return *reinterpret_cast<T*>(&space);
-  }
+  T& get() { return *reinterpret_cast<T*>(&space); }
 
 private:
   typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type
   space;
-};
+}; // archive_constructed
 
 } // boost::multi_index::detail
 

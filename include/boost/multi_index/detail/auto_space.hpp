@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_AUTO_SPACE_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
 #include <algorithm>
@@ -34,13 +33,12 @@ namespace boost::multi_index::detail {
  *     http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-defects.html#199
  */
 
-template<typename T, typename Allocator = std::allocator<T>>
+template<typename T, typename Allocator=std::allocator<T>>
 struct auto_space: private noncopyable {
-  typedef typename rebind_alloc_for<Allocator, T>::type
-  allocator;
+  using allocator = typename std::allocator_traits<Allocator>::rebind_alloc<T>;
   using alloc_traits = std::allocator_traits<allocator>;
-  typedef typename alloc_traits::pointer   pointer;
-  typedef typename alloc_traits::size_type size_type;
+  using pointer      = typename alloc_traits::pointer;
+  using size_type    = typename alloc_traits::size_type;
 
   explicit auto_space(const Allocator& al = Allocator(), size_type n = 1):
     al_(al), n_(n), data_(n_ ? alloc_traits::allocate(al_, n_) : pointer(0))

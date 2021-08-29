@@ -10,7 +10,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_RND_INDEX_PTR_ARRAY_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/rnd_index_node.hpp>
 #include <boost/multi_index/detail/noncopyable.hpp>
@@ -21,22 +20,18 @@ namespace boost::multi_index::detail {
 /* pointer structure for use by random access indices */
 
 template<typename Allocator>
-class random_access_index_ptr_array: private noncopyable {
-  typedef random_access_index_node_impl <
-  typename rebind_alloc_for <
-  Allocator,
-  char
-  >::type
-  >                                         node_impl_type;
+class random_access_index_ptr_array : private noncopyable
+{
+  using node_impl_type = random_access_index_node_impl<
+      typename std::allocator_traits<Allocator>::rebind_alloc<char>>;
 
 public:
-  typedef typename node_impl_type::pointer  value_type;
-  typedef typename rebind_alloc_for <
-  Allocator, value_type
-  >::type                                   value_allocator;
-  typedef std::allocator_traits<value_allocator> alloc_traits;
-  typedef typename alloc_traits::pointer    pointer;
-  typedef typename alloc_traits::size_type  size_type;
+  using value_type = typename node_impl_type::pointer;
+  using value_allocator = typename std::allocator_traits<Allocator>::
+                                                      rebind_alloc<value_type>;
+  using alloc_traits = std::allocator_traits<value_allocator>;
+  using pointer      = typename alloc_traits::pointer;
+  using size_type    = typename alloc_traits::size_type;
 
   random_access_index_ptr_array(
       const Allocator& al, value_type end_, size_type sz):

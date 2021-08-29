@@ -11,7 +11,6 @@
 #pragma once
 
 #include <boost/multi_index_container_fwd.hpp>
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <algorithm>
 #include <type_traits>
 #include <new>
@@ -172,11 +171,10 @@ private:
 
   void delete_node()
   {
-    typedef typename rebind_alloc_for <
-    allocator_type, Node
-    >::type                                          node_allocator;
-    typedef std::allocator_traits<node_allocator>    node_alloc_traits;
-    typedef typename node_alloc_traits::pointer      node_pointer;
+    using node_allocator =
+            typename std::allocator_traits<allocator_type>::rebind_alloc<Node>;
+    using node_alloc_traits = std::allocator_traits<node_allocator>;
+    using node_pointer = typename node_alloc_traits::pointer;
 
     alloc_traits::destroy(*allocator_ptr(), std::addressof(node->value()));
     node_allocator nal(*allocator_ptr());

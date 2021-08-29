@@ -20,7 +20,6 @@
 #include <boost/multi_index/detail/safe_mode.hpp>
 #include <boost/multi_index/detail/no_duplicate_tags.hpp>
 #include <boost/multi_index/detail/header_holder.hpp>
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/base_type.hpp>
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/adl_swap.hpp>
@@ -74,21 +73,19 @@ struct unequal_alloc_move_ctor_tag { };
 template<typename Value, typename IndexSpecifierList, typename Allocator>
 class multi_index_container
   : private detail::base_from_member<
-      typename detail::rebind_alloc_for<
-        Allocator,
+      typename std::allocator_traits<Allocator>::rebind_alloc<
         typename detail::multi_index_node_type<
           Value, IndexSpecifierList, Allocator
         >::type
-      >::type
+      >
     >
   , private detail::header_holder<
       typename std::allocator_traits<
-        typename detail::rebind_alloc_for<
-          Allocator,
+        typename std::allocator_traits<Allocator>::rebind_alloc<
           typename detail::multi_index_node_type<
             Value, IndexSpecifierList, Allocator
           >::type
-        >::type
+        >
       >::pointer,
       multi_index_container<Value, IndexSpecifierList, Allocator>
     >
@@ -102,8 +99,8 @@ private:
 
   using super = typename detail::multi_index_base_type<
                     Value, IndexSpecifierList, Allocator>::type;
-  using node_allocator = typename detail::rebind_alloc_for<
-                            Allocator, typename super::index_node_type>::type;
+  using node_allocator = typename std::allocator_traits<Allocator>::
+                                  rebind_alloc<typename super::index_node_type>;
   using node_alloc_traits = std::allocator_traits<node_allocator>;
   using node_pointer = typename node_alloc_traits::pointer;
   using bfm_allocator = detail::base_from_member<node_allocator>;

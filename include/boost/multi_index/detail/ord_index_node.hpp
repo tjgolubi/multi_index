@@ -37,7 +37,6 @@
 #define BOOST_MULTI_INDEX_DETAIL_ORD_INDEX_NODE_HPP
 #pragma once
 
-#include <boost/multi_index/detail/rebind_alloc_for.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_COMPRESSED_ORDERED_INDEX_NODES)
@@ -61,10 +60,8 @@ struct ordered_index_node_impl; /* fwd decl. */
 
 template<typename AugmentPolicy, typename Allocator>
 struct ordered_index_node_traits {
-  typedef typename rebind_alloc_for <
-  Allocator,
-  ordered_index_node_impl<AugmentPolicy, Allocator>
-  >::type                                            allocator;
+  using allocator = typename std::allocator_traits<Allocator>::
+              rebind_alloc<ordered_index_node_impl<AugmentPolicy, Allocator>>;
   typedef std::allocator_traits<allocator>           alloc_traits;
   typedef typename alloc_traits::pointer             pointer;
   typedef typename alloc_traits::const_pointer       const_pointer;
@@ -615,21 +612,17 @@ public:
 };
 
 template<typename AugmentPolicy, typename Super>
-struct ordered_index_node_trampoline:
-  ordered_index_node_impl <
-  AugmentPolicy,
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-  char
-  >::type
-  > {
-  typedef ordered_index_node_impl <
-  AugmentPolicy,
-  typename rebind_alloc_for <
-  typename Super::allocator_type,
-  char
-  >::type
-  > impl_type;
+struct ordered_index_node_trampoline
+  : ordered_index_node_impl<
+      AugmentPolicy,
+      typename std::allocator_traits<typename Super::allocator_type>::
+                                                            rebind_alloc<char>
+    >
+{
+  using impl_type = ordered_index_node_impl<
+    AugmentPolicy,
+    typename std::allocator_traits<typename Super::allocator_type>::
+                                                            rebind_alloc<char>>;
 };
 
 template<typename AugmentPolicy, typename Super>
