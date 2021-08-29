@@ -12,8 +12,7 @@
 #define BOOST_MULTI_INDEX_TEST_SMALL_ALLOCATOR_HPP
 
 template<typename T>
-class small_allocator
-{
+class small_allocator {
 public:
   typedef unsigned char size_type;
   typedef signed char   difference_type;
@@ -24,30 +23,35 @@ public:
   typedef T&            reference;
   typedef const T&      const_reference;
   typedef T             value_type;
-  template<class U>struct rebind{typedef small_allocator<U> other;};
+  template<class U>struct rebind {
+    typedef small_allocator<U> other;
+  };
 
-  small_allocator(){}
-  small_allocator(const small_allocator<T>&){}
-  template<class U>small_allocator(const small_allocator<U>&,int=0){}
+  small_allocator() {}
+  small_allocator(const small_allocator<T>&) {}
+  template<class U>small_allocator(const small_allocator<U>&, int = 0) {}
 
   pointer allocate(size_type n)
   {
-    return pointer((T*)(new char[n*sizeof(T)]));
+    return pointer((T*)(new char[n * sizeof(T)]));
   }
 
-  void deallocate(pointer p,size_type)
+  void deallocate(pointer p, size_type)
   {
-    delete[](char *)&*p;
+    delete[](char*)&*p;
   }
 
-  size_type max_size() const{return (size_type)(-1);}
+  size_type max_size() const
+  {
+    return (size_type)(-1);
+  }
 
-  friend bool operator==(const small_allocator&,const small_allocator&)
+  friend bool operator==(const small_allocator&, const small_allocator&)
   {
     return true;
   }
 
-  friend bool operator!=(const small_allocator&,const small_allocator&)
+  friend bool operator!=(const small_allocator&, const small_allocator&)
   {
     return false;
   }

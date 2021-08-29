@@ -22,34 +22,41 @@
 
 #include <boost/detail/lightweight_test.hpp>
 
-struct move_tracker
-{
-  move_tracker(int n):n(n),move_cted(false){}
-  move_tracker(const move_tracker& x):n(x.n),move_cted(false){}
-  move_tracker(move_tracker&& x):n(x.n),move_cted(true){}
+struct move_tracker {
+  move_tracker(int n): n(n), move_cted(false) {}
+  move_tracker(const move_tracker& x): n(x.n), move_cted(false) {}
+  move_tracker(move_tracker&& x): n(x.n), move_cted(true) {}
   move_tracker& operator=(const move_tracker& x)
-    {n=x.n;return *this;}
-  move_tracker& operator=(move_tracker&& x){n=x.n;return *this;}
+  {
+    n = x.n;
+    return *this;
+  }
+  move_tracker& operator=(move_tracker&& x)
+  {
+    n = x.n;
+    return *this;
+  }
 
   int  n;
   bool move_cted;
 };
 
-inline bool operator==(const move_tracker& x,const move_tracker& y)
+inline bool operator==(const move_tracker& x, const move_tracker& y)
 {
-  return x.n==y.n;
+  return x.n == y.n;
 }
 
-inline bool operator<(const move_tracker& x,const move_tracker& y)
+inline bool operator<(const move_tracker& x, const move_tracker& y)
 {
-  return x.n<y.n;
+  return x.n < y.n;
 }
 
 namespace std {
 
 template<>
 struct hash<move_tracker> {
-  std::size_t operator()(const move_tracker& x) const noexcept {
+  std::size_t operator()(const move_tracker& x) const noexcept
+  {
     std::hash<int> h;
     return h(x.n);
   }
@@ -57,83 +64,84 @@ struct hash<move_tracker> {
 
 } // std
 
-template<bool Propagate,bool AlwaysEqual>
+template<bool Propagate, bool AlwaysEqual>
 void test_allocator_awareness_for()
 {
   using namespace boost::multi_index;
 
-  typedef rooted_allocator<move_tracker,Propagate,AlwaysEqual> allocator;
-  typedef multi_index_container<
-    move_tracker,
-    indexed_by<
-      hashed_unique<identity<move_tracker> >,
-      ordered_unique<identity<move_tracker> >,
-      random_access<>,
-      ranked_unique<identity<move_tracker> >,
-      sequenced<>
-    >,
-    allocator
+  typedef rooted_allocator<move_tracker, Propagate, AlwaysEqual> allocator;
+  typedef multi_index_container <
+  move_tracker,
+  indexed_by <
+  hashed_unique<identity<move_tracker>>,
+  ordered_unique<identity<move_tracker>>,
+  random_access<>,
+  ranked_unique<identity<move_tracker>>,
+  sequenced<>
+  >,
+  allocator
   >                                                            container;
 
-  allocator root1(0),root2(0);
+  allocator root1(0), root2(0);
   container c(root1);
-  for(int i=0;i<10;++i)c.emplace(i);
+  for (int i = 0; i < 10; ++i)
+    c.emplace(i);
 
   BOOST_TEST(c.get_allocator().comes_from(root1));
 
   {
-    container c2(c,root2);
+    container c2(c, root2);
     BOOST_TEST(c2.get_allocator().comes_from(root2));
-    BOOST_TEST(c2==c);
+    BOOST_TEST(c2 == c);
   }
   {
     container           c2(c);
-    const move_tracker* pfirst=&*c2.begin();
-    container           c3(std::move(c2),root2);
+    const move_tracker* pfirst = &*c2.begin();
+    container           c3(std::move(c2), root2);
     BOOST_TEST(c3.get_allocator().comes_from(root2));
-    BOOST_TEST(c3==c);
+    BOOST_TEST(c3 == c);
     BOOST_TEST(c2.empty());
-    BOOST_TEST(AlwaysEqual==(&*c3.begin()==pfirst));
-    BOOST_TEST(!AlwaysEqual==(c3.begin()->move_cted));
+    BOOST_TEST(AlwaysEqual == (&*c3.begin() == pfirst));
+    BOOST_TEST(!AlwaysEqual == (c3.begin()->move_cted));
   }
   {
     container c2(root2);
-    c2=c;
-    BOOST_TEST(c2.get_allocator().comes_from(Propagate?root1:root2));
-    BOOST_TEST(c2==c);
+    c2 = c;
+    BOOST_TEST(c2.get_allocator().comes_from(Propagate ? root1 : root2));
+    BOOST_TEST(c2 == c);
   }
   {
-    const bool          element_transfer=Propagate||AlwaysEqual;
+    const bool          element_transfer = Propagate || AlwaysEqual;
 
     container           c2(c);
-    const move_tracker* pfirst=&*c2.begin();
+    const move_tracker* pfirst = &*c2.begin();
     container           c3(root2);
-    c3=std::move(c2);
-    BOOST_TEST(c3.get_allocator().comes_from(Propagate?root1:root2));
-    BOOST_TEST(c3==c);
+    c3 = std::move(c2);
+    BOOST_TEST(c3.get_allocator().comes_from(Propagate ? root1 : root2));
+    BOOST_TEST(c3 == c);
     BOOST_TEST(c2.empty());
-    BOOST_TEST(element_transfer==(&*c3.begin()==pfirst));
-    BOOST_TEST(!element_transfer==(c3.begin()->move_cted));
+    BOOST_TEST(element_transfer == (&*c3.begin() == pfirst));
+    BOOST_TEST(!element_transfer == (c3.begin()->move_cted));
   }
-  if(Propagate||AlwaysEqual){
+  if (Propagate || AlwaysEqual) {
     container           c2(c);
-    const move_tracker* pfirst=&*c2.begin();
+    const move_tracker* pfirst = &*c2.begin();
     container           c3(root2);
     c3.swap(c2);
-    BOOST_TEST(c2.get_allocator().comes_from(Propagate?root2:root1));
-    BOOST_TEST(c3.get_allocator().comes_from(Propagate?root1:root2));
-    BOOST_TEST(c3==c);
+    BOOST_TEST(c2.get_allocator().comes_from(Propagate ? root2 : root1));
+    BOOST_TEST(c3.get_allocator().comes_from(Propagate ? root1 : root2));
+    BOOST_TEST(c3 == c);
     BOOST_TEST(c2.empty());
-    BOOST_TEST(&*c3.begin()==pfirst);
+    BOOST_TEST(&*c3.begin() == pfirst);
     BOOST_TEST(!c3.begin()->move_cted);
   }
 }
 
 void test_allocator_awareness()
 {
-  test_allocator_awareness_for<false,false>();
-  test_allocator_awareness_for<false,true>();
+  test_allocator_awareness_for<false, false>();
+  test_allocator_awareness_for<false, true>();
 
-  test_allocator_awareness_for<true,false>();
-  test_allocator_awareness_for<true,true>();
+  test_allocator_awareness_for<true, false>();
+  test_allocator_awareness_for<true, true>();
 }

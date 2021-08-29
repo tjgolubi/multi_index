@@ -19,25 +19,22 @@
 #include <vector>
 
 template<int N>
-struct all_indices_equal_helper
-{
+struct all_indices_equal_helper {
   template<class MultiIndexContainer>
   static bool compare(
-    const MultiIndexContainer& m1,const MultiIndexContainer& m2)
+      const MultiIndexContainer& m1, const MultiIndexContainer& m2)
   {
-    if(!(boost::multi_index::get<N>(m1)==boost::multi_index::get<N>(m2))){
+    if (!(boost::multi_index::get<N>(m1) == boost::multi_index::get<N>(m2)))
       return false;
-    }
-    return all_indices_equal_helper<N-1>::compare(m1,m2);
+    return all_indices_equal_helper < N - 1 >::compare(m1, m2);
   }
 };
 
 template<>
-struct all_indices_equal_helper<0>
-{
+struct all_indices_equal_helper<0> {
   template<class MultiIndexContainer>
   static bool compare(
-    const MultiIndexContainer&,const MultiIndexContainer&)
+      const MultiIndexContainer&, const MultiIndexContainer&)
   {
     return true;
   }
@@ -45,12 +42,12 @@ struct all_indices_equal_helper<0>
 
 template<class MultiIndexContainer>
 bool all_indices_equal(
-  const MultiIndexContainer& m1,const MultiIndexContainer& m2)
+    const MultiIndexContainer& m1, const MultiIndexContainer& m2)
 {
-  static const int N=boost::mp11::mp_size<
-    typename MultiIndexContainer::index_type_list>::value;
+  static const int N = boost::mp11::mp_size <
+                       typename MultiIndexContainer::index_type_list >::value;
 
-  return all_indices_equal_helper<N-1>::compare(m1,m2);
+  return all_indices_equal_helper < N - 1 >::compare(m1, m2);
 }
 
 template<class MultiIndexContainer>
@@ -62,42 +59,42 @@ void test_serialization(const MultiIndexContainer& m)
   std::ostringstream oss;
   {
     boost::archive::text_oarchive oa(oss);
-    oa<<m;
+    oa << m;
 
     std::vector<const_iterator> its(m.size());
-    const_iterator              it_end=m.end();
-    for(const_iterator it=m.begin();it!=it_end;++it){
+    const_iterator              it_end = m.end();
+    for (const_iterator it = m.begin(); it != it_end; ++it) {
       its.push_back(it);
-      oa<<const_cast<const const_iterator&>(its.back());
+      oa << const_cast<const const_iterator&>(its.back());
     }
-    oa<<const_cast<const const_iterator&>(it_end);
+    oa << const_cast<const const_iterator&>(it_end);
   }
 
   MultiIndexContainer m2;
   std::istringstream iss(oss.str());
   boost::archive::text_iarchive ia(iss);
-  ia>>m2;
-  BOOST_TEST(all_indices_equal(m,m2));
+  ia >> m2;
+  BOOST_TEST(all_indices_equal(m, m2));
 
-  iterator it_end=m2.end();
-  for(iterator it=m2.begin();it!=it_end;++it){
+  iterator it_end = m2.end();
+  for (iterator it = m2.begin(); it != it_end; ++it) {
     iterator it2;
-    ia>>it2;
-    BOOST_TEST(it==it2);
+    ia >> it2;
+    BOOST_TEST(it == it2);
 
     /* exercise safe mode with this (unchecked) iterator */
-    BOOST_TEST(*it==*it2);
-    m2.erase(it,it2);
-    m2.erase(it2,it2);
-    m2.erase(it2,it);
+    BOOST_TEST(*it == *it2);
+    m2.erase(it, it2);
+    m2.erase(it2, it2);
+    m2.erase(it2, it);
     iterator it3(++it2);
     iterator it4;
-    it4=--it2;
-    BOOST_TEST(it==it4);
-    BOOST_TEST(it==boost::multi_index::project<0>(m2,it4));
+    it4 = --it2;
+    BOOST_TEST(it == it4);
+    BOOST_TEST(it == boost::multi_index::project<0>(m2, it4));
   }
   iterator it2;
-  ia>>it2;
-  BOOST_TEST(it_end==it2);
-  BOOST_TEST(it_end==boost::multi_index::project<0>(m2,it2));
+  ia >> it2;
+  BOOST_TEST(it_end == it2);
+  BOOST_TEST(it_end == boost::multi_index::project<0>(m2, it2));
 }

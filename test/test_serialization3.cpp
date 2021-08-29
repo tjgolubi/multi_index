@@ -17,54 +17,62 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/key_extractors.hpp>
 
-struct non_default_ctble
-{
-  non_default_ctble(int n_):n(n_){}
+struct non_default_ctble {
+  non_default_ctble(int n_): n(n_) {}
 
-  bool operator==(const non_default_ctble& x) const{return n==x.n;}
+  bool operator==(const non_default_ctble& x) const
+  {
+    return n == x.n;
+  }
 
   int n;
 };
 
 template<class Archive>
 void save_construct_data(
-  Archive& ar,const non_default_ctble* p,const unsigned int version)
+    Archive& ar, const non_default_ctble* p, const unsigned int version)
 {
-  if(version<3)return;
+  if (version < 3)
+    return;
 
-  ar<<boost::serialization::make_nvp("n",p->n);
+  ar << boost::serialization::make_nvp("n", p->n);
 }
 
 template<class Archive>
 void load_construct_data(
-  Archive& ar,non_default_ctble* p,const unsigned int version)
+    Archive& ar, non_default_ctble* p, const unsigned int version)
 {
-  if(version<3)return;
+  if (version < 3)
+    return;
 
-  int n=0;
-  ar>>boost::serialization::make_nvp("n",n);
-  ::new(p)non_default_ctble(n);
+  int n = 0;
+  ar >> boost::serialization::make_nvp("n", n);
+  ::new (p)non_default_ctble(n);
 }
 
 template<class Archive>
-void serialize(Archive&,non_default_ctble&,const unsigned int)
+void serialize(Archive&, non_default_ctble&, const unsigned int)
 {
 }
 
-namespace boost::serialization{
-template<> struct version<non_default_ctble>
-{
-  static const int value=3;
+namespace boost::serialization {
+template<> struct version<non_default_ctble> {
+  static const int value = 3;
 };
 } // boost::serialization
 
-struct non_copyable
-{
-  non_copyable(int n_=0):n(n_){}
-  non_copyable(non_copyable&& x):n(x.n){}
+struct non_copyable {
+  non_copyable(int n_ = 0): n(n_) {}
+  non_copyable(non_copyable&& x): n(x.n) {}
 
-  bool operator==(const non_copyable& x) const{return n==x.n;}
-  bool operator<(const non_copyable& x) const{return n<x.n;}
+  bool operator==(const non_copyable& x) const
+  {
+    return n == x.n;
+  }
+  bool operator<(const non_copyable& x) const
+  {
+    return n < x.n;
+  }
 
   int n;
 
@@ -74,25 +82,25 @@ private:
 };
 
 template<class Archive>
-void serialize(Archive& ar,non_copyable& x,const unsigned int)
+void serialize(Archive& ar, non_copyable& x, const unsigned int)
 {
-  ar&boost::serialization::make_nvp("n",x.n);
+  ar& boost::serialization::make_nvp("n", x.n);
 }
 
 using namespace boost::multi_index;
 
 void test_serialization3()
 {
-  const int N=100;
-  const int SHUFFLE=10232;
+  const int N = 100;
+  const int SHUFFLE = 10232;
 
-  typedef multi_index_container<
-    int,
-    indexed_by<
-      hashed_unique<identity<int> >,
-      sequenced<>
-    >,
-    non_std_allocator<int>
+  typedef multi_index_container <
+  int,
+  indexed_by <
+  hashed_unique<identity<int>>,
+  sequenced<>
+  >,
+  non_std_allocator<int>
   > hashed_set;
 
   typedef hashed_set::iterator       iterator;
@@ -100,95 +108,96 @@ void test_serialization3()
 
   hashed_set hs;
 
-  for(int i=0;i<N;++i){
-    hs.insert(i*SHUFFLE);
-  }
+  for (int i = 0; i < N; ++i)
+    hs.insert(i * SHUFFLE);
 
   std::ostringstream oss;
   {
     boost::archive::text_oarchive oa(oss);
-    oa<<const_cast<const hashed_set&>(hs);
+    oa << const_cast<const hashed_set&>(hs);
 
     std::vector<iterator> its(N);
-    for(int i=0;i<N;++i){
-      iterator it=hs.find(i*SHUFFLE);
+    for (int i = 0; i < N; ++i) {
+      iterator it = hs.find(i * SHUFFLE);
       its.push_back(it);
-      oa<<const_cast<const iterator&>(its.back());
+      oa << const_cast<const iterator&>(its.back());
     }
-    iterator it=hs.end();
-    oa<<const_cast<const iterator&>(it);
+    iterator it = hs.end();
+    oa << const_cast<const iterator&>(it);
 
-    std::vector<local_iterator> lits(2*N);
-    for(std::size_t buc=0;buc<hs.bucket_count();++buc){
-      for(local_iterator lit=hs.begin(buc),lit_end=hs.end(buc);
-          lit!=lit_end;++lit){
-        oa<<*lit;
+    std::vector<local_iterator> lits(2 * N);
+    for (std::size_t buc = 0; buc < hs.bucket_count(); ++buc) {
+      for (local_iterator lit = hs.begin(buc), lit_end = hs.end(buc);
+           lit != lit_end; ++lit) {
+        oa << *lit;
         lits.push_back(lit);
-        oa<<const_cast<const local_iterator&>(lits.back());
+        oa << const_cast<const local_iterator&>(lits.back());
       }
-      local_iterator lit2=hs.end(buc);
+      local_iterator lit2 = hs.end(buc);
       lits.push_back(lit2);
-      oa<<const_cast<const local_iterator&>(lits.back());
+      oa << const_cast<const local_iterator&>(lits.back());
     }
   }
 
   hashed_set hs2;
   std::istringstream iss(oss.str());
   boost::archive::text_iarchive ia(iss);
-  ia>>hs2;
-  BOOST_TEST(boost::multi_index::get<1>(hs)==boost::multi_index::get<1>(hs2));
+  ia >> hs2;
+  BOOST_TEST(boost::multi_index::get<1>(hs) == boost::multi_index::get<1>(hs2));
 
-  for(int j=0;j<N;++j){
+  for (int j = 0; j < N; ++j) {
     iterator it;
-    ia>>it;
-    BOOST_TEST(*it==j*SHUFFLE);
+    ia >> it;
+    BOOST_TEST(*it == j * SHUFFLE);
   }
   iterator it;
-  ia>>it;
-  BOOST_TEST(it==hs2.end());
+  ia >> it;
+  BOOST_TEST(it == hs2.end());
 
-  for(std::size_t buc=0;buc<hs2.bucket_count();++buc){
-    for(std::size_t k=0;k<hs2.bucket_size(buc);++k){
+  for (std::size_t buc = 0; buc < hs2.bucket_count(); ++buc) {
+    for (std::size_t k = 0; k < hs2.bucket_size(buc); ++k) {
       int n;
       local_iterator it_;
-      ia>>n;
-      ia>>it_;
-      BOOST_TEST(*it_==n);
+      ia >> n;
+      ia >> it_;
+      BOOST_TEST(*it_ == n);
     }
     local_iterator it2;
-    ia>>it2;
-    BOOST_TEST(it2==hs2.end(buc));
+    ia >> it2;
+    BOOST_TEST(it2 == hs2.end(buc));
   }
 
   {
-    typedef multi_index_container<
-      non_default_ctble,
-      indexed_by<
-        ordered_unique<
-          BOOST_MULTI_INDEX_MEMBER(non_default_ctble,int,n)
-        >
-      >
+    typedef multi_index_container <
+    non_default_ctble,
+    indexed_by <
+    ordered_unique <
+    BOOST_MULTI_INDEX_MEMBER(non_default_ctble, int, n)
+    >
+    >
     > multi_index_t;
 
     multi_index_t m;
-    for(int i=0;i<100;++i)m.insert(non_default_ctble(i));
+    for (int i = 0; i < 100; ++i)
+      m.insert(non_default_ctble(i));
     test_serialization(m);
   }
 
   {
     /* testcase for https://svn.boost.org/trac10/ticket/13478 */
 
-    typedef multi_index_container<
-      non_copyable,
-      indexed_by<
-        ordered_unique<
-          BOOST_MULTI_INDEX_MEMBER(non_copyable,int,n)
-        >
-      >
+    typedef multi_index_container <
+    non_copyable,
+    indexed_by <
+    ordered_unique <
+    BOOST_MULTI_INDEX_MEMBER(non_copyable, int, n)
+    >
+    >
     > multi_index_t;
 
     multi_index_t m;
-    for(int i=0;i<100;++i)m.emplace(i);
+    for (int i = 0; i < 100; ++i)
+      m.emplace(i);
     test_serialization(m);
   }
 }

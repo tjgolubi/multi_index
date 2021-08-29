@@ -17,8 +17,7 @@
 
 #define BOOST_MULTI_INDEX_ENABLE_SAFE_MODE
 
-struct safe_mode_exception
-{
+struct safe_mode_exception {
   safe_mode_exception(boost::multi_index::safe_mode::error_code error_code_):
     error_code(error_code_)
   {}

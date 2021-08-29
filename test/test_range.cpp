@@ -51,78 +51,79 @@ void test_range()
 
   int_set is;
 
-  for(int i=1;i<=10;++i)is.insert(i);
+  for (int i = 1; i <= 10; ++i)
+    is.insert(i);
 
-  std::pair<int_set::iterator,int_set::iterator> p;
+  std::pair<int_set::iterator, int_set::iterator> p;
 
-  p=is.range(unbounded,unbounded);
-  CHECK_RANGE(p,(1)(2)(3)(4)(5)(6)(7)(8)(9)(10));
+  p = is.range(unbounded, unbounded);
+  CHECK_RANGE(p, (1)(2)(3)(4)(5)(6)(7)(8)(9)(10));
 
-  p=is.range(
-    BIND1ST(std::less<int>(),5), /* 5 < x */
-    unbounded);
-  CHECK_RANGE(p,(6)(7)(8)(9)(10));
+  p = is.range(
+          BIND1ST(std::less<int>(), 5), /* 5 < x */
+          unbounded);
+  CHECK_RANGE(p, (6)(7)(8)(9)(10));
 
-  p=is.range(
-    BIND1ST(std::less_equal<int>(),8), /* 8 <= x */
-    unbounded);
-  CHECK_RANGE(p,(8)(9)(10));
+  p = is.range(
+          BIND1ST(std::less_equal<int>(), 8), /* 8 <= x */
+          unbounded);
+  CHECK_RANGE(p, (8)(9)(10));
 
-  p=is.range(
-    BIND1ST(std::less_equal<int>(),11), /* 11 <= x */
-    unbounded);
+  p = is.range(
+          BIND1ST(std::less_equal<int>(), 11), /* 11 <= x */
+          unbounded);
   CHECK_VOID_RANGE(p);
 
-  p=is.range(
-    unbounded,
-    BIND2ND(std::less<int>(),8)); /* x < 8 */
-  CHECK_RANGE(p,(1)(2)(3)(4)(5)(6)(7));
+  p = is.range(
+          unbounded,
+          BIND2ND(std::less<int>(), 8)); /* x < 8 */
+  CHECK_RANGE(p, (1)(2)(3)(4)(5)(6)(7));
 
-  p=is.range(
-    unbounded,
-    BIND2ND(std::less_equal<int>(),4)); /* x <= 4 */
-  CHECK_RANGE(p,(1)(2)(3)(4));
+  p = is.range(
+          unbounded,
+          BIND2ND(std::less_equal<int>(), 4)); /* x <= 4 */
+  CHECK_RANGE(p, (1)(2)(3)(4));
 
-  p=is.range(
-    unbounded,
-    BIND2ND(std::less_equal<int>(),0)); /* x <= 0 */
+  p = is.range(
+          unbounded,
+          BIND2ND(std::less_equal<int>(), 0)); /* x <= 0 */
   CHECK_VOID_RANGE(p);
 
-  p=is.range(
-    BIND1ST(std::less<int>(),6),        /* 6 <  x */
-    BIND2ND(std::less_equal<int>(),9)); /* x <= 9 */
-  CHECK_RANGE(p,(7)(8)(9));
+  p = is.range(
+          BIND1ST(std::less<int>(), 6),       /* 6 <  x */
+          BIND2ND(std::less_equal<int>(), 9)); /* x <= 9 */
+  CHECK_RANGE(p, (7)(8)(9));
 
-  p=is.range(
-    BIND1ST(std::less_equal<int>(),4), /* 4 <= x */
-    BIND2ND(std::less<int>(),5));      /* x <  5 */
-  CHECK_RANGE(p,(4));
+  p = is.range(
+          BIND1ST(std::less_equal<int>(), 4), /* 4 <= x */
+          BIND2ND(std::less<int>(), 5));     /* x <  5 */
+  CHECK_RANGE(p, (4));
 
-  p=is.range(
-    BIND1ST(std::less_equal<int>(),10),  /* 10 <=  x */
-    BIND2ND(std::less_equal<int>(),10)); /*  x <= 10 */
-  CHECK_RANGE(p,(10));
+  p = is.range(
+          BIND1ST(std::less_equal<int>(), 10), /* 10 <=  x */
+          BIND2ND(std::less_equal<int>(), 10)); /*  x <= 10 */
+  CHECK_RANGE(p, (10));
 
-  p=is.range(
-    BIND1ST(std::less<int>(),0),   /* 0 <  x */
-    BIND2ND(std::less<int>(),11)); /* x < 11 */
-  CHECK_RANGE(p,(1)(2)(3)(4)(5)(6)(7)(8)(9)(10));
+  p = is.range(
+          BIND1ST(std::less<int>(), 0),  /* 0 <  x */
+          BIND2ND(std::less<int>(), 11)); /* x < 11 */
+  CHECK_RANGE(p, (1)(2)(3)(4)(5)(6)(7)(8)(9)(10));
 
-  p=is.range(
-    BIND1ST(std::less<int>(),7),        /* 7 <  x */
-    BIND2ND(std::less_equal<int>(),7)); /* x <= 7 */
+  p = is.range(
+          BIND1ST(std::less<int>(), 7),       /* 7 <  x */
+          BIND2ND(std::less_equal<int>(), 7)); /* x <= 7 */
   CHECK_VOID_RANGE(p);
-  BOOST_TEST(p.first==is.upper_bound(7));
+  BOOST_TEST(p.first == is.upper_bound(7));
 
-  p=is.range(
-    BIND1ST(std::less_equal<int>(),8), /* 8 <= x */
-    BIND2ND(std::less<int>(),2));      /* x <  2 */
+  p = is.range(
+          BIND1ST(std::less_equal<int>(), 8), /* 8 <= x */
+          BIND2ND(std::less<int>(), 2));     /* x <  2 */
   CHECK_VOID_RANGE(p);
-  BOOST_TEST(p.first==is.lower_bound(8));
+  BOOST_TEST(p.first == is.lower_bound(8));
 
-  p=is.range(
-    BIND1ST(std::less<int>(),4),  /* 4 < x */
-    BIND2ND(std::less<int>(),5)); /* x < 5 */
+  p = is.range(
+          BIND1ST(std::less<int>(), 4), /* 4 < x */
+          BIND2ND(std::less<int>(), 5)); /* x < 5 */
   CHECK_VOID_RANGE(p);
-  BOOST_TEST(p.first!=is.end());
+  BOOST_TEST(p.first != is.end());
 }

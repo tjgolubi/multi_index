@@ -14,43 +14,52 @@
 #include <memory>
 
 template<typename T>
-struct count_allocator:std::allocator<T>
-{
+struct count_allocator: std::allocator<T> {
   typedef std::allocator<T> super;
   template<class U>
-  struct rebind{typedef count_allocator<U> other;};
+  struct rebind {
+    typedef count_allocator<U> other;
+  };
 
-  count_allocator(std::size_t& element_count,std::size_t& allocator_count):
-    pelement_count(&element_count),pallocator_count(&allocator_count)
-    {++(*pallocator_count);}
+  count_allocator(std::size_t& element_count, std::size_t& allocator_count):
+    pelement_count(&element_count), pallocator_count(&allocator_count)
+  {
+    ++(*pallocator_count);
+  }
   count_allocator(const count_allocator<T>& x):
     super(x),
-    pelement_count(x.pelement_count),pallocator_count(x.pallocator_count)
-    {++(*pallocator_count);}
+    pelement_count(x.pelement_count), pallocator_count(x.pallocator_count)
+  {
+    ++(*pallocator_count);
+  }
   template<class U>count_allocator(const count_allocator<U>& x):
     super(x),
-    pelement_count(x.pelement_count),pallocator_count(x.pallocator_count)
-    {++(*pallocator_count);}
+    pelement_count(x.pelement_count), pallocator_count(x.pallocator_count)
+  {
+    ++(*pallocator_count);
+  }
   ~count_allocator()
-    {--(*pallocator_count);}
+  {
+    --(*pallocator_count);
+  }
 
   count_allocator& operator=(const count_allocator<T>& x)
   {
-    pelement_count=x.pelement_count;
-    pallocator_count=x.pallocator_count;
+    pelement_count = x.pelement_count;
+    pallocator_count = x.pallocator_count;
     return *this;
   }
 
   T* allocate(std::size_t n)
   {
-    *pelement_count+=n;
+    *pelement_count += n;
     return super::allocate(n);
   }
 
-  void deallocate(T* p,std::size_t n)
+  void deallocate(T* p, std::size_t n)
   {
-    super::deallocate(p,n);
-    *pelement_count-=n;
+    super::deallocate(p, n);
+    *pelement_count -= n;
   }
 
   std::size_t* pelement_count;

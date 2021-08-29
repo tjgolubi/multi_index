@@ -53,66 +53,65 @@ static void local_test_rearrange()
 
   iterator it;
 
-  it=sc.begin();
-  std::advance(it,3);
-  sc.relocate(sc.begin(),it);
-  CHECK_EQUAL(sc,(3)(0)(1)(2)(4)(5));
-  BOOST_TEST(it==sc.begin());
+  it = sc.begin();
+  std::advance(it, 3);
+  sc.relocate(sc.begin(), it);
+  CHECK_EQUAL(sc, (3)(0)(1)(2)(4)(5));
+  BOOST_TEST(it == sc.begin());
 
-  sc.relocate(it,it);
-  CHECK_EQUAL(sc,(3)(0)(1)(2)(4)(5));
+  sc.relocate(it, it);
+  CHECK_EQUAL(sc, (3)(0)(1)(2)(4)(5));
 
-  std::advance(it,3);
-  sc.relocate(sc.end(),it,sc.end());
-  CHECK_EQUAL(sc,(3)(0)(1)(2)(4)(5));
+  std::advance(it, 3);
+  sc.relocate(sc.end(), it, sc.end());
+  CHECK_EQUAL(sc, (3)(0)(1)(2)(4)(5));
 
-  sc.relocate(sc.begin(),it,it);
-  CHECK_EQUAL(sc,(3)(0)(1)(2)(4)(5));
+  sc.relocate(sc.begin(), it, it);
+  CHECK_EQUAL(sc, (3)(0)(1)(2)(4)(5));
 
   iterator it2;
 
-  it2=sc.begin();
+  it2 = sc.begin();
   ++it2;
-  sc.relocate(it2,it,sc.end());
-  CHECK_EQUAL(sc,(3)(2)(4)(5)(0)(1));
-  BOOST_TEST(std::distance(it,it2)==3);
+  sc.relocate(it2, it, sc.end());
+  CHECK_EQUAL(sc, (3)(2)(4)(5)(0)(1));
+  BOOST_TEST(std::distance(it, it2) == 3);
 
-  sc.relocate(std::prev(sc.end()),it,it2);
-  CHECK_EQUAL(sc,(3)(0)(2)(4)(5)(1));
+  sc.relocate(std::prev(sc.end()), it, it2);
+  CHECK_EQUAL(sc, (3)(0)(2)(4)(5)(1));
 
-  std::vector<std::reference_wrapper<const value_type> > v;
-  for(iterator it3=sc.begin();it3!=sc.end();++it3){
+  std::vector<std::reference_wrapper<const value_type>> v;
+  for (iterator it3 = sc.begin(); it3 != sc.end(); ++it3)
     v.push_back(std::cref(*it3));
-  }
 
   sc.rearrange(v.begin());
-  BOOST_TEST(std::equal(sc.begin(),sc.end(),v.begin()));
+  BOOST_TEST(std::equal(sc.begin(), sc.end(), v.begin()));
 
-  std::reverse(v.begin(),v.end());
+  std::reverse(v.begin(), v.end());
   sc.rearrange(v.begin());
-  BOOST_TEST(std::equal(sc.begin(),sc.end(),v.begin()));
+  BOOST_TEST(std::equal(sc.begin(), sc.end(), v.begin()));
 
-  std::sort(v.begin(),v.end());
+  std::sort(v.begin(), v.end());
   sc.rearrange(v.begin());
-  BOOST_TEST(std::equal(sc.begin(),sc.end(),v.begin()));
+  BOOST_TEST(std::equal(sc.begin(), sc.end(), v.begin()));
 
-  std::reverse(v.begin(),v.begin()+v.size()/2);
+  std::reverse(v.begin(), v.begin() + v.size() / 2);
   sc.rearrange(v.begin());
-  BOOST_TEST(std::equal(sc.begin(),sc.end(),v.begin()));
+  BOOST_TEST(std::equal(sc.begin(), sc.end(), v.begin()));
 }
 
 void test_rearrange()
 {
-  typedef multi_index_container<
-    int,
-    indexed_by<sequenced<> >
+  typedef multi_index_container <
+  int,
+  indexed_by<sequenced<>>
   > int_list;
 
   local_test_rearrange<int_list>();
 
-  typedef multi_index_container<
-    int,
-    indexed_by<random_access<> >
+  typedef multi_index_container <
+  int,
+  indexed_by<random_access<>>
   > int_vector;
 
   local_test_rearrange<int_vector>();

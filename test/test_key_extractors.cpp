@@ -20,122 +20,163 @@
 
 using namespace boost::multi_index;
 
-struct test_class
-{
+struct test_class {
   int       int_member;
   const int int_cmember;
 
-  bool bool_mem_fun_const() const{return true;}
-  bool bool_mem_fun(){return false;}
-  bool bool_mem_fun_volatile()volatile{return false;}
-  bool bool_mem_fun_cv() const volatile{return true;}
+  bool bool_mem_fun_const() const
+  {
+    return true;
+  }
+  bool bool_mem_fun()
+  {
+    return false;
+  }
+  bool bool_mem_fun_volatile()volatile
+  {
+    return false;
+  }
+  bool bool_mem_fun_cv() const volatile
+  {
+    return true;
+  }
 
-  bool bool_mem_fun_cref() const&{return true;}
-  bool bool_mem_fun_ref()&{return false;}
-  bool bool_mem_fun_vref()volatile&{return false;}
-  bool bool_mem_fun_cvref() const volatile&{return true;}
+  bool bool_mem_fun_cref() const&
+  {
+    return true;
+  }
+  bool bool_mem_fun_ref()& {return false;}
+  bool bool_mem_fun_vref()volatile&
+  {
+    return false;
+  }
+  bool bool_mem_fun_cvref() const volatile&
+  {
+    return true;
+  }
 
-  static bool bool_global_fun(test_class){return true;}
-  static bool bool_global_fun_const_ref(const test_class&){return false;}
-  static bool bool_global_fun_ref(test_class&){return true;}
+  static bool bool_global_fun(test_class)
+  {
+    return true;
+  }
+  static bool bool_global_fun_const_ref(const test_class&)
+  {
+    return false;
+  }
+  static bool bool_global_fun_ref(test_class&)
+  {
+    return true;
+  }
 
-  test_class(int i=0):int_member(i),int_cmember(i){}
-  test_class(int i,int j):int_member(i),int_cmember(j){}
+  test_class(int i = 0): int_member(i), int_cmember(i) {}
+  test_class(int i, int j): int_member(i), int_cmember(j) {}
   test_class(const test_class& x):
-    int_member(x.int_member),int_cmember(x.int_cmember){}
+    int_member(x.int_member), int_cmember(x.int_cmember) {}
 
   test_class& operator=(const test_class& x)
   {
-    int_member=x.int_member;
+    int_member = x.int_member;
     return *this;
   }
 
   bool operator<(const test_class& x) const
   {
-    if(int_member<x.int_member)return true;
-    if(x.int_member<int_member)return false;
-    return int_cmember<x.int_cmember;
+    if (int_member < x.int_member)
+      return true;
+    if (x.int_member < int_member)
+      return false;
+    return int_cmember < x.int_cmember;
   }
 
   bool operator==(const test_class& x) const
   {
-    return int_member==x.int_member&&int_cmember==x.int_cmember;
+    return int_member == x.int_member && int_cmember == x.int_cmember;
   }
 };
 
-struct test_derived_class:test_class
-{
-  test_derived_class(int i=0):test_class(i){}
-  test_derived_class(int i,int j):test_class(i,j){}
+struct test_derived_class: test_class {
+  test_derived_class(int i = 0): test_class(i) {}
+  test_derived_class(int i, int j): test_class(i, j) {}
 };
 
 typedef identity<test_class>                                       idn;
 typedef identity<const test_class>                                 cidn;
-typedef BOOST_MULTI_INDEX_MEMBER(test_class,int,int_member)        key_m;
-typedef BOOST_MULTI_INDEX_MEMBER(test_class,const int,int_member)  ckey_m;
-typedef BOOST_MULTI_INDEX_MEMBER(test_class,const int,int_cmember) key_cm;
-typedef BOOST_MULTI_INDEX_MEM_FUN(test_class,bool,bool_mem_fun)    key_mf;
+typedef BOOST_MULTI_INDEX_MEMBER(test_class, int, int_member)        key_m;
+typedef BOOST_MULTI_INDEX_MEMBER(test_class, const int, int_member)  ckey_m;
+typedef BOOST_MULTI_INDEX_MEMBER(test_class, const int, int_cmember) key_cm;
+typedef BOOST_MULTI_INDEX_MEM_FUN(test_class, bool, bool_mem_fun)    key_mf;
 typedef BOOST_MULTI_INDEX_CONST_MEM_FUN(
-          test_class,bool,bool_mem_fun_const)                      key_cmf;
-typedef volatile_mem_fun<
-          test_class,bool,&test_class::bool_mem_fun_volatile>      key_vmf;
-typedef cv_mem_fun<test_class,bool,&test_class::bool_mem_fun_cv>   key_cvmf;
+    test_class, bool, bool_mem_fun_const)                      key_cmf;
+typedef volatile_mem_fun <
+test_class, bool, &test_class::bool_mem_fun_volatile >      key_vmf;
+typedef cv_mem_fun<test_class, bool, &test_class::bool_mem_fun_cv>   key_cvmf;
 
-typedef cref_mem_fun<
-          test_class,bool,&test_class::bool_mem_fun_cref>          key_crmf;
-typedef ref_mem_fun<test_class,bool,&test_class::bool_mem_fun_ref> key_rmf;
-typedef vref_mem_fun<
-          test_class,bool,&test_class::bool_mem_fun_vref>          key_vrmf;
-typedef cvref_mem_fun<
-          test_class,bool,&test_class::bool_mem_fun_cvref>         key_cvrmf;
+typedef cref_mem_fun <
+test_class, bool, &test_class::bool_mem_fun_cref >          key_crmf;
+typedef ref_mem_fun<test_class, bool, &test_class::bool_mem_fun_ref> key_rmf;
+typedef vref_mem_fun <
+test_class, bool, &test_class::bool_mem_fun_vref >          key_vrmf;
+typedef cvref_mem_fun <
+test_class, bool, &test_class::bool_mem_fun_cvref >         key_cvrmf;
 
-typedef global_fun<test_class,bool,&test_class::bool_global_fun>   key_gf;
-typedef global_fun<
-          const test_class&,bool,
-          &test_class::bool_global_fun_const_ref
-        >                                                          key_gcrf;
-typedef global_fun<
-          test_class&,bool,
-          &test_class::bool_global_fun_ref
-        >                                                          key_grf;
-typedef composite_key<
-          test_class,
-          idn,
-          key_m,
-          key_cm,
-          key_cmf
-        >                                                          compkey;
-typedef composite_key<
-          test_class,
-          cidn,
-          ckey_m
-        >                                                          ccompkey;
-typedef composite_key<
-          std::reference_wrapper<test_class>,
-          key_mf
-        >                                                          ccompw_key;
+typedef global_fun<test_class, bool, &test_class::bool_global_fun>   key_gf;
+typedef global_fun <
+const test_class&, bool,
+      &test_class::bool_global_fun_const_ref
+      >                                                          key_gcrf;
+typedef global_fun <
+test_class&, bool,
+           &test_class::bool_global_fun_ref
+           >                                                          key_grf;
+typedef composite_key <
+test_class,
+idn,
+key_m,
+key_cm,
+key_cmf
+>                                                          compkey;
+typedef composite_key <
+test_class,
+cidn,
+ckey_m
+>                                                          ccompkey;
+typedef composite_key <
+std::reference_wrapper<test_class>,
+    key_mf
+    >                                                          ccompw_key;
 
 /* testcases for problems with non-copyable classes reported at
  * http://lists.boost.org/Archives/boost/2006/04/103065.php
  */
 
-struct test_nc_class
-{
+struct test_nc_class {
   int       int_member;
   const int int_cmember;
 
-  bool bool_mem_fun_const() const{return true;}
-  bool bool_mem_fun(){return false;}
+  bool bool_mem_fun_const() const
+  {
+    return true;
+  }
+  bool bool_mem_fun()
+  {
+    return false;
+  }
 
-  static bool bool_global_fun_const_ref(const test_nc_class&){return false;}
-  static bool bool_global_fun_ref(test_nc_class&){return true;}
+  static bool bool_global_fun_const_ref(const test_nc_class&)
+  {
+    return false;
+  }
+  static bool bool_global_fun_ref(test_nc_class&)
+  {
+    return true;
+  }
 
-  test_nc_class(int i=0):int_member(i),int_cmember(i){}
-  test_nc_class(int i,int j):int_member(i),int_cmember(j){}
+  test_nc_class(int i = 0): int_member(i), int_cmember(i) {}
+  test_nc_class(int i, int j): int_member(i), int_cmember(j) {}
 
   bool operator==(const test_nc_class& x) const
   {
-    return int_member==x.int_member&&int_cmember==x.int_cmember;
+    return int_member == x.int_member && int_cmember == x.int_cmember;
   }
 
 private:
@@ -143,36 +184,35 @@ private:
   test_nc_class& operator=(const test_nc_class&);
 };
 
-struct test_nc_derived_class:test_nc_class
-{
-  test_nc_derived_class(int i=0):test_nc_class(i){}
-  test_nc_derived_class(int i,int j):test_nc_class(i,j){}
+struct test_nc_derived_class: test_nc_class {
+  test_nc_derived_class(int i = 0): test_nc_class(i) {}
+  test_nc_derived_class(int i, int j): test_nc_class(i, j) {}
 };
 
 typedef identity<test_nc_class>                                nc_idn;
 typedef identity<const test_nc_class>                          nc_cidn;
-typedef BOOST_MULTI_INDEX_MEMBER(test_nc_class,int,int_member) nc_key_m;
+typedef BOOST_MULTI_INDEX_MEMBER(test_nc_class, int, int_member) nc_key_m;
 typedef BOOST_MULTI_INDEX_MEMBER(
-          test_nc_class,const int,int_member)                  nc_ckey_m;
+    test_nc_class, const int, int_member)                  nc_ckey_m;
 typedef BOOST_MULTI_INDEX_CONST_MEM_FUN(
-          test_nc_class,bool,bool_mem_fun_const)               nc_key_cmf;
+    test_nc_class, bool, bool_mem_fun_const)               nc_key_cmf;
 typedef BOOST_MULTI_INDEX_MEM_FUN(
-          test_nc_class,bool,bool_mem_fun)                     nc_key_mf;
-typedef global_fun<
-          const test_nc_class&,bool,
-          &test_nc_class::bool_global_fun_const_ref
-        >                                                      nc_key_gcrf;
-typedef global_fun<
-          test_nc_class&,bool,
-          &test_nc_class::bool_global_fun_ref
-        >                                                      nc_key_grf;
-typedef composite_key<
-          test_nc_class,
-          nc_idn,
-          nc_key_m,
-          nc_ckey_m,
-          nc_key_cmf
-        >                                                      nc_compkey;
+    test_nc_class, bool, bool_mem_fun)                     nc_key_mf;
+typedef global_fun <
+const test_nc_class&, bool,
+      &test_nc_class::bool_global_fun_const_ref
+      >                                                      nc_key_gcrf;
+typedef global_fun <
+test_nc_class&, bool,
+              &test_nc_class::bool_global_fun_ref
+              >                                                      nc_key_grf;
+typedef composite_key <
+test_nc_class,
+nc_idn,
+nc_key_m,
+nc_ckey_m,
+nc_key_cmf
+>                                                      nc_compkey;
 
 void test_key_extractors()
 {
@@ -196,20 +236,20 @@ void test_key_extractors()
   ccompkey   ccmpk;
   ccompw_key ccmpk_w;
 
-  test_derived_class                         td(-1,0);
-  const test_derived_class&                  ctdr=td;
+  test_derived_class                         td(-1, 0);
+  const test_derived_class&                  ctdr = td;
 
-  test_class&                                tr=td;
-  const test_class&                          ctr=tr;
+  test_class&                                tr = td;
+  const test_class&                          ctr = tr;
 
-  test_derived_class*                        tdp=&td;
-  const test_derived_class*                  ctdp=&ctdr;
+  test_derived_class*                        tdp = &td;
+  const test_derived_class*                  ctdp = &ctdr;
 
-  test_class*                                tp=&tr;
-  const test_class*                          ctp=&tr;
+  test_class*                                tp = &tr;
+  const test_class*                          ctp = &tr;
 
-  test_class**                               tpp=&tp;
-  const test_class**                         ctpp=&ctp;
+  test_class**                               tpp = &tp;
+  const test_class**                         ctpp = &ctp;
 
   auto tap  = std::make_unique<test_class*>(tp);
   auto ctap = std::make_unique<const test_class*>(ctp);
@@ -217,115 +257,115 @@ void test_key_extractors()
   std::reference_wrapper<test_class>         tw(tr);
   std::reference_wrapper<const test_class>   ctw(tr);
 
-  id(tr).int_member=0;
-  BOOST_TEST(id(tr).int_member==0);
-  BOOST_TEST(cid(tr).int_member==0);
-  BOOST_TEST(k_m(tr)==0);
-  BOOST_TEST(ck_m(tr)==0);
-  BOOST_TEST(cmpk(tr)==std::make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(tr)==std::make_tuple(test_class(0,0),0));
-  BOOST_TEST(id(ctr).int_member==0);
-  BOOST_TEST(cid(ctr).int_member==0);
-  BOOST_TEST(k_m(ctr)==0);
-  BOOST_TEST(ck_m(ctr)==0);
-  BOOST_TEST(cmpk(ctr)==std::make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(ctr)==std::make_tuple(test_class(0,0),0));
+  id(tr).int_member = 0;
+  BOOST_TEST(id(tr).int_member == 0);
+  BOOST_TEST(cid(tr).int_member == 0);
+  BOOST_TEST(k_m(tr) == 0);
+  BOOST_TEST(ck_m(tr) == 0);
+  BOOST_TEST(cmpk(tr) == std::make_tuple(test_class(0, 0), 0, 0, true));
+  BOOST_TEST(ccmpk(tr) == std::make_tuple(test_class(0, 0), 0));
+  BOOST_TEST(id(ctr).int_member == 0);
+  BOOST_TEST(cid(ctr).int_member == 0);
+  BOOST_TEST(k_m(ctr) == 0);
+  BOOST_TEST(ck_m(ctr) == 0);
+  BOOST_TEST(cmpk(ctr) == std::make_tuple(test_class(0, 0), 0, 0, true));
+  BOOST_TEST(ccmpk(ctr) == std::make_tuple(test_class(0, 0), 0));
 
-  BOOST_TEST(id(td).int_member==0);
-  BOOST_TEST(cid(td).int_member==0);
-  BOOST_TEST(k_m(td)==0);
-  BOOST_TEST(ck_m(td)==0);
-  BOOST_TEST(cmpk(td)==std::make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(td)==std::make_tuple(test_class(0,0),0));
-  BOOST_TEST(id(ctdr).int_member==0);
-  BOOST_TEST(cid(ctdr).int_member==0);
-  BOOST_TEST(k_m(ctdr)==0);
-  BOOST_TEST(ck_m(ctdr)==0);
-  BOOST_TEST(cmpk(ctdr)==std::make_tuple(test_class(0,0),0,0,true));
-  BOOST_TEST(ccmpk(ctdr)==std::make_tuple(test_class(0,0),0));
+  BOOST_TEST(id(td).int_member == 0);
+  BOOST_TEST(cid(td).int_member == 0);
+  BOOST_TEST(k_m(td) == 0);
+  BOOST_TEST(ck_m(td) == 0);
+  BOOST_TEST(cmpk(td) == std::make_tuple(test_class(0, 0), 0, 0, true));
+  BOOST_TEST(ccmpk(td) == std::make_tuple(test_class(0, 0), 0));
+  BOOST_TEST(id(ctdr).int_member == 0);
+  BOOST_TEST(cid(ctdr).int_member == 0);
+  BOOST_TEST(k_m(ctdr) == 0);
+  BOOST_TEST(ck_m(ctdr) == 0);
+  BOOST_TEST(cmpk(ctdr) == std::make_tuple(test_class(0, 0), 0, 0, true));
+  BOOST_TEST(ccmpk(ctdr) == std::make_tuple(test_class(0, 0), 0));
 
-  k_m(tr)=1;
-  BOOST_TEST(id(tp).int_member==1);
-  BOOST_TEST(cid(tp).int_member==1);
-  BOOST_TEST(k_m(tp)==1);
-  BOOST_TEST(ck_m(tp)==1);
-  BOOST_TEST(cmpk(tp)==std::make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(tp)==std::make_tuple(test_class(1,0),1));
-  BOOST_TEST(cid(ctp).int_member==1);
-  BOOST_TEST(ck_m(ctp)==1);
-  BOOST_TEST(cmpk(ctp)==std::make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(ctp)==std::make_tuple(test_class(1,0),1));
+  k_m(tr) = 1;
+  BOOST_TEST(id(tp).int_member == 1);
+  BOOST_TEST(cid(tp).int_member == 1);
+  BOOST_TEST(k_m(tp) == 1);
+  BOOST_TEST(ck_m(tp) == 1);
+  BOOST_TEST(cmpk(tp) == std::make_tuple(test_class(1, 0), 1, 0, true));
+  BOOST_TEST(ccmpk(tp) == std::make_tuple(test_class(1, 0), 1));
+  BOOST_TEST(cid(ctp).int_member == 1);
+  BOOST_TEST(ck_m(ctp) == 1);
+  BOOST_TEST(cmpk(ctp) == std::make_tuple(test_class(1, 0), 1, 0, true));
+  BOOST_TEST(ccmpk(ctp) == std::make_tuple(test_class(1, 0), 1));
 
-  BOOST_TEST(id(tdp).int_member==1);
-  BOOST_TEST(cid(tdp).int_member==1);
-  BOOST_TEST(k_m(tdp)==1);
-  BOOST_TEST(ck_m(tdp)==1);
-  BOOST_TEST(cmpk(tdp)==std::make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(tdp)==std::make_tuple(test_class(1,0),1));
-  BOOST_TEST(cid(ctdp).int_member==1);
-  BOOST_TEST(ck_m(ctdp)==1);
-  BOOST_TEST(cmpk(ctdp)==std::make_tuple(test_class(1,0),1,0,true));
-  BOOST_TEST(ccmpk(ctdp)==std::make_tuple(test_class(1,0),1));
+  BOOST_TEST(id(tdp).int_member == 1);
+  BOOST_TEST(cid(tdp).int_member == 1);
+  BOOST_TEST(k_m(tdp) == 1);
+  BOOST_TEST(ck_m(tdp) == 1);
+  BOOST_TEST(cmpk(tdp) == std::make_tuple(test_class(1, 0), 1, 0, true));
+  BOOST_TEST(ccmpk(tdp) == std::make_tuple(test_class(1, 0), 1));
+  BOOST_TEST(cid(ctdp).int_member == 1);
+  BOOST_TEST(ck_m(ctdp) == 1);
+  BOOST_TEST(cmpk(ctdp) == std::make_tuple(test_class(1, 0), 1, 0, true));
+  BOOST_TEST(ccmpk(ctdp) == std::make_tuple(test_class(1, 0), 1));
 
-  k_m(tp)=2;
-  BOOST_TEST(id(tpp).int_member==2);
-  BOOST_TEST(cid(tpp).int_member==2);
-  BOOST_TEST(k_m(tpp)==2);
-  BOOST_TEST(ck_m(tpp)==2);
-  BOOST_TEST(cmpk(tpp)==std::make_tuple(test_class(2,0),2,0,true));
-  BOOST_TEST(ccmpk(tpp)==std::make_tuple(test_class(2,0),2));
-  BOOST_TEST(cid(ctpp).int_member==2);
-  BOOST_TEST(ck_m(ctpp)==2);
-  BOOST_TEST(cmpk(ctpp)==std::make_tuple(test_class(2,0),2,0,true));
-  BOOST_TEST(ccmpk(ctpp)==std::make_tuple(test_class(2,0),2));
+  k_m(tp) = 2;
+  BOOST_TEST(id(tpp).int_member == 2);
+  BOOST_TEST(cid(tpp).int_member == 2);
+  BOOST_TEST(k_m(tpp) == 2);
+  BOOST_TEST(ck_m(tpp) == 2);
+  BOOST_TEST(cmpk(tpp) == std::make_tuple(test_class(2, 0), 2, 0, true));
+  BOOST_TEST(ccmpk(tpp) == std::make_tuple(test_class(2, 0), 2));
+  BOOST_TEST(cid(ctpp).int_member == 2);
+  BOOST_TEST(ck_m(ctpp) == 2);
+  BOOST_TEST(cmpk(ctpp) == std::make_tuple(test_class(2, 0), 2, 0, true));
+  BOOST_TEST(ccmpk(ctpp) == std::make_tuple(test_class(2, 0), 2));
 
-  k_m(tpp)=3;
-  BOOST_TEST(id(tap).int_member==3);
-  BOOST_TEST(cid(tap).int_member==3);
-  BOOST_TEST(k_m(tap)==3);
-  BOOST_TEST(ck_m(tap)==3);
-  BOOST_TEST(cmpk(tap)==std::make_tuple(test_class(3,0),3,0,true));
-  BOOST_TEST(ccmpk(tap)==std::make_tuple(test_class(3,0),3));
-  BOOST_TEST(cid(ctap).int_member==3);
-  BOOST_TEST(ck_m(ctap)==3);
-  BOOST_TEST(cmpk(ctap)==std::make_tuple(test_class(3,0),3,0,true));
-  BOOST_TEST(ccmpk(ctap)==std::make_tuple(test_class(3,0),3));
+  k_m(tpp) = 3;
+  BOOST_TEST(id(tap).int_member == 3);
+  BOOST_TEST(cid(tap).int_member == 3);
+  BOOST_TEST(k_m(tap) == 3);
+  BOOST_TEST(ck_m(tap) == 3);
+  BOOST_TEST(cmpk(tap) == std::make_tuple(test_class(3, 0), 3, 0, true));
+  BOOST_TEST(ccmpk(tap) == std::make_tuple(test_class(3, 0), 3));
+  BOOST_TEST(cid(ctap).int_member == 3);
+  BOOST_TEST(ck_m(ctap) == 3);
+  BOOST_TEST(cmpk(ctap) == std::make_tuple(test_class(3, 0), 3, 0, true));
+  BOOST_TEST(ccmpk(ctap) == std::make_tuple(test_class(3, 0), 3));
 
-  k_m(tap)=4;
-  BOOST_TEST(id(tw).int_member==4);
-  BOOST_TEST(cid(tw).int_member==4);
-  BOOST_TEST(k_m(tw)==4);
-  BOOST_TEST(ck_m(tw)==4);
-  BOOST_TEST(cmpk(tw)==std::make_tuple(test_class(4,0),4,0,true));
-  BOOST_TEST(ccmpk(tw)==std::make_tuple(test_class(4,0),4));
+  k_m(tap) = 4;
+  BOOST_TEST(id(tw).int_member == 4);
+  BOOST_TEST(cid(tw).int_member == 4);
+  BOOST_TEST(k_m(tw) == 4);
+  BOOST_TEST(ck_m(tw) == 4);
+  BOOST_TEST(cmpk(tw) == std::make_tuple(test_class(4, 0), 4, 0, true));
+  BOOST_TEST(ccmpk(tw) == std::make_tuple(test_class(4, 0), 4));
 
-  k_m(tw)=5;
-  BOOST_TEST(id(ctw).int_member==5);
-  BOOST_TEST(cid(ctw).int_member==5);
-  BOOST_TEST(k_m(ctw)==5);
-  BOOST_TEST(ck_m(ctw)==5);
-  BOOST_TEST(cmpk(ctw)==std::make_tuple(test_class(5,0),5,0,true));
-  BOOST_TEST(ccmpk(ctw)==std::make_tuple(test_class(5,0),5));
+  k_m(tw) = 5;
+  BOOST_TEST(id(ctw).int_member == 5);
+  BOOST_TEST(cid(ctw).int_member == 5);
+  BOOST_TEST(k_m(ctw) == 5);
+  BOOST_TEST(ck_m(ctw) == 5);
+  BOOST_TEST(cmpk(ctw) == std::make_tuple(test_class(5, 0), 5, 0, true));
+  BOOST_TEST(ccmpk(ctw) == std::make_tuple(test_class(5, 0), 5));
 
-  BOOST_TEST(k_cm(tr)==0);
-  BOOST_TEST(k_cm(ctr)==0);
+  BOOST_TEST(k_cm(tr) == 0);
+  BOOST_TEST(k_cm(ctr) == 0);
 
-  BOOST_TEST(k_cm(td)==0);
-  BOOST_TEST(k_cm(ctdr)==0);
+  BOOST_TEST(k_cm(td) == 0);
+  BOOST_TEST(k_cm(ctdr) == 0);
 
-  BOOST_TEST(k_cm(tp)==0);
-  BOOST_TEST(k_cm(ctp)==0);
+  BOOST_TEST(k_cm(tp) == 0);
+  BOOST_TEST(k_cm(ctp) == 0);
 
-  BOOST_TEST(k_cm(tdp)==0);
-  BOOST_TEST(k_cm(ctdp)==0);
-  
-  BOOST_TEST(k_cm(tpp)==0);
-  BOOST_TEST(k_cm(ctpp)==0);
-  BOOST_TEST(k_cm(tap)==0);
-  BOOST_TEST(k_cm(ctap)==0);
+  BOOST_TEST(k_cm(tdp) == 0);
+  BOOST_TEST(k_cm(ctdp) == 0);
 
-  BOOST_TEST(k_cm(tw)==0);
-  BOOST_TEST(k_cm(ctw)==0);
+  BOOST_TEST(k_cm(tpp) == 0);
+  BOOST_TEST(k_cm(ctpp) == 0);
+  BOOST_TEST(k_cm(tap) == 0);
+  BOOST_TEST(k_cm(ctap) == 0);
+
+  BOOST_TEST(k_cm(tw) == 0);
+  BOOST_TEST(k_cm(ctw) == 0);
 
   BOOST_TEST(k_cmf(tr));
   BOOST_TEST(k_cmf(ctr));
@@ -452,7 +492,7 @@ void test_key_extractors()
 
   BOOST_TEST(k_gf(tw));
   BOOST_TEST(k_gf(ctw));
-  
+
   BOOST_TEST(!k_gcrf(tr));
   BOOST_TEST(!k_gcrf(ctr));
 
@@ -485,11 +525,11 @@ void test_key_extractors()
   BOOST_TEST(k_grf(tap));
   BOOST_TEST(k_grf(tw));
 
-  BOOST_TEST(ccmpk_w(tw)==std::make_tuple(false));
+  BOOST_TEST(ccmpk_w(tw) == std::make_tuple(false));
 
-/* testcases for problems with non-copyable classes reported at
- * http://lists.boost.org/Archives/boost/2006/04/103065.php
- */
+  /* testcases for problems with non-copyable classes reported at
+   * http://lists.boost.org/Archives/boost/2006/04/103065.php
+   */
 
   nc_idn        nc_id;
   nc_cidn       nc_cid;
@@ -501,15 +541,15 @@ void test_key_extractors()
   nc_key_grf    nc_k_grf;
   nc_compkey    nc_cmpk;
 
-  test_nc_derived_class nc_td(-1,0);
+  test_nc_derived_class nc_td(-1, 0);
 
-  nc_id(nc_td).int_member=0;
-  BOOST_TEST(nc_id(nc_td).int_member==0);
-  BOOST_TEST(nc_cid(nc_td).int_member==0);
+  nc_id(nc_td).int_member = 0;
+  BOOST_TEST(nc_id(nc_td).int_member == 0);
+  BOOST_TEST(nc_cid(nc_td).int_member == 0);
 
-  nc_k_m(&nc_td)=1;
-  BOOST_TEST(nc_k_m(&nc_td)==1);
-  BOOST_TEST(nc_ck_m(&nc_td)==1);
+  nc_k_m(&nc_td) = 1;
+  BOOST_TEST(nc_k_m(&nc_td) == 1);
+  BOOST_TEST(nc_ck_m(&nc_td) == 1);
 
   BOOST_TEST(nc_k_cmf(nc_td));
   BOOST_TEST(!nc_k_mf(nc_td));
@@ -517,23 +557,24 @@ void test_key_extractors()
   BOOST_TEST(!nc_k_gcrf(nc_td));
   BOOST_TEST(nc_k_grf(nc_td));
 
-  test_nc_class nc_t(1,0);
-  BOOST_TEST(nc_cmpk(nc_td)==std::make_tuple(std::cref(nc_t),1,1,true));
-  
-  std::list<test_class> tl;
-  for(int i=0;i<20;++i)tl.push_back(test_class(i));
+  test_nc_class nc_t(1, 0);
+  BOOST_TEST(nc_cmpk(nc_td) == std::make_tuple(std::cref(nc_t), 1, 1, true));
 
-  int j=0;
-  for(std::list<test_class>::iterator it=tl.begin();it!=tl.end();++it){
-    BOOST_TEST(k_m(it)==j);
-    BOOST_TEST(k_cm(it)==j);
+  std::list<test_class> tl;
+  for (int i = 0; i < 20; ++i)
+    tl.push_back(test_class(i));
+
+  int j = 0;
+  for (std::list<test_class>::iterator it = tl.begin(); it != tl.end(); ++it) {
+    BOOST_TEST(k_m(it) == j);
+    BOOST_TEST(k_cm(it) == j);
     BOOST_TEST(k_cmf(it));
     BOOST_TEST(!k_mf(it));
     BOOST_TEST(k_gf(it));
     BOOST_TEST(!k_gcrf(it));
     BOOST_TEST(k_grf(it));
-    BOOST_TEST(cmpk(it)==std::make_tuple(test_class(j),j,j,true));
-    BOOST_TEST(ccmpk(it)==std::make_tuple(test_class(j),j));
+    BOOST_TEST(cmpk(it) == std::make_tuple(test_class(j), j, j, true));
+    BOOST_TEST(ccmpk(it) == std::make_tuple(test_class(j), j));
     ++j;
   }
 }

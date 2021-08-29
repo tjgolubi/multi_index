@@ -13,18 +13,20 @@
 
 #include <boost/serialization/nvp.hpp>
 
-struct pair_of_ints
-{
-  pair_of_ints(int first_=0,int second_=0):first(first_),second(second_){}
+struct pair_of_ints {
+  pair_of_ints(int first_ = 0, int second_ = 0): first(first_), second(second_) {}
 
   bool operator==(const pair_of_ints& x) const
   {
-    return first==x.first&&second==x.second;
+    return first == x.first && second == x.second;
   }
 
-  bool operator!=(const pair_of_ints& x) const{return !(*this==x);}
+  bool operator!=(const pair_of_ints& x) const
+  {
+    return !(*this == x);
+  }
 
-  int first,second;
+  int first, second;
 };
 
 inline void increment_first(pair_of_ints& p)
@@ -58,10 +60,10 @@ inline int decrement_int(int& x)
 }
 
 template<class Archive>
-void serialize(Archive& ar,pair_of_ints& p,const unsigned int)
+void serialize(Archive& ar, pair_of_ints& p, const unsigned int)
 {
-  ar&boost::serialization::make_nvp("first",p.first);
-  ar&boost::serialization::make_nvp("second",p.second);
+  ar& boost::serialization::make_nvp("first", p.first);
+  ar& boost::serialization::make_nvp("second", p.second);
 }
 
 #endif

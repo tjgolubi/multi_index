@@ -22,39 +22,42 @@ using namespace boost::multi_index;
 void test_serialization1()
 {
   {
-    typedef multi_index_container<
-      int,
-      indexed_by<
-        sequenced<>,
-        sequenced<>,
-        random_access<>
-      >
+    typedef multi_index_container <
+    int,
+    indexed_by <
+    sequenced<>,
+    sequenced<>,
+    random_access<>
+    >
     > multi_index_t;
 
     multi_index_t m;
-    for(int i=0;i<100;++i)m.push_back(i);
+    for (int i = 0; i < 100; ++i)
+      m.push_back(i);
     m.reverse();
     test_serialization(m);
 
     m.clear();
-    for(int j=50;j<100;++j)m.push_back(j);
-    for(int k=0;k<50;++k)m.push_back(k);
+    for (int j = 50; j < 100; ++j)
+      m.push_back(j);
+    for (int k = 0; k < 50; ++k)
+      m.push_back(k);
     m.sort();
     test_serialization(m);
   }
   {
-    typedef multi_index_container<
-      int,
-      indexed_by<
-        random_access<>,
-        sequenced<>,
-        ordered_non_unique<identity<int> >
-      >,
-      non_std_allocator<int>
+    typedef multi_index_container <
+    int,
+    indexed_by <
+    random_access<>,
+    sequenced<>,
+    ordered_non_unique<identity<int>>
+    >,
+    non_std_allocator<int>
     > multi_index_t;
 
     multi_index_t m;
-    for(int i=0;i<100;++i){
+    for (int i = 0; i < 100; ++i) {
       m.push_back(i);
       m.push_back(i);
       m.push_back(i);

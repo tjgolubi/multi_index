@@ -14,9 +14,8 @@
 #include <type_traits>
 #include <memory>
 
-template<typename T,bool Propagate,bool AlwaysEqual>
-class rooted_allocator:public std::allocator<T>
-{
+template<typename T, bool Propagate, bool AlwaysEqual>
+class rooted_allocator: public std::allocator<T> {
   typedef std::bool_constant<Propagate>   propagate_type;
   typedef std::bool_constant<AlwaysEqual> always_equal_type;
 
@@ -26,27 +25,35 @@ public:
   typedef propagate_type    propagate_on_container_swap;
   typedef always_equal_type is_always_equal;
   template<typename U>
-  struct rebind{typedef rooted_allocator<U,Propagate,AlwaysEqual> other;};
+  struct rebind {
+    typedef rooted_allocator<U, Propagate, AlwaysEqual> other;
+  };
 
-  rooted_allocator():root(0){}
-  explicit rooted_allocator(int):root(this){}
-  template<typename U>
-  rooted_allocator(const rooted_allocator<U,Propagate,AlwaysEqual>& x):
-    root(x.root){}
-
-  template<typename U>
-  bool operator==(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
-    {return AlwaysEqual?true:root==x.root;}
-  template<typename U>
-  bool operator!=(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
-    {return !(*this==x);}
+  rooted_allocator(): root(0) {}
+  explicit rooted_allocator(int): root(this) {}
+  template<typename U> rooted_allocator(const
+                                        rooted_allocator<U, Propagate, AlwaysEqual>& x):
+    root(x.root) {}
 
   template<typename U>
-  bool comes_from(const rooted_allocator<U,Propagate,AlwaysEqual>& x) const
-    {return root==&x;}
+  bool operator==(const rooted_allocator<U, Propagate, AlwaysEqual>& x) const
+  {
+    return AlwaysEqual ? true : root == x.root;
+  }
+  template<typename U>
+  bool operator!=(const rooted_allocator<U, Propagate, AlwaysEqual>& x) const
+  {
+    return !(*this == x);
+  }
+
+  template<typename U>
+  bool comes_from(const rooted_allocator<U, Propagate, AlwaysEqual>& x) const
+  {
+    return root == &x;
+  }
 
 private:
-  template<typename,bool,bool> friend class rooted_allocator;
+  template<typename, bool, bool> friend class rooted_allocator;
 
   const void* root;
 };

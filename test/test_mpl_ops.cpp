@@ -25,53 +25,53 @@ using namespace boost::multi_index;
 
 void test_mpl_ops()
 {
-  using indexed_t1 = multi_index_container<
-    int,
-    indexed_by<
-      ordered_unique<identity<int>>,
-      ordered_non_unique<identity<int>>
-    >
-  >;
+  using indexed_t1 = multi_index_container <
+                     int,
+                     indexed_by <
+                     ordered_unique<identity<int>>,
+                     ordered_non_unique<identity<int>>
+                     >
+                     >;
 
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0>,
-    ordered_unique<identity<int> > >));
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1>,
-    ordered_non_unique<identity<int> > >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 0>,
+                 ordered_unique<identity<int>> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 1>,
+                 ordered_non_unique<identity<int>> >));
 
-  typedef boost::mp11::mp_push_front<
-    indexed_t1::index_specifier_type_list,
-    sequenced<>
-  >                           index_list_t;
+  typedef boost::mp11::mp_push_front <
+  indexed_t1::index_specifier_type_list,
+             sequenced<>
+             >                           index_list_t;
 
-  typedef multi_index_container<
-    int,
-    index_list_t
+  typedef multi_index_container <
+  int,
+  index_list_t
   >                           indexed_t2;
 
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,0>,
-    sequenced<> >));
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,1>,
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0> >));
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list,2>,
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list, 0>,
+                 sequenced<> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list, 1>,
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 0> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t2::index_specifier_type_list, 2>,
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 1> >));
 
-  typedef multi_index_container<
-    int,
-    boost::mp11::mp_list<
-      ordered_unique<identity<int> >,
-      ordered_non_unique<identity<int> >
-    >
+  typedef multi_index_container <
+  int,
+  boost::mp11::mp_list <
+  ordered_unique<identity<int>>,
+  ordered_non_unique<identity<int>>
+  >
   >                           indexed_t3;
 
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list,0>,
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,0> >));
-  static_assert((std::is_same_v<
-    boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list,1>,
-    boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list,1> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list, 0>,
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 0> >));
+  static_assert((std::is_same_v <
+                 boost::mp11::mp_at_c<indexed_t3::index_specifier_type_list, 1>,
+                 boost::mp11::mp_at_c<indexed_t1::index_specifier_type_list, 1> >));
 }
