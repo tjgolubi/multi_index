@@ -19,29 +19,20 @@ namespace boost::multi_index::detail {
 
 template<typename MultiIndexContainer, typename Index>
 struct converter {
-  static const Index& index(const MultiIndexContainer& x)
-  {
-    return x;
-  }
-  static Index&       index(MultiIndexContainer& x)
-  {
-    return x;
-  }
+  static const Index& index(const MultiIndexContainer& x) { return x; }
 
-  static typename Index::const_iterator const_iterator(
-      const MultiIndexContainer& x,
-      typename MultiIndexContainer::final_node_type* node)
-  {
-    return x.Index::make_iterator(node);
-  }
+  static Index&       index(MultiIndexContainer& x) { return x; }
 
-  static typename Index::iterator iterator(
-      MultiIndexContainer& x,
-      typename MultiIndexContainer::final_node_type* node)
-  {
-    return x.Index::make_iterator(node);
-  }
-};
+  static typename Index::const_iterator
+  const_iterator(const MultiIndexContainer& x,
+                 typename MultiIndexContainer::final_node_type* node)
+  { return x.Index::make_iterator(node); }
+
+  static typename Index::iterator
+  iterator(MultiIndexContainer& x,
+           typename MultiIndexContainer::final_node_type* node)
+  { return x.Index::make_iterator(node); }
+}; // converter
 
 } // boost::multi_index::detail
 

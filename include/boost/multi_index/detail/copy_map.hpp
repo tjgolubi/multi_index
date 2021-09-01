@@ -33,114 +33,87 @@ namespace boost::multi_index::detail {
 
 template<typename Node>
 struct copy_map_entry {
-  copy_map_entry(Node* f, Node* s): first(f), second(s) {}
+  copy_map_entry(Node* f, Node* s) : first(f), second(s) { }
 
   Node* first;
   Node* second;
 
   bool operator<(const copy_map_entry<Node>& x) const
-  {
-    return std::less<Node*>()(first, x.first);
-  }
-};
+  { return std::less<Node*>()(first, x.first); }
+}; // copy_map_entry
 
 struct copy_map_value_copier {
   template<typename Value>
-  const Value& operator()(Value& x) const
-  {
-    return x;
-  }
+  const Value& operator()(Value& x) const { return x; }
 };
 
 struct copy_map_value_mover {
   template<typename Value>
-  Value&& operator()(Value& x) const
-  {
-    return std::move(x);
-  }
+  Value&& operator()(Value& x) const { return std::move(x); }
 };
 
 template<typename Node, typename Allocator>
-class copy_map: private noncopyable {
+class copy_map : private noncopyable {
   using allocator_type = typename std::allocator_traits<Allocator>::
                                                             rebind_alloc<Node>;
   using alloc_traits = std::allocator_traits<allocator_type>;
-  using pointer = typename alloc_traits::pointer;
+  using pointer      = typename alloc_traits::pointer;
 
 public:
   using const_iterator = const copy_map_entry<Node>*;
-  using size_type = typename alloc_traits::size_type;
+  using size_type      = typename alloc_traits::size_type;
 
-  copy_map(
-      const Allocator& al, size_type size, Node* header_org, Node* header_cpy):
-    al_(al), size_(size), spc(al_, size_), n(0),
-    header_org_(header_org), header_cpy_(header_cpy), released(false)
-  {}
+  copy_map(const Allocator& al, size_type size, Node* header_org,
+           Node* header_cpy)
+    : al_(al), size_(size), spc(al_, size_), n(0)
+    , header_org_(header_org), header_cpy_(header_cpy), released(false)
+    { }
 
-  ~copy_map()
-  {
-    if (!released) {
-      for (size_type i = 0; i < n; ++i) {
-        alloc_traits::destroy(
-            al_, std::addressof((spc.data() + i)->second->value()));
-        deallocate((spc.data() + i)->second);
-      }
+  ~copy_map() {
+    if (released)
+      return;
+    for (size_type i = 0; i < n; ++i) {
+      alloc_traits::destroy(al_,
+                          std::addressof((spc.data() + i)->second->value()));
+      deallocate((spc.data() + i)->second);
     }
   }
 
   const_iterator begin() const
-  {
-    return raw_ptr<const_iterator>(spc.data());
-  }
+  { return raw_ptr<const_iterator>(spc.data()); }
+
   const_iterator end() const
-  {
-    return raw_ptr<const_iterator>(spc.data() + n);
-  }
+  { return raw_ptr<const_iterator>(spc.data() + n); }
 
-  void copy_clone(Node* node)
-  {
-    clone(node, copy_map_value_copier());
-  }
-  void move_clone(Node* node)
-  {
-    clone(node, copy_map_value_mover());
-  }
+  void copy_clone(Node* node) { clone(node, copy_map_value_copier()); }
 
-  Node* find(Node* node) const
-  {
+  void move_clone(Node* node) { clone(node, copy_map_value_mover()); }
+
+  Node* find(Node* node) const {
     if (node == header_org_)
       return header_cpy_;
-    return std::lower_bound(
-               begin(), end(), copy_map_entry<Node>(node, 0))->second;
+    return std::lower_bound(begin(), end(),
+                            copy_map_entry<Node>(node, 0))->second;
   }
 
-  void release()
-  {
-    released = true;
-  }
+  void release() { released = true; }
 
 private:
-  allocator_type                             al_;
-  size_type                                  size_;
+  allocator_type                              al_;
+  size_type                                   size_;
   auto_space<copy_map_entry<Node>, Allocator> spc;
-  size_type                                  n;
-  Node*                                      header_org_;
-  Node*                                      header_cpy_;
-  bool                                       released;
+  size_type                                   n;
+  Node*                                       header_org_;
+  Node*                                       header_cpy_;
+  bool                                        released;
 
-  pointer allocate()
-  {
-    return alloc_traits::allocate(al_, 1);
-  }
+  pointer allocate() { return alloc_traits::allocate(al_, 1); }
 
   void deallocate(Node* node)
-  {
-    alloc_traits::deallocate(al_, static_cast<pointer>(node), 1);
-  }
+  { alloc_traits::deallocate(al_, static_cast<pointer>(node), 1); }
 
   template<typename ValueAccess>
-  void clone(Node* node, ValueAccess access)
-  {
+  void clone(Node* node, ValueAccess access) {
     (spc.data() + n)->first = node;
     (spc.data() + n)->second = raw_ptr<Node*>(allocate());
     try {
@@ -155,12 +128,11 @@ private:
     ++n;
 
     if (n == size_) {
-      std::sort(
-          raw_ptr<copy_map_entry<Node>*>(spc.data()),
-          raw_ptr<copy_map_entry<Node>*>(spc.data()) + size_);
+      std::sort(raw_ptr<copy_map_entry<Node>*>(spc.data()),
+                raw_ptr<copy_map_entry<Node>*>(spc.data()) + size_);
     }
   }
-};
+}; // copy_map
 
 } // boost::multi_index::detail
 
