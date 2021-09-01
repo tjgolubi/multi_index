@@ -16,7 +16,7 @@ namespace boost::multi_index::detail {
  * a container but not its elements.
  */
 
-struct do_not_copy_elements_tag {};
+struct do_not_copy_elements_tag { };
 
 } // boost::multi_index::detail
 
