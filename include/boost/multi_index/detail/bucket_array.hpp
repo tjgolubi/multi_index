@@ -70,9 +70,7 @@ protected:
 #endif
   }; // sizes
 
-  static
-  std::size_t size_index(std::size_t n)
-  {
+  static std::size_t size_index(std::size_t n) {
     auto bound = std::lower_bound(sizes.begin(), sizes.end(), n);
     if (bound == sizes.end())
       --bound;
@@ -80,8 +78,7 @@ protected:
   }
 
   static constexpr
-  std::size_t position(std::size_t hash, std::size_t size_index_)
-  {
+  std::size_t position(std::size_t hash, std::size_t size_index_) {
     /* Accelerate hash%sizes[size_index_] by replacing with a switch on
      * hash%Ci expressions, each Ci a compile-time constant, which the
      * compiler can implement without using integer division.
@@ -105,50 +102,31 @@ public:
   bucket_array(const Allocator& al, pointer end_, std::size_t size_)
     : size_index_(super::size_index(size_))
     , spc(al, static_cast<auto_space_size_type>(super::sizes[size_index_] + 1))
-  {
-    clear(end_);
-  }
+  { clear(end_); }
 
-  std::size_t size() const
-  {
-    return super::sizes[size_index_];
-  }
+  std::size_t size() const { return super::sizes[size_index_]; }
 
   std::size_t position(std::size_t hash) const
-  {
-    return super::position(hash, size_index_);
-  }
+  { return super::position(hash, size_index_); }
 
-  base_pointer begin() const
-  {
-    return buckets();
-  }
-  base_pointer end()   const
-  {
-    return buckets() + size();
-  }
-  base_pointer at(std::size_t n) const
-  {
-    return buckets() + n;
-  }
+  base_pointer begin() const { return buckets(); }
+  base_pointer end()   const { return buckets() + size(); }
+  base_pointer at(std::size_t n) const { return buckets() + n; }
 
-  void clear(pointer end_)
-  {
+  void clear(pointer end_) {
     for (auto x = begin(), y = end(); x != y; ++x)
       x->prior() = pointer(nullptr);
     end()->prior() = end_->prior() = end_;
     end_->next() = end();
   }
 
-  void swap(bucket_array& x)
-  {
+  void swap(bucket_array& x) {
     std::swap(size_index_, x.size_index_);
     spc.swap(x.spc);
   }
 
   template<typename BoolConstant>
-  void swap(bucket_array& x, BoolConstant swap_allocators)
-  {
+  void swap(bucket_array& x, BoolConstant swap_allocators) {
     std::swap(size_index_, x.size_index_);
     spc.swap(x.spc, swap_allocators);
   }
@@ -160,10 +138,7 @@ private:
   std::size_t      size_index_;
   auto_space_type  spc;
 
-  base_pointer buckets() const
-  {
-    return spc.data();
-  }
+  base_pointer buckets() const { return spc.data(); }
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
   friend class boost::serialization::access;
@@ -180,9 +155,7 @@ private:
 
 template<typename Allocator>
 void swap(bucket_array<Allocator>& x, bucket_array<Allocator>& y)
-{
-  x.swap(y);
-}
+{ x.swap(y); }
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 /* bucket_arrays never get constructed directly by Boost.Serialization,

@@ -24,31 +24,28 @@ namespace boost::multi_index::detail {
  */
 
 template<typename Node>
-class bidir_node_iterator:
-  public bidirectional_iterator_helper <
-  bidir_node_iterator<Node>,
-  typename Node::value_type,
-  typename Node::difference_type,
-  const typename Node::value_type*,
-  const typename Node::value_type& > {
+class bidir_node_iterator
+  : public bidirectional_iterator_helper<
+      bidir_node_iterator<Node>,
+      typename Node::value_type,
+      typename Node::difference_type,
+      const typename Node::value_type*,
+      const typename Node::value_type&
+    >
+{
 public:
   /* coverity[uninit_ctor]: suppress warning */
   bidir_node_iterator() {}
-  explicit bidir_node_iterator(Node* node_): node(node_) {}
+  explicit bidir_node_iterator(Node* node_) : node(node_) { }
 
-  const typename Node::value_type& operator*() const
-  {
-    return node->value();
-  }
+  const typename Node::value_type& operator*() const { return node->value(); }
 
-  bidir_node_iterator& operator++()
-  {
+  bidir_node_iterator& operator++() {
     Node::increment(node);
     return *this;
   }
 
-  bidir_node_iterator& operator--()
-  {
+  bidir_node_iterator& operator--() {
     Node::decrement(node);
     return *this;
   }
@@ -60,18 +57,16 @@ public:
 
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-  typedef typename Node::base_type node_base_type;
+  using node_base_type = typename Node::base_type;
 
   template<class Archive>
-  void save(Archive& ar, const unsigned int) const
-  {
+  void save(Archive& ar, const unsigned int) const {
     node_base_type* bnode = node;
     ar << serialization::make_nvp("pointer", bnode);
   }
 
   template<class Archive>
-  void load(Archive& ar, const unsigned int)
-  {
+  void load(Archive& ar, const unsigned int) {
     node_base_type* bnode;
     ar >> serialization::make_nvp("pointer", bnode);
     node = static_cast<Node*>(bnode);
@@ -80,24 +75,18 @@ public:
 
   /* get_node is not to be used by the user */
 
-  typedef Node node_type;
+  using node_type = Node;
 
-  Node* get_node() const
-  {
-    return node;
-  }
+  Node* get_node() const { return node; }
 
 private:
   Node* node;
-};
+}; // bidir_node_iterator
 
 template<typename Node>
-bool operator==(
-    const bidir_node_iterator<Node>& x,
-    const bidir_node_iterator<Node>& y)
-{
-  return x.get_node() == y.get_node();
-}
+bool operator==(const bidir_node_iterator<Node>& x,
+                const bidir_node_iterator<Node>& y)
+{ return x.get_node() == y.get_node(); }
 
 } // boost::multi_index::detail
 
