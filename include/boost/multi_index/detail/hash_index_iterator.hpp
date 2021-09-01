@@ -23,32 +23,28 @@ namespace boost::multi_index::detail {
 /* Iterator class for hashed indices.
  */
 
-struct hashed_index_global_iterator_tag {};
-struct hashed_index_local_iterator_tag {};
+struct hashed_index_global_iterator_tag { };
+struct hashed_index_local_iterator_tag { };
 
-template<
-    typename Node, typename BucketArray,
-    typename IndexCategory, typename IteratorCategory
+template<typename Node, typename BucketArray,
+         typename IndexCategory, typename IteratorCategory>
+class hashed_index_iterator
+  : public forward_iterator_helper<
+      hashed_index_iterator<Node, BucketArray, IndexCategory, IteratorCategory>,
+      typename Node::value_type,
+      typename Node::difference_type,
+      const typename Node::value_type*,
+      const typename Node::value_type&
     >
-class hashed_index_iterator:
-  public forward_iterator_helper <
-  hashed_index_iterator<Node, BucketArray, IndexCategory, IteratorCategory>,
-  typename Node::value_type,
-  typename Node::difference_type,
-  const typename Node::value_type*,
-  const typename Node::value_type& > {
+{
 public:
   /* coverity[uninit_ctor]: suppress warning */
-  hashed_index_iterator() {}
-  hashed_index_iterator(Node* node_): node(node_) {}
+  hashed_index_iterator() { }
+  hashed_index_iterator(Node* node_) : node(node_) { }
 
-  const typename Node::value_type& operator*() const
-  {
-    return node->value();
-  }
+  const typename Node::value_type& operator*() const { return node->value(); }
 
-  hashed_index_iterator& operator++()
-  {
+  hashed_index_iterator& operator++() {
     this->increment(IteratorCategory());
     return *this;
   }
@@ -60,24 +56,21 @@ public:
 
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-  typedef typename Node::base_type node_base_type;
+  using node_base_type = typename Node::base_type;
 
   template<class Archive>
-  void save(Archive& ar, const unsigned int) const
-  {
+  void save(Archive& ar, const unsigned int) const {
     node_base_type* bnode = node;
     ar << serialization::make_nvp("pointer", bnode);
   }
 
   template<class Archive>
   void load(Archive& ar, const unsigned int version)
-  {
-    load(ar, version, IteratorCategory());
-  }
+  { load(ar, version, IteratorCategory()); }
 
   template<class Archive>
-  void load(
-      Archive& ar, const unsigned int version, hashed_index_global_iterator_tag)
+  void load(Archive& ar, const unsigned int version,
+            hashed_index_global_iterator_tag)
   {
     node_base_type* bnode;
     ar >> serialization::make_nvp("pointer", bnode);
@@ -89,8 +82,8 @@ public:
   }
 
   template<class Archive>
-  void load(
-      Archive& ar, const unsigned int version, hashed_index_local_iterator_tag)
+  void load(Archive& ar, const unsigned int version,
+            hashed_index_local_iterator_tag)
   {
     node_base_type* bnode;
     ar >> serialization::make_nvp("pointer", bnode);
@@ -100,7 +93,7 @@ public:
       ar >> serialization::make_nvp("pointer", buckets);
       if (buckets && node && node->impl() == buckets->end()->prior()) {
         /* end local_iterators used to point to end node, now they are null */
-        node = 0;
+        node = nullptr;
       }
     }
   }
@@ -108,40 +101,28 @@ public:
 
   /* get_node is not to be used by the user */
 
-  typedef Node node_type;
+  using node_type = Node;
 
-  Node* get_node() const
-  {
-    return node;
-  }
+  Node* get_node() const { return node; }
 
 private:
 
   void increment(hashed_index_global_iterator_tag)
-  {
-    Node::template increment<IndexCategory>(node);
-  }
+  { Node::template increment<IndexCategory>(node); }
 
   void increment(hashed_index_local_iterator_tag)
-  {
-    Node::template increment_local<IndexCategory>(node);
-  }
+  { Node::template increment_local<IndexCategory>(node); }
 
   Node* node;
-};
+}; // hashed_index_iterator
 
-template<
-    typename Node, typename BucketArray,
-    typename IndexCategory, typename IteratorCategory
-    >
-bool operator==(
-    const hashed_index_iterator <
-    Node, BucketArray, IndexCategory, IteratorCategory > & x,
-    const hashed_index_iterator <
-    Node, BucketArray, IndexCategory, IteratorCategory > & y)
-{
-  return x.get_node() == y.get_node();
-}
+template<typename Node, typename BucketArray,
+         typename IndexCategory, typename IteratorCategory>
+bool operator==(const hashed_index_iterator<
+                    Node, BucketArray, IndexCategory, IteratorCategory>& x,
+                const hashed_index_iterator<
+                    Node, BucketArray, IndexCategory, IteratorCategory>& y)
+{ return (x.get_node() == y.get_node()); }
 
 } // boost::multi_index::detail
 
@@ -151,17 +132,15 @@ bool operator==(
  */
 
 namespace boost::serialization {
-template<
-    typename Node, typename BucketArray,
-    typename IndexCategory, typename IteratorCategory
-    >
-struct version <
-  boost::multi_index::detail::hashed_index_iterator <
-  Node, BucketArray, IndexCategory, IteratorCategory
-  >
-  > {
+
+template<typename Node, typename BucketArray,
+         typename IndexCategory, typename IteratorCategory>
+struct version<boost::multi_index::detail::hashed_index_iterator<
+                  Node, BucketArray, IndexCategory, IteratorCategory>>
+{
   static const int value = 1;
 };
+
 } // boost::serialization
 
 #endif
