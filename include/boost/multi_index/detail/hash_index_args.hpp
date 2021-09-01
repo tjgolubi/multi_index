@@ -35,42 +35,28 @@ namespace boost::multi_index::detail {
 
 template<typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 struct hashed_index_args {
-  typedef is_tag<Arg1> full_form;
+  using full_form = is_tag<Arg1>;
 
-  typedef mp11::mp_if <
-  full_form,
-  Arg1,
-  tag< > >                                  tag_list_type;
-  typedef mp11::mp_if <
-  full_form,
-  Arg2,
-  Arg1 >                                     key_from_value_type;
-  typedef mp11::mp_if <
-  full_form,
-  Arg3,
-  Arg2 >                                     supplied_hash_type;
-  typedef mp11::mp_eval_if_c <
-  !std::is_void_v<supplied_hash_type>,
-  supplied_hash_type,
-  std::hash,
-  typename key_from_value_type::result_type
-  >                                           hash_type;
-  typedef mp11::mp_if <
-  full_form,
-  Arg4,
-  Arg3 >                                     supplied_pred_type;
-  typedef mp11::mp_eval_if_c <
-  !std::is_void_v<supplied_pred_type>,
-  supplied_pred_type,
-  std::equal_to,
-  typename key_from_value_type::result_type
-  >                                           pred_type;
+  using tag_list_type = std::conditional_t<full_form::value, Arg1, tag<>>;
+  using key_from_value_type = std::conditional_t<full_form::value, Arg2, Arg1>;
+  using supplied_hash_type = std::conditional_t<full_form::value, Arg3, Arg2>;
+  using hash_type = mp11::mp_eval_if_c<!std::is_void_v<supplied_hash_type>,
+                      supplied_hash_type,
+                      std::hash,
+                      typename key_from_value_type::result_type
+                    >;
+  using supplied_pred_type = std::conditional_t<full_form::value, Arg4, Arg3>;
+  using pred_type = mp11::mp_eval_if_c<!std::is_void_v<supplied_pred_type>,
+                      supplied_pred_type,
+                      std::equal_to,
+                      typename key_from_value_type::result_type
+                    >;
 
   static_assert(is_tag<tag_list_type>::value);
   static_assert(!std::is_void_v<key_from_value_type>);
   static_assert(!std::is_void_v<hash_type>);
   static_assert(!std::is_void_v<pred_type>);
-};
+}; // hashed_index_args
 
 } // boost::multi_index::detail
 
