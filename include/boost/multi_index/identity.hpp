@@ -19,7 +19,7 @@ namespace detail {
 
 /* identity is a do-nothing key extractor that returns the [const] Type&
  * object passed.
- * Additionally, identity is overloaded to support referece_wrappers
+ * Additionally, identity is overloaded to support reference_wrappers
  * of Type and "chained pointers" to Type's. By chained pointer to Type we
  * mean a  type  P such that, given a p of type P
  *   *...n...*x is convertible to Type&, for some n>=1.
@@ -37,8 +37,7 @@ struct const_identity_base {
   Type&> operator()(const ChainedPtr& x) const
   { return operator()(*x); }
 
-  Type& operator()(Type& x) const
-  { return x; }
+  Type& operator()(Type& x) const { return x; }
 
   Type& operator()(const std::reference_wrapper<Type>& x) const
   { return x.get(); }
